@@ -36,7 +36,7 @@ function Cart() {
                   <Item
                     id={item.id}
                     img={item.img}
-                    title={item.name}
+                    title={item.title}
                     price={+item.price}
                     count={item.count}
                     discount={discount}

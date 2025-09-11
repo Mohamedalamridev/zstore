@@ -43,7 +43,7 @@ function TopSeller() {
                   img={p?.img[0]}
                   rate={4}
                   price={p?.price}
-                  discount={p?.oldPrice - p.price}
+                  discount={p?.oldPrice - +p.price}
                   oldPrice={p?.oldPrice}
                 />
               );

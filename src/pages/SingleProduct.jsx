@@ -20,6 +20,7 @@ function SingleProduct() {
         );
         const data = await res.json();
         setProduct(data.product);
+        console.log(data.product.title);
 
         if (data.product?.img?.length > 0) {
           setCurrentImg(data.product.img[0]);
@@ -87,14 +88,15 @@ function SingleProduct() {
 
           {/* Add to Cart */}
           <div className="add_to_cart flex-col flex my-8 gap-7">
-            <Quantity
-              id={product?._id}
-              name={product?.title}
-              img={product?.img[0]}
-              price={product?.price}
-              discount={product?.oldPrice - product.price}
-              oldPrice={product?.oldPrice}
-            />
+            {product !== null && (
+              <Quantity
+                id={product._id}
+                img={product.img}
+                title={product.title}
+                price={product.price}
+                discount={product.oldPrice - product.price}
+              />
+            )}
             <button className="py-2 px-20 rounded-3xl w-full text-white bg-[#27374D]">
               Add To Cart
             </button>
