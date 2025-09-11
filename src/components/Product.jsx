@@ -21,7 +21,7 @@ function Product({ name, img, rate = 0, price, oldPrice = 0, id, discount }) {
     oldPrice > 0 ? Math.round(((oldPrice - price) / oldPrice) * 100) : 0;
 
   return (
-    <div className="lg:col-span-1 col-span-2">
+    <div className="lg:col-span-1 col-span-4">
       <div className="relative w-[95%] product group border-[1px] border-gray-200 rounded-2xl p-3 shadow-sm">
         {/* product image */}
         <img
