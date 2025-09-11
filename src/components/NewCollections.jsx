@@ -8,7 +8,7 @@ function NewCollections() {
         <h1 className="text-center my-10 font-black text-[#27374D] text-4xl">
           NEW ARRIVALS
         </h1>
-        <div className="grid grid-cols-4 gap-8 ">
+        <div className="grid grid-cols-4 gap-3 gap-y-16 ">
           <Product
             id={5}
             name="Classic Blue Shirt"

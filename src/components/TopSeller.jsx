@@ -4,11 +4,11 @@ import Product from "./Product";
 function TopSeller() {
   return (
     <>
-      <section className="xl:px-24 lg:px-10 px-4 pb-10">
+      <section className="xl:px-24 lg:px-10 px-3 pb-10">
         <h1 className="text-center my-10 font-black text-[#27374D] text-4xl">
           top selling
         </h1>
-        <div className="grid grid-cols-4 gap-8 ">
+        <div className="grid grid-cols-4 gap-y-16 ">
           <Product
             id={1}
             name="polo Blue Shirt"

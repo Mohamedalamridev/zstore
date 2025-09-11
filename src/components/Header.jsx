@@ -18,20 +18,20 @@ function Header() {
           <button className="px-5 py-3 bg-[#27374D] text-white uppercase rounded-4xl">
             Shop Now
           </button>
-          <div className="stats_container flex gap-6 my-10 flex-wrap">
-            <div className="bg-white p-5 rounded-2xl">
+          <div className="stats_container grid gap-4 my-10 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 ">
+            <div className="bg-white p-5 rounded-2xl ">
               <h1 className="font-semibold text-4xl text-[#27374D] mb-2">
                 300+
               </h1>
               <h2 className="text-sm text-[#526D82]">International Brands</h2>
             </div>
-            <div className="bg-white p-5 rounded-2xl">
+            <div className="bg-white p-5 rounded-2xl  ">
               <h1 className="font-semibold text-4xl text-[#27374D] mb-2">
                 3,000+
               </h1>
               <h2 className="text-sm text-[#526D82]">High-Quality Products</h2>
             </div>
-            <div className="bg-white p-5 rounded-2xl">
+            <div className="bg-white p-5 rounded-2xl  ">
               <h1 className="font-semibold text-4xl text-[#27374D] mb-2">
                 40,000+
               </h1>
