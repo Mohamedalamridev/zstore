@@ -3,17 +3,15 @@ import { FiMinus } from "react-icons/fi";
 import { GoPlus } from "react-icons/go";
 import { MdDelete } from "react-icons/md";
 import { useCart } from "../CartContext";
+import Quantity from "./Quantity";
 
 function Item({ id, img, title, info, price, count, discount }) {
   const { state, dispatch } = useCart();
-  const handleDecrease = () => {
-    dispatch({ type: "REMOVE_ITEM", payload: { id } });
-  };
 
   return (
     <div className="flex gap-4 not-last:border-b-[1px] border-gray-400 pb-4">
       <div className="img">
-        <img src={img} alt="" className="lg:max-w-32 w-28 rounded-lg" />
+        <img src={img} alt="" className="lg:w-32 w-28 rounded-lg" />
       </div>
       <div>
         <h1>{title}</h1>
@@ -34,26 +32,15 @@ function Item({ id, img, title, info, price, count, discount }) {
         >
           <MdDelete />
         </span>
-        <div className="flex items-center bg-[#F0F0F0] py-1 px-1 rounded-3xl">
-          <span
-            className="text-xl px-2 cursor-pointer"
-            onClick={handleDecrease}
-          >
-            <FiMinus />
-          </span>
-          <span className="text-xl px-3">{count}</span>
-          <span
-            className="text-xl px-2 cursor-pointer"
-            onClick={() => {
-              dispatch({
-                type: "ADD_TO_CART",
-                payload: { id, img, title, price, count, discount },
-              });
-            }}
-          >
-            <GoPlus />
-          </span>
-        </div>
+        <Quantity
+          id={id}
+          img={img}
+          price={price}
+          discount={discount}
+          title={title}
+          count={count}
+          key={id}
+        />
       </div>
     </div>
   );

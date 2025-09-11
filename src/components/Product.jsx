@@ -3,8 +3,18 @@ import { IoStarSharp } from "react-icons/io5";
 import { MdAddShoppingCart, MdFavoriteBorder } from "react-icons/md";
 import { FaCheckCircle } from "react-icons/fa";
 import { useCart } from "../CartContext";
+import Quantity from "./Quantity";
 
-function Product({ name, img, rate = 0, price, oldPrice = 0, id, discount }) {
+function Product({
+  name,
+  count,
+  img,
+  rate = 0,
+  price,
+  oldPrice = 0,
+  id,
+  discount,
+}) {
   const { state, dispatch } = useCart();
 
   const isAdded = state.cart.some((item) => item.id === id);
@@ -67,13 +77,17 @@ function Product({ name, img, rate = 0, price, oldPrice = 0, id, discount }) {
 
           {/* add to cart button always visible */}
         </div>
-        <button
-          onClick={handleAddToCart}
-          className=" w-full mt-4 flex items-center gap-2 bg-[#27374D] text-white px-4 py-2 rounded-xl shadow hover:bg-[#1b2433] transition"
-        >
-          <MdAddShoppingCart className="text-lg" />
-          Add to Cart
-        </button>
+        {!isAdded ? (
+          <button
+            onClick={handleAddToCart}
+            className=" w-full mt-4 flex items-center gap-2 bg-[#27374D] text-white px-4 py-2 rounded-xl shadow hover:bg-[#1b2433] transition"
+          >
+            <MdAddShoppingCart className="text-lg" />
+            Add to Cart
+          </button>
+        ) : (
+          <Quantity id={id} count={count} />
+        )}
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import React from "react";
 import Product from "./Product";
+import { useCart } from "../CartContext";
 
 function NewCollections() {
   return (
@@ -11,8 +12,8 @@ function NewCollections() {
         <div className="grid grid-cols-4 gap-3 gap-y-16 ">
           <Product
             id={5}
-            name="Classic Blue Shirt"
             img="pro-5.png"
+            title="Classic Blue Shirt"
             rate={4}
             discount={0}
             price="120"
@@ -20,24 +21,24 @@ function NewCollections() {
           />
           <Product
             id={6}
-            name="Classic Blue Shirt"
             img="pro-6.png"
+            title="Classic Blue Shirt"
             rate={5}
             discount={50}
             price="360"
           />
           <Product
             id={7}
-            name="Classic Blue Shirt"
             img="pro-7.png"
+            title="Classic Blue Shirt"
             rate={5}
             discount={0}
             price="118"
           />
           <Product
             id={8}
-            name="Classic Blue Shirt"
             img="pro-8.png"
+            title="Classic Blue Shirt"
             rate={4}
             discount={100}
             price="199"

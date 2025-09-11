@@ -5,6 +5,7 @@ import { useCart } from "../CartContext";
 
 function Cart() {
   const { state } = useCart();
+  console.log(state);
 
   const { subTotal, discount, total } = useMemo(() => {
     const subTotal = state.cart.reduce(
@@ -33,11 +34,9 @@ function Cart() {
               <div className="items border-2 border-gray-200 rounded-3xl lg:p-5 p-4 flex-2 gap-4 flex flex-col">
                 {state.cart.map((item) => (
                   <Item
-                    key={item.id}
                     id={item.id}
                     img={item.img}
                     title={item.name}
-                    info="Size: Large"
                     price={+item.price}
                     count={item.count}
                     discount={item.discount}

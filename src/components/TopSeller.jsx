@@ -11,7 +11,7 @@ function TopSeller() {
         <div className="grid grid-cols-4 gap-y-16 ">
           <Product
             id={1}
-            name="polo Blue Shirt"
+            title="polo Blue Shirt"
             img="pro-1.png"
             rate={4}
             price="120"
@@ -20,7 +20,7 @@ function TopSeller() {
           />
           <Product
             id={2}
-            name="xyz Shirt"
+            title="xyz Shirt"
             img="pro-2.png"
             rate={5}
             price="360"
@@ -29,7 +29,7 @@ function TopSeller() {
 
           <Product
             id={3}
-            name="Classice Shirt"
+            title="Classice Shirt"
             img="pro-3.png"
             rate={5}
             price="118"
@@ -38,7 +38,7 @@ function TopSeller() {
 
           <Product
             id={4}
-            name=" Blue Shirt"
+            title=" Blue Shirt"
             img="pro-4.png"
             rate={4}
             price="199"
