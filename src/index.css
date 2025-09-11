@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+.product:hover .add_to_cart {
+  display: flex;
+  transition: 0.3s;
+}
