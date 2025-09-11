@@ -8,7 +8,7 @@ function TopSeller() {
     const fetchProducts = async () => {
       try {
         const response = await fetch(
-          "http://localhost:3000/api/product/top-seller",
+          "https://zstore-server.onrender.com/api/product/top-seller",
           {
             method: "GET",
             headers: {
