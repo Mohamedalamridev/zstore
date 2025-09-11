@@ -4,6 +4,7 @@ import { GoPlus } from "react-icons/go";
 import { MdDelete } from "react-icons/md";
 import { useCart } from "../CartContext";
 import Quantity from "./Quantity";
+import { Link } from "react-router-dom";
 
 function Item({ id, img, title, info, price, count, discount }) {
   const { state, dispatch } = useCart();
@@ -11,12 +12,17 @@ function Item({ id, img, title, info, price, count, discount }) {
   return (
     <div className="flex gap-4 not-last:border-b-[1px] border-gray-400 pb-4">
       <div className="img">
-        <img src={img} alt="" className="lg:w-32 w-28 rounded-lg" />
+        <img src={img} alt="" className="lg:w-32 w-32 rounded-lg" />
       </div>
       <div>
-        <h1>{title}</h1>
+        <Link to={`/product_details/${id}`}>
+          <h1>{title}</h1>
+        </Link>
         <p className="py-1 text-gray-500 font-normal text-sm"> {info}</p>
-        <h2 className="font-black text-xl">${price * count} </h2>
+        <h2 className="font-bold text-lg">
+          ${price * count}{" "}
+          <span className="font-normal text-md text-red-500">-${discount}</span>
+        </h2>
       </div>
       <div className="flex ml-auto flex-col justify-between">
         <span

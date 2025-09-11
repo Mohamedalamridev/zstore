@@ -12,10 +12,10 @@ function Cart() {
       (sum, item) => sum + +item.price * item.count,
       0
     );
-    const discount = state.cart.reduce(
-      (sum, item) => sum + +item.discount * item.count,
-      0
-    );
+    const discount = state.cart.reduce((sum, item) => {
+      return (sum + item.discount) * item.count;
+    }, 0);
+
     const total = subTotal - discount;
     return { subTotal, discount, total };
   }, [state.cart]);
@@ -39,7 +39,7 @@ function Cart() {
                     title={item.name}
                     price={+item.price}
                     count={item.count}
-                    discount={item.discount}
+                    discount={discount}
                   />
                 ))}
               </div>

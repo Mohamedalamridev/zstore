@@ -8,7 +8,7 @@ function Home() {
   return (
     <>
       <Header />
-      <NewCollections />
+      {/* <NewCollections /> */}
       <TopSeller />
       <Newsletter />
     </>

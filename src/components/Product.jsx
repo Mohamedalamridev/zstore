@@ -4,6 +4,7 @@ import { MdAddShoppingCart, MdFavoriteBorder } from "react-icons/md";
 import { FaCheckCircle } from "react-icons/fa";
 import { useCart } from "../CartContext";
 import Quantity from "./Quantity";
+import { Link } from "react-router-dom";
 
 function Product({
   name,
@@ -11,7 +12,7 @@ function Product({
   img,
   rate = 0,
   price,
-  oldPrice = 0,
+  oldPrice,
   id,
   discount,
 }) {
@@ -37,7 +38,7 @@ function Product({
         <img
           src={img}
           alt={name}
-          className="rounded-2xl  w-full group-hover:scale-105 transition-transform duration-300"
+          className="rounded-2xl  h-72 w-full group-hover:scale-105 transition-transform duration-300"
         />
 
         {/* added to cart badge */}
@@ -49,7 +50,9 @@ function Product({
         )}
 
         {/* product name */}
-        <h1 className="text-xl font-medium mt-2">{name}</h1>
+        <Link to={`/product_details/${id}`}>
+          <h1 className="text-xl font-medium mt-2">{name}</h1>
+        </Link>
 
         {/* rating */}
         <div className="rate flex my-1 items-center">

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Review from "./Review";
 import Recommends from "./Recommends";
 
@@ -45,7 +45,7 @@ function Reviews() {
         <button className="mx-auto p-3 my-20 rounded-3xl text-sm border-2 border-gray-400 w-fit block">
           Load More
         </button>
-        <Recommends />
+        {/* <Recommends /> */}
       </div>
     </section>
   );

@@ -1,7 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import Product from "./Product";
+import { Link } from "react-router-dom";
 
 function TopSeller() {
+  const [products, setProducts] = useState([]);
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await fetch(
+          "http://localhost:3000/api/product/top-seller",
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "Application/json",
+            },
+          }
+        );
+        const data = await response.json();
+        setProducts(data.products);
+        console.log(data.products);
+      } catch (error) {
+        console.log(error.message);
+      }
+    };
+    fetchProducts();
+  }, []);
   return (
     <>
       <section className="xl:px-24 lg:px-10 px-3 pb-10">
@@ -9,42 +32,22 @@ function TopSeller() {
           top selling
         </h1>
         <div className="grid grid-cols-4 gap-y-16 ">
-          <Product
-            id={1}
-            title="polo Blue Shirt"
-            img="pro-1.png"
-            rate={4}
-            price="120"
-            discount={0}
-            oldPrice="200"
-          />
-          <Product
-            id={2}
-            title="xyz Shirt"
-            img="pro-2.png"
-            rate={5}
-            price="360"
-            discount={800}
-          />
-
-          <Product
-            id={3}
-            title="Classice Shirt"
-            img="pro-3.png"
-            rate={5}
-            price="118"
-            discount={80}
-          />
-
-          <Product
-            id={4}
-            title=" Blue Shirt"
-            img="pro-4.png"
-            rate={4}
-            price="199"
-            discount={80}
-            oldPrice="400"
-          />
+          {products.length > 0 &&
+            products !== null &&
+            products.map((p, i) => {
+              return (
+                <Product
+                  key={p._id}
+                  id={p?._id}
+                  name={p?.title}
+                  img={p?.img[0]}
+                  rate={4}
+                  price={p?.price}
+                  discount={p?.oldPrice - p.price}
+                  oldPrice={p?.oldPrice}
+                />
+              );
+            })}
         </div>
       </section>
       <span className="w-full h-[1px] bg-gray-200 block my-8"></span>

@@ -29,7 +29,7 @@ function Navbar() {
       <div className="xl:px-24 lg:px-16 px-4 w-full py-3 flex items-center md:justify-between">
         {/* Logo */}
         <Link to={"/"}>
-          <img src="logo.png" alt="z-store logo" className="w-16" />
+          <img src="/logo.png" alt="z-store logo" className="w-16" />
         </Link>
 
         {/* Toggle Button (Mobile) */}
