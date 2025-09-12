@@ -68,7 +68,9 @@ function Navbar() {
           </Link>
 
           {/* User */}
-          <FaRegUserCircle className="text-3xl text-[#27374D] cursor-pointer hover:text-blue-600 transition" />
+          <Link to={"/signup"}>
+            <FaRegUserCircle className="text-3xl text-[#27374D] cursor-pointer hover:text-blue-600 transition" />
+          </Link>
         </div>
       </div>
 
