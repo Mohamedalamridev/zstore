@@ -4,6 +4,7 @@ import NewCollections from "../components/NewCollections";
 import TopSeller from "../components/TopSeller";
 import Newsletter from "../components/Newsletter";
 import Barnds from "../components/Barnds";
+import Footer from "../components/Footer";
 
 function Home() {
   return (
@@ -13,6 +14,7 @@ function Home() {
       <TopSeller />
       <Newsletter />
       <Barnds />
+      <Footer />
     </>
   );
 }
