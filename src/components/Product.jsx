@@ -13,6 +13,7 @@ function Product({
   rate = 0,
   price,
   oldPrice,
+  title,
   id,
   discount,
 }) {
@@ -23,7 +24,7 @@ function Product({
   const handleAddToCart = () => {
     dispatch({
       type: "ADD_TO_CART",
-      payload: { id, name, img, price, discount, count: 1 },
+      payload: { id, name, img, price, title, discount, count: 1 },
     });
   };
 

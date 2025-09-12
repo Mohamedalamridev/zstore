@@ -39,7 +39,7 @@ function TopSeller() {
                 <Product
                   key={p._id}
                   id={p?._id}
-                  name={p?.title}
+                  title={p?.title}
                   img={p?.img[0]}
                   rate={4}
                   price={p?.price}
