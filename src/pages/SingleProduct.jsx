@@ -4,13 +4,15 @@ import Reviews from "../components/Reviews";
 import Newsletter from "../components/Newsletter";
 import Quantity from "../components/Quantity";
 import { useParams } from "react-router-dom";
+import { MdAddShoppingCart } from "react-icons/md";
+import { useCart } from "../CartContext";
 
 function SingleProduct() {
-  const [count, setCount] = useState(1);
+  const { state, dispatch } = useCart();
   const [currentImg, setCurrentImg] = useState(null);
-  const [selectedSize, setSelectedSize] = useState(null);
   const { id } = useParams();
   const [product, setProduct] = useState(null);
+  const isAdded = state.cart.some((item) => item.id === id);
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -88,18 +90,37 @@ function SingleProduct() {
 
           {/* Add to Cart */}
           <div className="add_to_cart flex-col flex my-8 gap-7">
-            {product !== null && (
+            {!isAdded ? (
+              <button
+                onClick={() => {
+                  dispatch({
+                    type: "ADD_TO_CART",
+                    payload: {
+                      id: product._id,
+                      title: product.title,
+                      img: product.img,
+                      price: product.price,
+                      discount: product.oldPrice - product.price,
+                      count: product.count,
+                      info: product.moreInfo,
+                    },
+                  });
+                }}
+                className=" w-full justify-center mt-4 flex items-center gap-6 bg-[#27374D] text-white px-4 py-2 rounded-xl shadow hover:bg-[#1b2433] transition"
+              >
+                <MdAddShoppingCart className="text-lg" />
+                Add to Cart
+              </button>
+            ) : (
               <Quantity
                 id={product._id}
                 img={product.img}
                 title={product.title}
                 price={product.price}
                 discount={product.oldPrice - product.price}
+                count={product.count}
               />
             )}
-            <button className="py-2 px-20 rounded-3xl w-full text-white bg-[#27374D]">
-              Add To Cart
-            </button>
           </div>
         </div>
       </section>

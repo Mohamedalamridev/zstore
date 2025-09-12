@@ -10,7 +10,8 @@ function Product({
   name,
   count,
   img,
-  rate = 0,
+  info,
+  rate,
   price,
   oldPrice,
   title,
@@ -24,7 +25,7 @@ function Product({
   const handleAddToCart = () => {
     dispatch({
       type: "ADD_TO_CART",
-      payload: { id, name, img, price, title, discount, count: 1 },
+      payload: { id, name, img, price, info, title, discount, count: 1 },
     });
   };
 
@@ -52,7 +53,7 @@ function Product({
 
         {/* product name */}
         <Link to={`/product_details/${id}`}>
-          <h1 className="text-xl font-medium mt-2">{name}</h1>
+          <h1 className="text-xl font-medium mt-2">{title}</h1>
         </Link>
 
         {/* rating */}
@@ -64,7 +65,7 @@ function Product({
         </div>
 
         {/* price */}
-        <div className="flex items-center justify-between mt-2">
+        <div className="flex items-center mb-5 justify-between mt-2">
           {oldPrice > 0 ? (
             <div className="flex items-center">
               <span className="font-bold text-xl text-[#27374D]">${price}</span>
@@ -84,7 +85,7 @@ function Product({
         {!isAdded ? (
           <button
             onClick={handleAddToCart}
-            className=" w-full mt-4 flex items-center gap-2 bg-[#27374D] text-white px-4 py-2 rounded-xl shadow hover:bg-[#1b2433] transition"
+            className=" w-full justify-center mt-4 flex items-center gap-6 bg-[#27374D] text-white px-4 py-2 rounded-xl shadow hover:bg-[#1b2433] transition"
           >
             <MdAddShoppingCart className="text-lg" />
             Add to Cart
