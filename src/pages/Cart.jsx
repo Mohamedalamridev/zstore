@@ -2,9 +2,10 @@ import React, { useMemo } from "react";
 import Navbar from "../components/Navbar";
 import Item from "../components/Item";
 import { useCart } from "../CartContext";
+import { MdCleaningServices } from "react-icons/md";
 
 function Cart() {
-  const { state } = useCart();
+  const { state, dispatch } = useCart();
   console.log(state);
 
   const { subTotal, discount, total } = useMemo(() => {
@@ -26,9 +27,14 @@ function Cart() {
 
       <section>
         {state.cart.length > 0 ? (
-          <div className="xl:px-24 lg:p-6 p-2 lg:px-10 py-16 border-t border-gray-200">
-            <h1 className="uppercase pb-8 text-3xl font-black">Your cart</h1>
-
+          <div className="xl:px-24 lg:p-6 p-2 lg:px-10 py-8 border-t border-gray-200">
+            <h1 className="uppercase  text-3xl font-bold px-4">Your cart</h1>
+            <span
+              className=" font-black text-4xl p-5 flex"
+              onClick={() => dispatch({ type: "CLEAR_CART" })}
+            >
+              <MdCleaningServices className="ml-auto" />
+            </span>
             <div className="container gap-10 flex flex-col lg:flex-row">
               {/* Items */}
               <div className="items border-2 border-gray-200 rounded-3xl lg:p-5 p-3 flex-2 gap-4 flex flex-col">

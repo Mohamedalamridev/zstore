@@ -3,6 +3,7 @@ import Header from "../components/Header";
 import NewCollections from "../components/NewCollections";
 import TopSeller from "../components/TopSeller";
 import Newsletter from "../components/Newsletter";
+import Barnds from "../components/Barnds";
 
 function Home() {
   return (
@@ -11,6 +12,7 @@ function Home() {
       {/* <NewCollections /> */}
       <TopSeller />
       <Newsletter />
+      <Barnds />
     </>
   );
 }

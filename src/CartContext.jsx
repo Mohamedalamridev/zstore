@@ -23,7 +23,6 @@ const CartReducer = (state, action) => {
           ...updatedCart[itemIndex],
           count: updatedCart[itemIndex].count + 1,
         };
-
         return {
           ...state,
           cart: updatedCart,
@@ -34,6 +33,9 @@ const CartReducer = (state, action) => {
         ...state,
         cart: [...state.cart, { ...action.payload, count: 1 }],
       };
+    }
+    case "CLEAR_CART": {
+      return { cart: [] };
     }
 
     case "REMOVE_ITEM": {
