@@ -3,13 +3,22 @@ import { IoCloseSharp } from "react-icons/io5";
 import { CiSearch } from "react-icons/ci";
 import { MdOutlineShoppingCart } from "react-icons/md";
 import { FaRegUserCircle } from "react-icons/fa";
-import { Link } from "react-router-dom";
-import { useCart } from "../CartContext";
 import { TiThMenuOutline } from "react-icons/ti";
+import { Link, useNavigate } from "react-router-dom";
+import { useCart } from "../CartContext";
+import { useUser } from "../UserContext";
+import { FiLogOut } from "react-icons/fi";
 
 function Navbar() {
+  const navigate = useNavigate();
   const [toggle, setToggle] = useState(false);
-  const { state } = useCart();
+  const { state: cartState } = useCart();
+  const { state: userState, dispatch, logout } = useUser();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/login");
+  };
 
   const navLinks = ["Shop", "On Sale", "New Arrivals", "Brands"];
 
@@ -59,18 +68,32 @@ function Navbar() {
         <div className="flex items-center gap-6 relative">
           {/* Cart */}
           <Link to={"/cart"} className="relative">
-            {state.cart.length > 0 && (
+            {cartState.cart.length > 0 && (
               <span className="absolute -top-2 -right-2 bg-red-600 flex justify-center items-center text-white text-xs font-bold rounded-full w-5 h-5">
-                {state.cart.length}
+                {cartState.cart.length}
               </span>
             )}
             <MdOutlineShoppingCart className="text-3xl text-[#27374D]" />
           </Link>
 
           {/* User */}
-          <Link to={"/signup"}>
-            <FaRegUserCircle className="text-3xl text-[#27374D] cursor-pointer hover:text-blue-600 transition" />
-          </Link>
+          {!userState.isLogged ? (
+            <Link to={"/signup"}>
+              <FaRegUserCircle className="text-3xl cursor-pointer hover:text-blue-600 transition" />
+            </Link>
+          ) : (
+            <>
+              <Link
+                to={"/profile"}
+                className="text-[#27374D] font-medium cursor-pointer hover:text-blue-600 transition"
+              >
+                {userState.profile.user?.name || "User"}
+              </Link>
+              <button className="cursor-pointer" onClick={() => handleLogout()}>
+                <FiLogOut />
+              </button>
+            </>
+          )}
         </div>
       </div>
 

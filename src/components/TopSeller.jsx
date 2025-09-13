@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from "react";
 import Product from "./Product";
 import { Link } from "react-router-dom";
+const baseUrl = import.meta.env.BASE_URL;
 
 function TopSeller() {
   const [products, setProducts] = useState([]);
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(
-          "https://zstore-server.onrender.com/api/product/top-seller",
-          {
-            method: "GET",
-            headers: {
-              "Content-Type": "Application/json",
-            },
-          }
-        );
+        const response = await fetch(`${baseUrl}/api/product/top-seller`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "Application/json",
+          },
+        });
         const data = await response.json();
         setProducts(data.products);
         console.log(data.products);
@@ -37,8 +35,8 @@ function TopSeller() {
             products.map((p, i) => {
               return (
                 <Product
-                  key={p._id}
                   id={p?._id}
+                  key={i}
                   title={p?.title}
                   img={p?.img[0]}
                   info={p?.moreInfo}

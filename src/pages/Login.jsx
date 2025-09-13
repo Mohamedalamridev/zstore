@@ -1,8 +1,35 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
-
+import { useUser } from "../UserContext";
+import { useCart } from "../CartContext";
+const baseUrl = import.meta.env.VITE_BASE_URL;
 function Login() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const { state, dispatch } = useUser();
+  const { state: cartState } = useCart();
+
+  const navigate = useNavigate();
+  const handleLogin = async () => {
+    const response = await fetch(`${baseUrl}/api/user/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "Application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify({ email, password }),
+    });
+    const userData = await response.json();
+    if (response.ok) {
+      dispatch({ type: "LOGIN", payload: { userData } });
+      if (cartState.cart.length > 0) {
+        navigate("/cart");
+      } else {
+        navigate("/");
+      }
+    }
+  };
   return (
     <>
       <Navbar />
@@ -12,13 +39,21 @@ function Login() {
             Welcome Back
           </h2>
 
-          <form className="space-y-4">
+          <form
+            className="space-y-4"
+            onSubmit={(e) => {
+              e.preventDefault();
+              handleLogin();
+            }}
+          >
             {/* Email */}
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Email
               </label>
               <input
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 type="email"
                 placeholder="Enter your email"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:outline-none"
@@ -31,6 +66,8 @@ function Login() {
                 Password
               </label>
               <input
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 placeholder="Enter your password"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:outline-none"

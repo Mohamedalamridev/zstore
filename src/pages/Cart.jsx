@@ -3,55 +3,55 @@ import Navbar from "../components/Navbar";
 import Item from "../components/Item";
 import { useCart } from "../CartContext";
 import { MdCleaningServices } from "react-icons/md";
+import { useUser } from "../UserContext";
+import PaymobCheckout from "./PaymentCheckout";
 
 function Cart() {
   const { state, dispatch } = useCart();
-  console.log(state);
+  const { state: userState } = useUser();
 
   const { subTotal, discount, total } = useMemo(() => {
     const subTotal = state.cart.reduce(
       (sum, item) => sum + +item.price * item.count,
       0
     );
-    const discount = state.cart.reduce((sum, item) => {
-      return (sum + item.discount) * item.count;
-    }, 0);
-
-    const total = subTotal - discount;
-    return { subTotal, discount, total };
+    const discount = state.cart.reduce(
+      (sum, item) => sum + (item.discount || 0) * item.count,
+      0
+    );
+    return { subTotal, discount, total: subTotal - discount };
   }, [state.cart]);
 
   return (
     <>
       <Navbar />
-
       <section>
         {state.cart.length > 0 ? (
-          <div className="xl:px-24 lg:p- p-2 lg:px-10 py-8 border-t border-gray-200">
-            <h1 className="uppercase  text-3xl font-bold px-4">Your cart</h1>
+          <div className="xl:px-24 lg:px-10 py-8 border-t border-gray-200">
+            <h1 className="uppercase text-3xl font-bold px-4">Your cart</h1>
             <span
-              className=" font-black text-4xl p-5 flex"
+              className="font-black text-4xl p-5 flex"
               onClick={() => dispatch({ type: "CLEAR_CART" })}
             >
               <MdCleaningServices className="ml-auto" />
             </span>
+
             <div className="container gap-8 flex flex-col lg:flex-row">
-              {/* Items */}
               <div className="items border-2 border-gray-200 rounded-3xl lg:p-5 p-3 flex-2 gap-4 flex flex-col">
                 {state.cart.map((item) => (
                   <Item
+                    key={item.id}
                     id={item.id}
                     img={item.img}
                     title={item.title}
                     info={item.info}
                     price={+item.price}
                     count={item.count}
-                    discount={discount}
+                    discount={item.discount}
                   />
                 ))}
               </div>
 
-              {/* Order Summary */}
               <div className="check flex-1 border-2 border-gray-200 p-8 rounded-3xl h-fit">
                 <h1 className="text-2xl font-bold mb-6">Order Summary</h1>
                 <div className="space-y-4">
@@ -72,9 +72,17 @@ function Cart() {
                   </div>
                 </div>
 
-                <button className="w-full mt-6 py-3 rounded-xl bg-black text-white font-semibold hover:bg-blue-700 transition">
-                  Checkout
-                </button>
+                {userState.isLogged ? (
+                  <PaymobCheckout
+                    cartItems={state.cart}
+                    totalAmount={total}
+                    userId={userState.profile.user?._id}
+                  />
+                ) : (
+                  <button className="w-full mt-6 py-3 rounded-xl bg-gray-500 text-white font-semibold cursor-not-allowed">
+                    Login to Checkout
+                  </button>
+                )}
               </div>
             </div>
           </div>

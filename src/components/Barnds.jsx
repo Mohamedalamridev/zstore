@@ -17,21 +17,6 @@ function Brands() {
       name: "Uniqlo",
       img: "https://cdn.worldvectorlogo.com/logos/uniqlo.svg",
     },
-    {
-      id: 4,
-      name: "Puma",
-      img: "https://cdn.worldvectorlogo.com/logos/puma-logo.svg",
-    },
-    {
-      id: 4,
-      name: "Adidas",
-      img: "https://cdn.worldvectorlogo.com/logos/adidas-13.svg",
-    },
-    {
-      id: 4,
-      name: "Prada",
-      img: "https://cdn.worldvectorlogo.com/logos/prada-logo-1.svg",
-    },
   ];
 
   return (
@@ -42,10 +27,7 @@ function Brands() {
 
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-6 items-center">
         {brands.map((brand) => (
-          <div
-            key={brand.id}
-            className="bg-white rounded-xl shadow p-4 flex items-center justify-center hover:shadow-lg transition-all cursor-pointer"
-          >
+          <div className="bg-white rounded-xl shadow p-4 flex items-center justify-center hover:shadow-lg transition-all cursor-pointer">
             <img
               src={brand.img}
               alt={brand.name}

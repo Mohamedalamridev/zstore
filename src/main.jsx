@@ -1,6 +1,10 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 import "./index.css";
 import App from "./App.jsx";
 import { CartProvider } from "./CartContext.jsx";
@@ -9,6 +13,16 @@ import Cart from "./pages/Cart.jsx";
 import SingleProduct from "./pages/SingleProduct.jsx";
 import Signup from "./pages/Signup.jsx";
 import Login from "./pages/Login.jsx";
+import { UserProvider, useUser } from "./UserContext.jsx";
+import Profile from "./pages/Profile.jsx";
+import PaymentSuccess from "./pages/PaymentSuccess.jsx";
+export const ProtecedRoute = ({ children }) => {
+  const { state } = useUser();
+  if (state.loading) {
+    return <p>Loading...</p>;
+  }
+  return state.isLogged ? children : <Navigate to="/login" replace />;
+};
 const router = createBrowserRouter([
   {
     path: "/",
@@ -30,12 +44,26 @@ const router = createBrowserRouter([
     path: "/login",
     element: <Login />,
   },
+  {
+    path: "/profile",
+    element: (
+      <ProtecedRoute>
+        <Profile />,
+      </ProtecedRoute>
+    ),
+  },
+  {
+    path: "/success",
+    element: <PaymentSuccess />,
+  },
 ]);
 
 createRoot(document.getElementById("root")).render(
-  <CartProvider>
-    <RouterProvider router={router}>
-      <App />
-    </RouterProvider>
-  </CartProvider>
+  <UserProvider>
+    <CartProvider>
+      <RouterProvider router={router}>
+        <App />
+      </RouterProvider>
+    </CartProvider>
+  </UserProvider>
 );

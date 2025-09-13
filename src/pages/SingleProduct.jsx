@@ -7,7 +7,7 @@ import { useParams } from "react-router-dom";
 import { MdAddShoppingCart } from "react-icons/md";
 import { useCart } from "../CartContext";
 import Footer from "../components/Footer";
-
+const baseUrl = import.meta.env.VITE_BASE_URL;
 function SingleProduct() {
   const { state, dispatch } = useCart();
   const [currentImg, setCurrentImg] = useState(null);
@@ -18,9 +18,7 @@ function SingleProduct() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await fetch(
-          `https://zstore-server.onrender.com/api/product/${id}`
-        );
+        const res = await fetch(`${baseUrl}/api/product/${id}`);
         const data = await res.json();
         setProduct(data.product);
         console.log(data.product.title);
@@ -58,7 +56,7 @@ function SingleProduct() {
                   src={src}
                   alt={`preview-${i}`}
                   className={`w-full h-[33%] rounded-2xl cursor-pointer ${
-                    currentImg === src ? "border-2 border-[#27374D]" : ""
+                    currentImg === src ? "border-2 border-black" : ""
                   }`}
                   onClick={() => setCurrentImg(src)}
                 />
@@ -78,7 +76,7 @@ function SingleProduct() {
             <h1 className="name lg:text-4xl text-2xl font-medium">
               {product.title}
             </h1>
-            <span className="font-bold text-3xl my-3 block text-[#27374D]">
+            <span className="font-bold text-3xl my-3 block text-black">
               ${product.price}
               {product.oldPrice && (
                 <span className="line-through text-gray-400 text-lg ml-3">
@@ -108,7 +106,7 @@ function SingleProduct() {
                       },
                     });
                   }}
-                  className=" w-full justify-center mt-4 flex items-center gap-6 bg-[#27374D] text-white px-4 py-2 rounded-xl shadow hover:bg-[#1b2433] transition"
+                  className=" w-full justify-center mt-4 flex items-center gap-6 bg-black text-white px-4 py-2 rounded-xl shadow hover:bg-[#1b2433] transition"
                 >
                   <MdAddShoppingCart className="text-lg" />
                   Add to Cart

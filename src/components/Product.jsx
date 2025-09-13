@@ -85,7 +85,7 @@ function Product({
         {!isAdded ? (
           <button
             onClick={handleAddToCart}
-            className=" w-full justify-center mt-4 flex items-center gap-6 bg-[#27374D] text-white px-4 py-2 rounded-xl shadow hover:bg-[#1b2433] transition"
+            className=" w-full justify-center mt-4 flex items-center gap-6 bg-black text-white px-4 py-2 rounded-xl shadow hover:bg-[#1b2433] transition"
           >
             <MdAddShoppingCart className="text-lg" />
             Add to Cart
