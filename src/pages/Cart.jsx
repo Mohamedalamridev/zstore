@@ -79,7 +79,7 @@ function Cart() {
                     userId={userState.profile.user?._id}
                   />
                 ) : (
-                  <button className="w-full mt-6 py-3 rounded-xl bg-gray-500 text-white font-semibold cursor-not-allowed">
+                  <button className="w-full mt-6 py-3 rounded-xl bg-gray-600 text-white font-semibold cursor-not-allowed">
                     Login to Checkout
                   </button>
                 )}
