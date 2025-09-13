@@ -2,7 +2,7 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 
 const initialUser = {
   isLogged: false,
-  loading: true,
+
   profile: null,
 };
 const baseUrl = import.meta.env.VITE_BASE_URL;
@@ -11,12 +11,12 @@ const userReducer = (state, action) => {
     case "LOGIN":
       return {
         ...state,
-        loading: false,
+
         isLogged: true,
         profile: action.payload,
       };
     case "LOGOUT":
-      return { ...state, isLogged: false, profile: null, loading: false };
+      return { ...state, isLogged: false, profile: null };
     default:
       return state;
   }
@@ -33,7 +33,7 @@ export const UserProvider = ({ children }) => {
         const res = await fetch(`${baseUrl}/api/user/profile`, {
           method: "GET",
           headers: {
-            "Content-Type": "Application/json",
+            "Content-Type": "application/json",
           },
           credentials: "include",
         });

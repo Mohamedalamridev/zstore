@@ -18,9 +18,7 @@ import Profile from "./pages/Profile.jsx";
 import PaymentSuccess from "./pages/PaymentSuccess.jsx";
 export const ProtecedRoute = ({ children }) => {
   const { state } = useUser();
-  if (state.loading) {
-    return <p>Loading...</p>;
-  }
+
   return state.isLogged ? children : <Navigate to="/login" replace />;
 };
 const router = createBrowserRouter([
