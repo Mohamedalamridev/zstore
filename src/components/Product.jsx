@@ -65,7 +65,7 @@ function Product({
   return (
     <div className="col-span-6 md:col-span-4 lg:col-span-3 xl:col-span-2">
       <div
-        className="relative product group border-[1px] border-gray-200 rounded-xl p-3 shadow-sm hover:shadow-xl transition-all duration-300 bg-white"
+        className="relative product group border-[1px] border-gray-200 rounded-xl p-1 shadow-sm hover:shadow-xl transition-all duration-300 bg-white"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -108,7 +108,7 @@ function Product({
 
             <button
               onClick={handleFavoriteToggle}
-              className="bg-white p-3 rounded-full shadow-md hover:bg-gray-100 transition-colors transform hover:scale-110"
+              className="bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition-colors transform hover:scale-110"
               aria-label={
                 isFavorited ? "Remove from favorites" : "Add to favorites"
               }
@@ -135,13 +135,13 @@ function Product({
           </div>
 
           <Link to={`/product_details/${id}`}>
-            <h2 className="text-sm font-medium text-gray-800 hover:text-blue-600 transition-colors line-clamp-2 h-10">
+            <h2 className="text-sm font-medium text-gray-800 hover:text-blue-600 transition-colors ">
               {title}
             </h2>
           </Link>
 
           {/* Price */}
-          <div className="flex items-center mt-3 justify-between">
+          <div className="flex items-center mt-2 justify-between">
             {oldPrice > 0 ? (
               <div className="flex items-center">
                 <span className="font-bold text-lg text-gray-900">
