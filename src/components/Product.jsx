@@ -65,7 +65,7 @@ function Product({
   return (
     <div className="col-span-6 md:col-span-4 lg:col-span-3 xl:col-span-2">
       <div
-        className="relative product group border-[1px] border-gray-200 rounded-xl p-1 shadow-sm hover:shadow-xl transition-all duration-300 bg-white"
+        className="relative product group border-[1px] border-gray-200 rounded-xl p-2 shadow-sm hover:shadow-xl transition-all duration-300 bg-white"
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
@@ -144,7 +144,7 @@ function Product({
           <div className="flex items-center mt-2 justify-between">
             {oldPrice > 0 ? (
               <div className="flex items-center">
-                <span className="font-bold text-lg text-gray-900">
+                <span className="font-bold text-lg text-[#377071]">
                   ${price}
                 </span>
                 <span className="text-gray-500 text-sm ml-2 line-through">
@@ -161,11 +161,11 @@ function Product({
                   dispatch({ type: "REMOVE_ITEM", payload: { id } });
                 }}
               >
-                <FaCheckCircle className="text-blue-800 text-xl " />
+                <FaCheckCircle className="text-[#377071] text-2xl " />
               </button>
             ) : (
               <button onClick={handleAddToCart}>
-                <MdAddShoppingCart className="text-lg" />
+                <MdAddShoppingCart className="text-2xl" />
               </button>
             )}
           </div>

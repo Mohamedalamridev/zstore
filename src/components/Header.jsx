@@ -7,7 +7,7 @@ function Header() {
       <Navbar />
       <div className="flex flex-col-reverse md:flex-row items-center px-3 md:px-24  md:py-10">
         <div className="content flex-1">
-          <h1 className="text-3xl md:text-6xl font-bold text-black">
+          <h1 className="text-3xl md:text-6xl font-bold text-[#222d41]">
             FIND CLOTHES THAT MATCHES YOUR STYLE
           </h1>
           <p className="my-6 pr-8s text-md text-[#526D82]">
@@ -15,7 +15,7 @@ function Header() {
             designed to bring out your individuality and cater to your sense of
             style.
           </p>
-          <button className="px-5 py-3 bg-black text-white uppercase rounded-4xl">
+          <button className="px-5 py-3 bg-[#37696a] text-white uppercase rounded-4xl">
             Shop Now
           </button>
           <div className="stats_container grid gap-4 my-10 grid-cols-1 md:grid-cols-2 xl:grid-cols-3 ">
@@ -36,7 +36,7 @@ function Header() {
           </div>
         </div>
         <div className="img flex-1 ">
-          <img src="shopping.png" alt="" className="w-lg ml-auto" />
+          <img src="shopping.png" alt="" className="ml-auto" />
         </div>
       </div>
     </header>

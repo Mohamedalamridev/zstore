@@ -3,7 +3,6 @@ import Header from "../components/Header";
 import NewCollections from "../components/NewCollections";
 import TopSeller from "../components/TopSeller";
 import Newsletter from "../components/Newsletter";
-import Barnds from "../components/Barnds";
 import Footer from "../components/Footer";
 
 function Home() {
@@ -12,8 +11,8 @@ function Home() {
       <Header />
       {/* <NewCollections /> */}
       <TopSeller />
-      <Newsletter />
-      <Barnds />
+      {/* <Newsletter /> */}
+
       <Footer />
     </>
   );
