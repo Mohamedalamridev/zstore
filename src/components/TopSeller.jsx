@@ -13,6 +13,7 @@ function TopSeller() {
           headers: {
             "Content-Type": "Application/json",
           },
+          credentials: "include",
         });
         const data = await response.json();
         setProducts(data.products);

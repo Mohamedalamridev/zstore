@@ -18,7 +18,9 @@ function SingleProduct() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await fetch(`${baseUrl}/api/product/${id}`);
+        const res = await fetch(`${baseUrl}/api/product/${id}`, {
+          credentials: "include",
+        });
         const data = await res.json();
         setProduct(data.product);
         console.log(data.product.title);
