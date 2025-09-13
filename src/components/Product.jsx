@@ -1,9 +1,12 @@
-import React from "react";
-import { IoStarSharp } from "react-icons/io5";
-import { MdAddShoppingCart, MdFavoriteBorder } from "react-icons/md";
-import { FaCheckCircle } from "react-icons/fa";
+import React, { useState } from "react";
+import { IoStarSharp, IoStarHalfSharp, IoStarOutline } from "react-icons/io5";
+import {
+  MdAddShoppingCart,
+  MdFavorite,
+  MdFavoriteBorder,
+} from "react-icons/md";
+import { FaCheckCircle, FaEye } from "react-icons/fa";
 import { useCart } from "../CartContext";
-import Quantity from "./Quantity";
 import { Link } from "react-router-dom";
 
 function Product({
@@ -19,6 +22,9 @@ function Product({
   discount,
 }) {
   const { state, dispatch } = useCart();
+  const [isHovered, setIsHovered] = useState(false);
+  const [isFavorited, setIsFavorited] = useState(false);
+  const [imageLoaded, setImageLoaded] = useState(false);
 
   const isAdded = state.cart.some((item) => item.id === id);
 
@@ -29,70 +35,141 @@ function Product({
     });
   };
 
+  const handleFavoriteToggle = () => {
+    setIsFavorited(!isFavorited);
+  };
+
   const validRate = Math.max(0, Math.min(5, rate));
   const discountPercentage =
     oldPrice > 0 ? Math.round(((oldPrice - price) / oldPrice) * 100) : 0;
 
+  // Render star ratings
+  const renderStars = () => {
+    const stars = [];
+    const fullStars = Math.floor(validRate);
+    const hasHalfStar = validRate % 1 >= 0.5;
+
+    for (let i = 1; i <= 5; i++) {
+      if (i <= fullStars) {
+        stars.push(<IoStarSharp key={i} className="text-yellow-400" />);
+      } else if (i === fullStars + 1 && hasHalfStar) {
+        stars.push(<IoStarHalfSharp key={i} className="text-yellow-400" />);
+      } else {
+        stars.push(<IoStarOutline key={i} className="text-yellow-400" />);
+      }
+    }
+
+    return stars;
+  };
+
   return (
-    <div className="lg:col-span-1 col-span-4">
-      <div className="relative w-[95%] product group border-[1px] border-gray-200 rounded-2xl p-3 shadow-sm">
-        {/* product image */}
-        <img
-          src={img}
-          alt={name}
-          className="rounded-2xl  h-72 w-full group-hover:scale-105 transition-transform duration-300"
-        />
-
-        {/* added to cart badge */}
-        {isAdded && (
-          <span className="absolute top-2 left-2 inline-flex items-center gap-2 px-4 py-2 bg-green-600 text-white text-sm font-semibold rounded-full shadow-md animate-bounce">
-            <FaCheckCircle className="text-lg" />
-            Added
-          </span>
-        )}
-
-        {/* product name */}
-        <Link to={`/product_details/${id}`}>
-          <h1 className="text-xl font-medium mt-2">{title}</h1>
-        </Link>
-
-        {/* rating */}
-        <div className="rate flex my-1 items-center">
-          {Array.from({ length: validRate }).map((_, i) => (
-            <IoStarSharp key={i} color="#FFC633" className="text-lg" />
-          ))}
-          <span className="ml-1 text-[#526D82] text-xs">{validRate}/5</span>
-        </div>
-
-        {/* price */}
-        <div className="flex items-center mb-5 justify-between mt-2">
-          {oldPrice > 0 ? (
-            <div className="flex items-center">
-              <span className="font-bold text-xl text-[#27374D]">${price}</span>
-              <span className="text-[#526D82] text-xl font-semibold ml-2 line-through">
-                ${oldPrice}
-              </span>
-              <span className="bg-red-50 text-red-500 py-1 px-3 rounded-3xl ml-2 text-xs font-medium">
-                -{discountPercentage}%
-              </span>
-            </div>
-          ) : (
-            <span className="font-bold text-xl text-[#27374D]">${price}</span>
+    <div className="col-span-6 md:col-span-4 lg:col-span-3 xl:col-span-2">
+      <div
+        className="relative product group border-[1px] border-gray-200 rounded-xl p-3 shadow-sm hover:shadow-xl transition-all duration-300 bg-white"
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
+        {/* Image container with overlay actions */}
+        <div className="relative overflow-hidden rounded-lg">
+          {/* Loading skeleton */}
+          {!imageLoaded && (
+            <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-lg"></div>
           )}
 
-          {/* add to cart button always visible */}
-        </div>
-        {!isAdded ? (
-          <button
-            onClick={handleAddToCart}
-            className=" w-full justify-center mt-4 flex items-center gap-6 bg-black text-white px-4 py-2 rounded-xl shadow hover:bg-[#1b2433] transition"
+          <img
+            src={img}
+            alt={name}
+            className={`rounded-lg w-full transition-all duration-500 ${
+              isHovered ? "scale-110" : "scale-100"
+            } ${imageLoaded ? "opacity-100" : "opacity-0"}`}
+            onLoad={() => setImageLoaded(true)}
+          />
+
+          <div
+            className={`absolute inset-0 bg-black/50 bg-opacity-20 flex items-center justify-center gap-3 transition-opacity duration-300 ${
+              isHovered ? "opacity-100" : "opacity-0"
+            }`}
           >
-            <MdAddShoppingCart className="text-lg" />
-            Add to Cart
-          </button>
-        ) : (
-          <Quantity id={id} count={count} />
-        )}
+            <button
+              onClick={handleAddToCart}
+              className="bg-white p-3 rounded-full shadow-md hover:bg-gray-100 transition-colors transform hover:scale-110"
+              aria-label="Add to cart"
+            >
+              <MdAddShoppingCart className="text-xl text-gray-800" />
+            </button>
+
+            <Link
+              to={`/product_details/${id}`}
+              className="bg-white p-3 rounded-full shadow-md hover:bg-gray-100 transition-colors transform hover:scale-110"
+              aria-label="View details"
+            >
+              <FaEye className="text-xl text-gray-800" />
+            </Link>
+
+            <button
+              onClick={handleFavoriteToggle}
+              className="bg-white p-3 rounded-full shadow-md hover:bg-gray-100 transition-colors transform hover:scale-110"
+              aria-label={
+                isFavorited ? "Remove from favorites" : "Add to favorites"
+              }
+            >
+              {isFavorited ? (
+                <MdFavorite className="text-2xl text-red-500" />
+              ) : (
+                <MdFavoriteBorder className="text-2xl text-gray-800" />
+              )}
+            </button>
+          </div>
+
+          {discountPercentage > 0 && (
+            <span className="absolute top-2 left-2 bg-red-500 text-white py-1 px-2 rounded-md text-xs font-bold">
+              -{discountPercentage}%
+            </span>
+          )}
+        </div>
+
+        <div className="mt-4">
+          <div className="flex items-center mb-2">
+            <div className="flex text-sm">{renderStars()}</div>
+            <span className="text-xs text-gray-500 ml-1">({count})</span>
+          </div>
+
+          <Link to={`/product_details/${id}`}>
+            <h2 className="text-sm font-medium text-gray-800 hover:text-blue-600 transition-colors line-clamp-2 h-10">
+              {title}
+            </h2>
+          </Link>
+
+          {/* Price */}
+          <div className="flex items-center mt-3 justify-between">
+            {oldPrice > 0 ? (
+              <div className="flex items-center">
+                <span className="font-bold text-lg text-gray-900">
+                  ${price}
+                </span>
+                <span className="text-gray-500 text-sm ml-2 line-through">
+                  ${oldPrice}
+                </span>
+              </div>
+            ) : (
+              <span className="font-bold text-lg text-gray-900">${price}</span>
+            )}
+
+            {isAdded ? (
+              <button
+                onClick={() => {
+                  dispatch({ type: "REMOVE_ITEM", payload: { id } });
+                }}
+              >
+                <FaCheckCircle className="text-blue-800 text-xl " />
+              </button>
+            ) : (
+              <button onClick={handleAddToCart}>
+                <MdAddShoppingCart className="text-lg" />
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

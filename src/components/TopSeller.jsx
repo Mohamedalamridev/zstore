@@ -30,7 +30,7 @@ function TopSeller() {
         <h1 className="text-center my-10 font-black text-[#27374D] text-4xl">
           top selling
         </h1>
-        <div className="grid grid-cols-4 gap-y-16 ">
+        <div className="grid grid-cols-12 gap-2 gap-y-4 ">
           {products.length > 0 &&
             products !== null &&
             products.map((p, i) => {

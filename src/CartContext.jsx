@@ -43,23 +43,7 @@ const CartReducer = (state, action) => {
         (item) => item.id === action.payload.id
       );
 
-      if (itemIndex < 0) {
-        return state;
-      }
-
-      const updatedCart = [...state.cart];
-      if (updatedCart[itemIndex].count > 1) {
-        updatedCart[itemIndex] = {
-          ...updatedCart[itemIndex],
-          count: updatedCart[itemIndex].count - 1,
-        };
-      } else {
-        updatedCart.splice(itemIndex, 1);
-      }
-      return {
-        ...state,
-        cart: updatedCart,
-      };
+      state.cart.splice(itemIndex, 1);
     }
     default:
       return state;
