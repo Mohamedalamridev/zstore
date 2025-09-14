@@ -77,23 +77,15 @@ function Navbar() {
           </Link>
 
           {/* User */}
-          {!userState.isLogged ? (
-            <Link to={"/signup"}>
+          <>
+            <Link to={userState.isLogged ? "/profile" : "/login"}>
               <FaRegUserCircle className="text-3xl cursor-pointer hover:text-blue-600 transition" />
             </Link>
-          ) : (
-            <>
-              <Link
-                to={"/profile"}
-                className="text-[#27374D] font-medium cursor-pointer hover:text-blue-600 transition"
-              >
-                {userState.profile.user?.name || "User"}
-              </Link>
-              <button className="cursor-pointer" onClick={() => handleLogout()}>
-                <FiLogOut />
-              </button>
-            </>
-          )}
+
+            <button className="cursor-pointer" onClick={() => handleLogout()}>
+              <FiLogOut />
+            </button>
+          </>
         </div>
       </div>
 

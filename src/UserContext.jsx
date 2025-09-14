@@ -2,7 +2,6 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 
 const initialUser = {
   isLogged: false,
-
   profile: null,
 };
 const baseUrl = import.meta.env.VITE_BASE_URL;

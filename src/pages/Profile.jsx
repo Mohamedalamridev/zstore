@@ -2,8 +2,21 @@ import React, { useEffect } from "react";
 import { useUser } from "../UserContext.jsx";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
-import Address from "../components/Address.jsx";
-
+// export const Feild = ({ name, value, placeholder, onChange }) => {
+//   return (
+//     <div className="flex flex-col">
+//       <label className=" mt-3 mb-1 text-lg text-gray-600">{name}</label>
+//       <input
+//         placeholder={placeholder}
+//         type="text"
+//         className="bg-white p-3 rounded-md shadow-sm border-[1px] border-gray-300"
+//         name={name || ""}
+//         value={value || ""}
+//         onChange={onChange}
+//       />
+//     </div>
+//   );
+// };
 export function Feild({ label, value, type }) {
   return (
     <div className="mb-4">
@@ -22,6 +35,9 @@ function Profile() {
   const { state, dispatch } = useUser();
 
   const user = state.profile?.user;
+  const profile = state.profile?.profile;
+  console.log(user?.addresses);
+  const addresses = user?.addresses;
   const orders = state.profile?.orders;
 
   return (
@@ -38,7 +54,15 @@ function Profile() {
             <Feild label="Email" value={user?.email} type="email" />
           </form>
         </div>
-
+        <div>
+          <form className="m-5">
+            {/* {addresses.length > 0 &&
+              addresses &&
+              addresses.map((item, i) => {
+                return <Feild />;
+              })} */}
+          </form>
+        </div>
         {/* Orders Section */}
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-bold text-gray-800 mb-6">My Orders</h2>

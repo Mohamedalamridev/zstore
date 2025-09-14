@@ -6,11 +6,11 @@ function Header() {
     <header className="bg-[#F2F0F1] min-h-screen">
       <Navbar />
       <div className="flex flex-col-reverse md:flex-row items-center px-3 md:px-24  md:py-10">
-        <div className="content flex-1">
-          <h1 className="text-3xl md:text-6xl font-bold text-[#222d41]">
+        <div className="content flex-1 p-2 md:p-0">
+          <h1 className="text-3xl md:text-6xl  font-bold text-[#222d41]">
             FIND CLOTHES THAT MATCHES YOUR STYLE
           </h1>
-          <p className="my-6 pr-8s text-md text-[#526D82]">
+          <p className=" pr-8s my-6 text-md text-[#526D82]">
             Browse through our diverse range of meticulously crafted garments,
             designed to bring out your individuality and cater to your sense of
             style.
