@@ -3,7 +3,7 @@ import { Link, Navigate, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
 function Signup() {
-  const baseUrl = import.meta.env.VIT_BASE_URL;
+  const baseUrl = import.meta.env.VITE_BASE_URL;
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
