@@ -63,7 +63,7 @@ function Product({
   };
 
   return (
-    <div className="col-span-6 md:col-span-4 lg:col-span-3 xl:col-span-2">
+    <div className="col-span-6 md:col-span-4 lg:col-span-3">
       <div
         className="relative product group border-[1px] border-gray-200 rounded-xl p-2 shadow-sm hover:shadow-xl transition-all duration-300 bg-white"
         onMouseEnter={() => setIsHovered(true)}
@@ -133,7 +133,7 @@ function Product({
           </div>
 
           <Link to={`/product_details/${id}`}>
-            <h2 className="text-sm font-medium text-gray-800 hover:text-blue-600 transition-colors ">
+            <h2 className="text-sm md:text-lg font-medium text-gray-800 hover:text-blue-600 transition-colors ">
               {title}
             </h2>
           </Link>
