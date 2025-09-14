@@ -5,13 +5,26 @@ import Footer from "../components/Footer.jsx";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 
-const Feild = ({ label, value, onchange, defaultValue, disabled = false }) => {
+const Feild = ({
+  label,
+  value,
+  onchange,
+  defaultValue,
+  disabled = false,
+  runValidate,
+}) => {
   return (
     <div className="flex flex-col">
       <label className="mt-3 mb-1 text-lg text-gray-600">{label}</label>
       <input
         type="text"
-        className={`bg-gray-100 p-3 rounded-md shadow-sm border border-gray-300 ${
+        className={`${
+          runValidate && value.trim() === ""
+            ? "border-red-500"
+            : value.trim() == "" && !runValidate
+            ? "border-gray-600"
+            : value.trim() !== "" && "border-green-600"
+        } bg-gray-100 p-3 rounded-md shadow-sm border border-gray-300 ${
           disabled ? "text-gray-500 cursor-not-allowed" : ""
         }`}
         value={value || ""}
@@ -19,6 +32,9 @@ const Feild = ({ label, value, onchange, defaultValue, disabled = false }) => {
         defaultValue={defaultValue}
         disabled={disabled}
       />
+      {runValidate && value.trim() === "" && (
+        <span className="text-red-600 text-sm mt-1">This Feild Is Require</span>
+      )}
     </div>
   );
 };
@@ -34,11 +50,22 @@ function Profile() {
     street: "",
     phone: "",
   });
+
   const [showAddAddress, setShowAddAddress] = useState(false);
+  const [runValidate, setRunValidate] = useState(false);
   const { state } = useUser();
   const user = state.profile?.user;
   const orders = state.profile?.orders;
   const addresses = user.addresses;
+
+  const validate = (data) => {
+    const isValid = Object.values(data).every(
+      (item) => item && item.trim() !== ""
+    );
+    setRunValidate(!isValid);
+
+    return isValid;
+  };
 
   const handleDelete = async (id) => {
     const res = await fetch(`${baseUrl}/api/user/profile/address/${id}`, {
@@ -54,6 +81,10 @@ function Profile() {
 
   const handleAddAddress = async (e) => {
     e.preventDefault();
+    const isValid = validate(address);
+    if (!isValid) {
+      return;
+    }
     const res = await fetch(`${baseUrl}/api/user/profile/address`, {
       method: "POST",
       headers: {
@@ -115,6 +146,7 @@ function Profile() {
                 >
                   <Feild
                     label="Label"
+                    runValidate={runValidate}
                     value={address.label}
                     onchange={(e) =>
                       setAddress({ ...address, label: e.target.value })
@@ -122,6 +154,7 @@ function Profile() {
                   />
                   <Feild
                     label="City"
+                    runValidate={runValidate}
                     value={address.city}
                     onchange={(e) =>
                       setAddress({ ...address, city: e.target.value })
@@ -129,6 +162,7 @@ function Profile() {
                   />
                   <Feild
                     label="State"
+                    runValidate={runValidate}
                     value={address.state}
                     onchange={(e) =>
                       setAddress({ ...address, state: e.target.value })
@@ -136,6 +170,7 @@ function Profile() {
                   />
                   <Feild
                     label="Country"
+                    runValidate={runValidate}
                     value={address.country}
                     onchange={(e) =>
                       setAddress({ ...address, country: e.target.value })
@@ -143,6 +178,7 @@ function Profile() {
                   />
                   <Feild
                     label="Postal Code"
+                    runValidate={runValidate}
                     value={address.postalCode}
                     onchange={(e) =>
                       setAddress({ ...address, postalCode: e.target.value })
@@ -150,6 +186,7 @@ function Profile() {
                   />
                   <Feild
                     label="Street"
+                    runValidate={runValidate}
                     value={address.street}
                     onchange={(e) =>
                       setAddress({ ...address, street: e.target.value })
@@ -157,6 +194,7 @@ function Profile() {
                   />
                   <Feild
                     label="Phone"
+                    runValidate={runValidate}
                     value={address.phone}
                     onchange={(e) =>
                       setAddress({ ...address, phone: e.target.value })

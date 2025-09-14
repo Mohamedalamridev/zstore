@@ -69,9 +69,7 @@ function Product({
         onMouseEnter={() => setIsHovered(true)}
         onMouseLeave={() => setIsHovered(false)}
       >
-        {/* Image container with overlay actions */}
         <div className="relative overflow-hidden rounded-lg">
-          {/* Loading skeleton */}
           {!imageLoaded && (
             <div className="absolute inset-0 bg-gray-200 animate-pulse rounded-lg"></div>
           )}
@@ -86,13 +84,13 @@ function Product({
           />
 
           <div
-            className={`absolute inset-0 bg-black/50 bg-opacity-20 flex items-center justify-center gap-3 transition-opacity duration-300 ${
+            className={`absolute inset-0 bg-black/50 bg-opacity-20 flex items-center justify-center md:gap-3 gap-2 transition-opacity duration-300 ${
               isHovered ? "opacity-100" : "opacity-0"
             }`}
           >
             <button
               onClick={handleAddToCart}
-              className="bg-white p-3 rounded-full shadow-md hover:bg-gray-100 transition-colors transform hover:scale-110"
+              className="bg-white p-2 md:p-4 rounded-full shadow-md hover:bg-gray-100 transition-colors transform hover:scale-110"
               aria-label="Add to cart"
             >
               <MdAddShoppingCart className="text-xl text-gray-800" />
@@ -100,7 +98,7 @@ function Product({
 
             <Link
               to={`/product_details/${id}`}
-              className="bg-white p-3 rounded-full shadow-md hover:bg-gray-100 transition-colors transform hover:scale-110"
+              className="bg-white p-2 md:p-4 rounded-full shadow-md hover:bg-gray-100 transition-colors transform hover:scale-110"
               aria-label="View details"
             >
               <FaEye className="text-xl text-gray-800" />

@@ -35,7 +35,7 @@ function Navbar() {
 
   return (
     <nav className="bg-white shadow-md sticky top-0 z-50">
-      <div className="xl:px-24 lg:px-16 px-4 w-full py-5 flex items-center md:justify-between">
+      <div className="xl:px-16 lg:px-16 px-4 w-full py-5 flex items-center md:justify-between">
         {/* Logo */}
         <Link to={"/"}>
           <img src="/logo.png" alt="z-store logo" className="w-28" />

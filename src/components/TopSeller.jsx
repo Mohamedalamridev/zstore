@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Product from "./Product";
 import { Link } from "react-router-dom";
 const baseUrl = import.meta.env.VITE_BASE_URL;
-
+import { BeatLoader } from "react-spinners";
 function TopSeller() {
   const [products, setProducts] = useState([]);
   useEffect(() => {
@@ -24,9 +24,16 @@ function TopSeller() {
     };
     fetchProducts();
   }, []);
+  if (products.length <= 0) {
+    return (
+      <div className="min-h-[70vh]">
+        <BeatLoader />
+      </div>
+    );
+  }
   return (
     <>
-      <section className="xl:px-24 lg:px-10 px-3 pb-10">
+      <section className="xl:px-12 lg:px-10 px-3 pb-10">
         <h1 className="text-center my-10 font-black text-[#27374D] text-4xl">
           top selling
         </h1>
