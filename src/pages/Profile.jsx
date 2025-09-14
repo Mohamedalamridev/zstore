@@ -1,75 +1,242 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { useUser } from "../UserContext.jsx";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
-export const Feild = ({ name, value, placeholder, onChange }) => {
+import { Link } from "react-router-dom";
+import { useState } from "react";
+
+const Feild = ({ label, value, onchange, defaultValue, disabled = false }) => {
   return (
     <div className="flex flex-col">
-      <label className=" mt-3 mb-1 text-lg text-gray-600">{name}</label>
+      <label className="mt-3 mb-1 text-lg text-gray-600">{label}</label>
       <input
-        placeholder={placeholder}
         type="text"
-        className="bg-white p-3 rounded-md shadow-sm border-[1px] border-gray-300"
-        name={name || ""}
+        className={`bg-gray-100 p-3 rounded-md shadow-sm border border-gray-300 ${
+          disabled ? "text-gray-500 cursor-not-allowed" : ""
+        }`}
         value={value || ""}
-        onChange={onChange}
+        onChange={onchange}
+        defaultValue={defaultValue}
+        disabled={disabled}
       />
     </div>
   );
 };
-// export function Feild({ label, value, type }) {
-//   return (
-//     <div className="mb-4">
-//       <label className="block mb-1 font-semibold text-gray-700">{label}</label>
-//       <input
-//         type={type}
-//         value={value || ""}
-//         readOnly
-//         className="p-3 rounded-xl w-full bg-gray-100 text-gray-700 border border-gray-300 focus:outline-none"
-//       />
-//     </div>
-//   );
-// }
 
 function Profile() {
-  const { state, dispatch } = useUser();
-
+  const baseUrl = import.meta.env.VITE_BASE_URL;
+  const [address, setAddress] = useState({
+    label: "",
+    city: "",
+    state: "",
+    country: "",
+    postalCode: "",
+    street: "",
+    phone: "",
+  });
+  const [showAddAddress, setShowAddAddress] = useState(false);
+  const { state } = useUser();
   const user = state.profile?.user;
-  const profile = state.profile?.profile;
-  console.log(user?.addresses);
-  const addresses = user?.addresses;
   const orders = state.profile?.orders;
+  const addresses = user.addresses;
+
+  const handleDelete = async (id) => {
+    const res = await fetch(`${baseUrl}/api/user/profile/address/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "Application/json",
+      },
+      credentials: "include",
+    });
+    const result = await res.json();
+    console.log(result);
+  };
+
+  const handleAddAddress = async (e) => {
+    e.preventDefault();
+    const res = await fetch(`${baseUrl}/api/user/profile/address`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(address),
+      credentials: "include",
+    });
+    const result = await res.json();
+    console.log(result);
+    setShowAddAddress(false);
+    setAddress({
+      label: "",
+      city: "",
+      state: "",
+      country: "",
+      postalCode: "",
+      street: "",
+      phone: "",
+    });
+  };
 
   return (
     <>
       <Navbar />
-      <section className="min-h-screen p-8 bg-gray-50">
+      <section className="min-h-screen p-4 md:p-8 bg-gray-50">
         {/* Profile Card */}
-        <div className="max-w-3xl mx-auto bg-white shadow-md rounded-2xl p-6 mb-8">
+        <div className="max-w-4xl mx-auto bg-white shadow-md rounded-2xl p-6 mb-8">
           <h1 className="text-2xl font-bold text-gray-800 mb-6">
             User Profile
           </h1>
+
           <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Feild label="Your Name" value={user?.name} type="text" />
-            <Feild label="Email" value={user?.email} type="email" />
+            <Feild label="Your Name" value={user?.name} disabled={true} />
+            <Feild label="Email" value={user?.email} disabled={true} />
           </form>
-          <form className="">
-            {addresses.length > 0 &&
-              addresses &&
-              addresses.map((item, idx) => {
-                return <Feild label="Label" value={item?.label} />;
-              })}
-          </form>
+
+          {/* Addresses Section */}
+          <div className="mt-8">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-semibold text-gray-800">Addresses</h2>
+              <button
+                onClick={() => setShowAddAddress(!showAddAddress)}
+                className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+              >
+                {showAddAddress ? "Cancel" : "Add New Address"}
+              </button>
+            </div>
+
+            {/* Add New Address Form */}
+            {showAddAddress && (
+              <div className="bg-gray-50 p-4 rounded-lg mb-6">
+                <h3 className="text-lg font-medium text-gray-700 mb-4">
+                  Add New Address
+                </h3>
+                <form
+                  onSubmit={handleAddAddress}
+                  className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                >
+                  <Feild
+                    label="Label"
+                    value={address.label}
+                    onchange={(e) =>
+                      setAddress({ ...address, label: e.target.value })
+                    }
+                  />
+                  <Feild
+                    label="City"
+                    value={address.city}
+                    onchange={(e) =>
+                      setAddress({ ...address, city: e.target.value })
+                    }
+                  />
+                  <Feild
+                    label="State"
+                    value={address.state}
+                    onchange={(e) =>
+                      setAddress({ ...address, state: e.target.value })
+                    }
+                  />
+                  <Feild
+                    label="Country"
+                    value={address.country}
+                    onchange={(e) =>
+                      setAddress({ ...address, country: e.target.value })
+                    }
+                  />
+                  <Feild
+                    label="Postal Code"
+                    value={address.postalCode}
+                    onchange={(e) =>
+                      setAddress({ ...address, postalCode: e.target.value })
+                    }
+                  />
+                  <Feild
+                    label="Street"
+                    value={address.street}
+                    onchange={(e) =>
+                      setAddress({ ...address, street: e.target.value })
+                    }
+                  />
+                  <Feild
+                    label="Phone"
+                    value={address.phone}
+                    onchange={(e) =>
+                      setAddress({ ...address, phone: e.target.value })
+                    }
+                  />
+                  <div className="md:col-span-2 flex justify-end space-x-3 mt-4">
+                    <button
+                      type="button"
+                      onClick={() => setShowAddAddress(false)}
+                      className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="px-4 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700"
+                    >
+                      Save Address
+                    </button>
+                  </div>
+                </form>
+              </div>
+            )}
+
+            {/* Existing Addresses */}
+            <div className="space-y-6">
+              {addresses.length > 0
+                ? addresses.map((item) => (
+                    <div
+                      key={item?._id}
+                      className="border border-gray-200 rounded-lg p-4"
+                    >
+                      <div className="flex justify-between items-start mb-3">
+                        <h3 className="font-medium text-gray-800">
+                          {item?.label}
+                        </h3>
+                        <button
+                          onClick={() => handleDelete(item?._id)}
+                          className="text-red-600 hover:text-red-800 text-sm font-medium"
+                        >
+                          Delete
+                        </button>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-gray-600">
+                        <p>
+                          <span className="font-medium">Street:</span>{" "}
+                          {item?.street}
+                        </p>
+                        <p>
+                          <span className="font-medium">City:</span>{" "}
+                          {item?.city}
+                        </p>
+                        <p>
+                          <span className="font-medium">State:</span>{" "}
+                          {item?.state}
+                        </p>
+                        <p>
+                          <span className="font-medium">Country:</span>{" "}
+                          {item?.country}
+                        </p>
+                        <p>
+                          <span className="font-medium">Postal Code:</span>{" "}
+                          {item?.postalCode}
+                        </p>
+                        <p>
+                          <span className="font-medium">Phone:</span>{" "}
+                          {item?.phone}
+                        </p>
+                      </div>
+                    </div>
+                  ))
+                : !showAddAddress && (
+                    <div className="text-center py-8 text-gray-500">
+                      <p>No addresses saved yet.</p>
+                    </div>
+                  )}
+            </div>
+          </div>
         </div>
-        <div>
-          <form className="m-5">
-            {/* {addresses.length > 0 &&
-              addresses &&
-              addresses.map((item, i) => {
-                return <Feild />;
-              })} */}
-          </form>
-        </div>
+
         {/* Orders Section */}
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-bold text-gray-800 mb-6">My Orders</h2>
@@ -123,7 +290,15 @@ function Profile() {
               </div>
             ))
           ) : (
-            <p className="text-gray-500 text-center">No orders found.</p>
+            <div className="bg-white shadow-md rounded-2xl p-8 text-center">
+              <p className="text-gray-500 mb-4">No orders found.</p>
+              <Link
+                to="/"
+                className="px-6 py-2 bg-indigo-600 text-white rounded-md hover:bg-indigo-700 transition-colors"
+              >
+                Browse Products
+              </Link>
+            </div>
           )}
         </div>
       </section>
