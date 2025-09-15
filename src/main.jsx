@@ -17,9 +17,16 @@ import { UserProvider, useUser } from "./UserContext.jsx";
 import Profile from "./pages/Profile.jsx";
 import PaymentSuccess from "./pages/PaymentSuccess.jsx";
 import Address from "./pages/Address.jsx";
+
 export const ProtecedRoute = ({ children }) => {
   const { state } = useUser();
-
+  if (state.isLoading) {
+    return (
+      <div className="min-h-screen flex justify-center items-center">
+        Loading...
+      </div>
+    );
+  }
   return state.isLogged ? children : <Navigate to="/login" replace />;
 };
 const router = createBrowserRouter([

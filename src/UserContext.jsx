@@ -3,6 +3,7 @@ import { createContext, useContext, useEffect, useReducer } from "react";
 const initialUser = {
   isLogged: false,
   profile: null,
+  isLoading: true,
 };
 const baseUrl = import.meta.env.VITE_BASE_URL;
 const userReducer = (state, action) => {
@@ -10,7 +11,7 @@ const userReducer = (state, action) => {
     case "LOGIN":
       return {
         ...state,
-
+        isLoading: false,
         isLogged: true,
         profile: action.payload,
       };

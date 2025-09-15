@@ -57,6 +57,7 @@ function Profile() {
   const user = state.profile?.user;
   const orders = state.profile?.orders;
   const addresses = user.addresses;
+  console.log(state.isLogged);
 
   const validate = (data) => {
     const isValid = Object.values(data).every(

@@ -3,6 +3,7 @@ import Product from "./Product";
 import { Link } from "react-router-dom";
 const baseUrl = import.meta.env.VITE_BASE_URL;
 import { BeatLoader } from "react-spinners";
+import Fillter from "./Fillter";
 function TopSeller() {
   const [products, setProducts] = useState([]);
   useEffect(() => {
@@ -34,9 +35,7 @@ function TopSeller() {
   return (
     <>
       <section className="xl:px-12 lg:px-10 px-3 pb-10">
-        <h1 className="text-center my-10 font-black text-[#27374D] text-4xl">
-          top selling
-        </h1>
+        <Fillter />
         <div className="grid grid-cols-12 gap-2 gap-y-4 ">
           {products.length > 0 &&
             products !== null &&

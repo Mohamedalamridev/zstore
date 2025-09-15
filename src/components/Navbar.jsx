@@ -8,6 +8,8 @@ import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../CartContext";
 import { useUser } from "../UserContext";
 import { FiLogOut } from "react-icons/fi";
+import { BeatLoader } from "react-spinners";
+import { MdAccountCircle } from "react-icons/md";
 
 function Navbar() {
   const navigate = useNavigate();
@@ -78,13 +80,20 @@ function Navbar() {
 
           {/* User */}
           <>
-            <Link to={userState.isLogged ? "/profile" : "/login"}>
-              <FaRegUserCircle className="text-3xl cursor-pointer hover:text-blue-600 transition" />
-            </Link>
-
-            <button className="cursor-pointer" onClick={() => handleLogout()}>
-              <FiLogOut />
-            </button>
+            {!userState.isLogged ? (
+              <Link to={"/login"}>Login</Link>
+            ) : (
+              <button className="flex items-center gap-4 cursor-pointer">
+                <Link to="/profile">
+                  {" "}
+                  <MdAccountCircle className="text-4xl cursor-pointer hover:text-blue-600 transition" />
+                </Link>
+                <FiLogOut
+                  onClick={() => handleLogout()}
+                  className="text-2xl cursor-pointer"
+                />
+              </button>
+            )}
           </>
         </div>
       </div>
