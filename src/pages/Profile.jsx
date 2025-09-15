@@ -3,6 +3,7 @@ import { useUser } from "../UserContext.jsx";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
 
 const Feild = ({
   label,
@@ -42,7 +43,6 @@ const Feild = ({
 
 function Profile() {
   const baseUrl = import.meta.env.VITE_BASE_URL;
-
   const [address, setAddress] = useState({
     label: "",
     city: "",
@@ -56,10 +56,10 @@ function Profile() {
   const [showAddAddress, setShowAddAddress] = useState(false);
   const [runValidate, setRunValidate] = useState(false);
 
-  const { state } = useUser();
-  const user = state?.profile?.user ?? {};
-  const orders = state?.profile?.orders ?? [];
-  const addresses = user?.addresses ?? [];
+  const { state, userProfile, setUserProfile, orders, dispatch } = useUser();
+  const user = userProfile?.user ?? {};
+  const addresses = userProfile?.addresses ?? [];
+  console.log(userProfile?.addresses);
 
   const validate = (data) => {
     const isValid = Object.values(data).every(
@@ -68,6 +68,7 @@ function Profile() {
     setRunValidate(!isValid);
     return isValid;
   };
+  console.log(userProfile.user);
 
   const handleDelete = async (id) => {
     try {
@@ -77,7 +78,7 @@ function Profile() {
         credentials: "include",
       });
       const result = await res.json();
-      console.log(result);
+      setUserProfile(result.user);
     } catch (err) {
       console.error("Delete address failed:", err);
     }
@@ -96,7 +97,8 @@ function Profile() {
         credentials: "include",
       });
       const result = await res.json();
-      console.log("Added address:", result);
+
+      setUserProfile(result.user);
     } catch (err) {
       console.error("Add address failed:", err);
     }
@@ -113,6 +115,13 @@ function Profile() {
     });
   };
 
+  if (state.isLoading) {
+    return (
+      <div className="min-h-screen flex justify-center items-center">
+        Loading...
+      </div>
+    );
+  }
   return (
     <>
       <Navbar />
@@ -143,6 +152,8 @@ function Profile() {
                 {showAddAddress ? "Cancel" : "Add New Address"}
               </button>
             </div>
+
+            {}
 
             {/* Add New Address Form */}
             {showAddAddress && (

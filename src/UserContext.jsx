@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { createContext, useContext, useEffect, useReducer } from "react";
 
 const initialUser = {
@@ -5,6 +6,7 @@ const initialUser = {
   profile: null,
   isLoading: true,
 };
+
 const baseUrl = import.meta.env.VITE_BASE_URL;
 const userReducer = (state, action) => {
   switch (action.type) {
@@ -15,8 +17,18 @@ const userReducer = (state, action) => {
         isLogged: true,
         profile: action.payload,
       };
+
+    case "UPDATE_PROFILE":
+      return {
+        ...state,
+        profile: {
+          ...state.profile,
+          addresses: action.payload,
+        },
+      };
+
     case "LOGOUT":
-      return { ...state, isLogged: false, profile: null };
+      return { ...state.profile, isLogged: false, profile: null };
     default:
       return state;
   }
@@ -25,6 +37,8 @@ const userReducer = (state, action) => {
 export const UserContext = createContext();
 
 export const UserProvider = ({ children }) => {
+  const [userProfile, setUserProfile] = useState(null);
+  const [orders, setOrders] = useState(null);
   const [state, dispatch] = useReducer(userReducer, initialUser);
 
   useEffect(() => {
@@ -39,12 +53,17 @@ export const UserProvider = ({ children }) => {
         });
         if (res.ok) {
           const data = await res.json();
+          setUserProfile(data.user);
+          console.log("data from context", data);
+
+          setOrders(data.orders);
 
           dispatch({
             type: "LOGIN",
             payload: {
               user: data.user,
               orders: data.orders,
+              profile: data.profile,
             },
           });
         }
@@ -70,7 +89,9 @@ export const UserProvider = ({ children }) => {
   };
 
   return (
-    <UserContext.Provider value={{ state, dispatch, logout }}>
+    <UserContext.Provider
+      value={{ state, dispatch, logout, userProfile, orders, setUserProfile }}
+    >
       {children}
     </UserContext.Provider>
   );
