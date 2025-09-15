@@ -67,8 +67,8 @@ function Profile() {
     setRunValidate(!isValid);
     return isValid;
   };
-  // console.log(userProfile.user);
 
+  useEffect(() => {}, [state]);
   const handleDelete = async (id) => {
     try {
       Swal.fire({

@@ -54,7 +54,6 @@ export const UserProvider = ({ children }) => {
         if (res.ok) {
           const data = await res.json();
           setUserProfile(data.user);
-          console.log("data from context", data);
 
           setOrders(data.orders);
 

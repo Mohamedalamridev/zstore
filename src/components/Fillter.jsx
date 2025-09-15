@@ -77,9 +77,9 @@ function Filter({ products, setFilter }) {
         {/* Size */}
         <h2 className="font-medium">Size</h2>
         <div className="flex gap-2 flex-wrap">
-          {SIZES.map((size) => (
+          {SIZES.map((size, i) => (
             <span
-              key={size}
+              key={i}
               className={`px-3 py-1 border rounded-md cursor-pointer ${
                 filters.size === size ? "bg-black text-white" : "bg-white"
               }`}

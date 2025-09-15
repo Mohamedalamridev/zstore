@@ -20,7 +20,7 @@ function TopSeller() {
         });
         const data = await response.json();
         setProducts(data.products);
-        setFillter(data.products);
+        setFilter(data.products);
       } catch (error) {
         console.log(error.message);
       }

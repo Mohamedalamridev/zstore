@@ -50,9 +50,9 @@ function Navbar() {
       {/* Menu for desktop */}
       <div>
         <ul className="hidden gap-8 md:flex">
-          {navLinks.map((item) => {
+          {navLinks.map((item, i) => {
             return (
-              <li className=" text-gray-600">
+              <li key={i} className=" text-gray-600">
                 <Link to={item.path}>{item.label}</Link>
               </li>
             );
@@ -74,13 +74,21 @@ function Navbar() {
             <RiAccountCircle2Fill className="text-5xl" />
           </Link>
         </li>
-        {navLinks.map((item) => {
+        {navLinks.map((item, i) => {
           return (
-            <li className="not-last:border-b-2 py-4 text-gray-500">
+            <li key={i} className="not-last:border-b-2 py-4 text-gray-500">
               <Link to={item.path}>{item.label}</Link>
             </li>
           );
         })}
+        <li
+          className="pt-4 cursor-pointer text-black font-semibold"
+          onClick={() => {
+            dispatch({ type: "LOGOUT" });
+          }}
+        >
+          Logout
+        </li>
       </ul>
       <div className="flex items-center gap-3">
         <Link className="relative" to={"/cart"}>
