@@ -1,9 +1,8 @@
-import React from "react";
+import React, { useState } from "react";
 import { useUser } from "../UserContext.jsx";
 import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import { Link } from "react-router-dom";
-import { useState } from "react";
 
 const Feild = ({
   label,
@@ -19,21 +18,23 @@ const Feild = ({
       <input
         type="text"
         className={`${
-          runValidate && value.trim() === ""
+          runValidate && value?.trim?.() === ""
             ? "border-red-500"
-            : value.trim() == "" && !runValidate
+            : value?.trim?.() === "" && !runValidate
             ? "border-gray-600"
-            : value.trim() !== "" && "border-green-600"
+            : value?.trim?.() !== "" && "border-green-600"
         } bg-gray-100 p-3 rounded-md shadow-sm border border-gray-300 ${
           disabled ? "text-gray-500 cursor-not-allowed" : ""
         }`}
-        value={value || ""}
+        value={value ?? ""}
         onChange={onchange}
         defaultValue={defaultValue}
         disabled={disabled}
       />
-      {runValidate && value.trim() === "" && (
-        <span className="text-red-600 text-sm mt-1">This Feild Is Require</span>
+      {runValidate && value?.trim?.() === "" && (
+        <span className="text-red-600 text-sm mt-1">
+          This Field Is Required
+        </span>
       )}
     </div>
   );
@@ -41,6 +42,7 @@ const Feild = ({
 
 function Profile() {
   const baseUrl = import.meta.env.VITE_BASE_URL;
+
   const [address, setAddress] = useState({
     label: "",
     city: "",
@@ -53,49 +55,52 @@ function Profile() {
 
   const [showAddAddress, setShowAddAddress] = useState(false);
   const [runValidate, setRunValidate] = useState(false);
+
   const { state } = useUser();
-  const user = state.profile?.user;
-  const orders = state.profile?.orders;
-  const addresses = user.addresses;
-  console.log(state.isLogged);
+  const user = state?.profile?.user ?? {};
+  const orders = state?.profile?.orders ?? [];
+  const addresses = user?.addresses ?? [];
 
   const validate = (data) => {
     const isValid = Object.values(data).every(
       (item) => item && item.trim() !== ""
     );
     setRunValidate(!isValid);
-
     return isValid;
   };
 
   const handleDelete = async (id) => {
-    const res = await fetch(`${baseUrl}/api/user/profile/address/${id}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "Application/json",
-      },
-      credentials: "include",
-    });
-    const result = await res.json();
-    console.log(result);
+    try {
+      const res = await fetch(`${baseUrl}/api/user/profile/address/${id}`, {
+        method: "DELETE",
+        headers: { "Content-Type": "Application/json" },
+        credentials: "include",
+      });
+      const result = await res.json();
+      console.log(result);
+    } catch (err) {
+      console.error("Delete address failed:", err);
+    }
   };
 
   const handleAddAddress = async (e) => {
     e.preventDefault();
     const isValid = validate(address);
-    if (!isValid) {
-      return;
+    if (!isValid) return;
+
+    try {
+      const res = await fetch(`${baseUrl}/api/user/profile/address`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(address),
+        credentials: "include",
+      });
+      const result = await res.json();
+      console.log("Added address:", result);
+    } catch (err) {
+      console.error("Add address failed:", err);
     }
-    const res = await fetch(`${baseUrl}/api/user/profile/address`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(address),
-      credentials: "include",
-    });
-    const result = await res.json();
-    console.log(result);
+
     setShowAddAddress(false);
     setAddress({
       label: "",
@@ -119,8 +124,12 @@ function Profile() {
           </h1>
 
           <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Feild label="Your Name" value={user?.name} disabled={true} />
-            <Feild label="Email" value={user?.email} disabled={true} />
+            <Feild label="Your Name" value={user?.name ?? "Guest"} disabled />
+            <Feild
+              label="Email"
+              value={user?.email ?? "Not Provided"}
+              disabled
+            />
           </form>
 
           {/* Addresses Section */}
@@ -145,62 +154,17 @@ function Profile() {
                   onSubmit={handleAddAddress}
                   className="grid grid-cols-1 md:grid-cols-2 gap-4"
                 >
-                  <Feild
-                    label="Label"
-                    runValidate={runValidate}
-                    value={address.label}
-                    onchange={(e) =>
-                      setAddress({ ...address, label: e.target.value })
-                    }
-                  />
-                  <Feild
-                    label="City"
-                    runValidate={runValidate}
-                    value={address.city}
-                    onchange={(e) =>
-                      setAddress({ ...address, city: e.target.value })
-                    }
-                  />
-                  <Feild
-                    label="State"
-                    runValidate={runValidate}
-                    value={address.state}
-                    onchange={(e) =>
-                      setAddress({ ...address, state: e.target.value })
-                    }
-                  />
-                  <Feild
-                    label="Country"
-                    runValidate={runValidate}
-                    value={address.country}
-                    onchange={(e) =>
-                      setAddress({ ...address, country: e.target.value })
-                    }
-                  />
-                  <Feild
-                    label="Postal Code"
-                    runValidate={runValidate}
-                    value={address.postalCode}
-                    onchange={(e) =>
-                      setAddress({ ...address, postalCode: e.target.value })
-                    }
-                  />
-                  <Feild
-                    label="Street"
-                    runValidate={runValidate}
-                    value={address.street}
-                    onchange={(e) =>
-                      setAddress({ ...address, street: e.target.value })
-                    }
-                  />
-                  <Feild
-                    label="Phone"
-                    runValidate={runValidate}
-                    value={address.phone}
-                    onchange={(e) =>
-                      setAddress({ ...address, phone: e.target.value })
-                    }
-                  />
+                  {Object.keys(address).map((field) => (
+                    <Feild
+                      key={field}
+                      label={field.charAt(0).toUpperCase() + field.slice(1)}
+                      runValidate={runValidate}
+                      value={address[field]}
+                      onchange={(e) =>
+                        setAddress({ ...address, [field]: e.target.value })
+                      }
+                    />
+                  ))}
                   <div className="md:col-span-2 flex justify-end space-x-3 mt-4">
                     <button
                       type="button"
@@ -222,7 +186,7 @@ function Profile() {
 
             {/* Existing Addresses */}
             <div className="space-y-6">
-              {addresses.length > 0
+              {addresses?.length > 0
                 ? addresses.map((item) => (
                     <div
                       key={item?._id}
@@ -230,7 +194,7 @@ function Profile() {
                     >
                       <div className="flex justify-between items-start mb-3">
                         <h3 className="font-medium text-gray-800">
-                          {item?.label}
+                          {item?.label ?? "Unnamed Address"}
                         </h3>
                         <button
                           onClick={() => handleDelete(item?._id)}
@@ -242,27 +206,27 @@ function Profile() {
                       <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-gray-600">
                         <p>
                           <span className="font-medium">Street:</span>{" "}
-                          {item?.street}
+                          {item?.street ?? "N/A"}
                         </p>
                         <p>
                           <span className="font-medium">City:</span>{" "}
-                          {item?.city}
+                          {item?.city ?? "N/A"}
                         </p>
                         <p>
                           <span className="font-medium">State:</span>{" "}
-                          {item?.state}
+                          {item?.state ?? "N/A"}
                         </p>
                         <p>
                           <span className="font-medium">Country:</span>{" "}
-                          {item?.country}
+                          {item?.country ?? "N/A"}
                         </p>
                         <p>
                           <span className="font-medium">Postal Code:</span>{" "}
-                          {item?.postalCode}
+                          {item?.postalCode ?? "N/A"}
                         </p>
                         <p>
                           <span className="font-medium">Phone:</span>{" "}
-                          {item?.phone}
+                          {item?.phone ?? "N/A"}
                         </p>
                       </div>
                     </div>
@@ -279,7 +243,7 @@ function Profile() {
         {/* Orders Section */}
         <div className="max-w-4xl mx-auto">
           <h2 className="text-2xl font-bold text-gray-800 mb-6">My Orders</h2>
-          {orders && orders.length > 0 ? (
+          {orders?.length > 0 ? (
             orders.map((item, i) => (
               <div
                 key={i}
@@ -289,38 +253,38 @@ function Profile() {
                   <h1 className="font-semibold text-lg text-gray-800">
                     Order ID:{" "}
                     <span className="text-indigo-600 font-bold">
-                      {item.paymobOrderId}
+                      {item?.paymobOrderId ?? "N/A"}
                     </span>
                   </h1>
                   <span
                     className={`px-3 py-1 rounded-full text-sm font-medium ${
-                      item.paymentStatus === "paid"
+                      item?.paymentStatus === "paid"
                         ? "bg-green-100 text-green-700"
                         : "bg-red-100 text-red-700"
                     }`}
                   >
-                    {item.paymentStatus}
+                    {item?.paymentStatus ?? "unknown"}
                   </span>
                 </div>
                 <h3 className="text-gray-700 font-medium mb-2">
                   Total Amount:{" "}
                   <span className="text-indigo-700 font-bold">
-                    EGP {item.amount}
+                    EGP {item?.totalAmount ?? 0}
                   </span>
                 </h3>
                 <div className="border-t border-gray-200 pt-4">
                   <h4 className="font-semibold text-gray-800 mb-3">Items:</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {item.items.map((product, idx) => (
+                    {item?.items?.map((product, idx) => (
                       <div
                         key={idx}
                         className="flex justify-between items-center bg-gray-50 rounded-lg p-3"
                       >
                         <span className="font-medium text-gray-700">
-                          {product.name}
+                          {product?.name ?? "Unnamed Product"}
                         </span>
                         <span className="text-sm text-gray-500">
-                          x {product.quantity}
+                          x {product?.quantity ?? 0}
                         </span>
                       </div>
                     ))}
