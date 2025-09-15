@@ -4,7 +4,7 @@ import Navbar from "../components/Navbar.jsx";
 import Footer from "../components/Footer.jsx";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
-
+import Swal from "sweetalert2";
 const Feild = ({
   label,
   value,
@@ -57,9 +57,8 @@ function Profile() {
   const [runValidate, setRunValidate] = useState(false);
 
   const { state, userProfile, setUserProfile, orders, dispatch } = useUser();
-  const user = userProfile?.user ?? {};
+
   const addresses = userProfile?.addresses ?? [];
-  console.log(userProfile?.addresses);
 
   const validate = (data) => {
     const isValid = Object.values(data).every(
@@ -68,17 +67,34 @@ function Profile() {
     setRunValidate(!isValid);
     return isValid;
   };
-  console.log(userProfile.user);
+  // console.log(userProfile.user);
 
   const handleDelete = async (id) => {
     try {
-      const res = await fetch(`${baseUrl}/api/user/profile/address/${id}`, {
-        method: "DELETE",
-        headers: { "Content-Type": "Application/json" },
-        credentials: "include",
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          Swal.fire({
+            title: "Deleted!",
+            text: "Your file has been deleted.",
+            icon: "success",
+          });
+          const res = await fetch(`${baseUrl}/api/user/profile/address/${id}`, {
+            method: "DELETE",
+            headers: { "Content-Type": "Application/json" },
+            credentials: "include",
+          });
+          const result = await res.json();
+          setUserProfile(result.user);
+        }
       });
-      const result = await res.json();
-      setUserProfile(result.user);
     } catch (err) {
       console.error("Delete address failed:", err);
     }
@@ -133,10 +149,14 @@ function Profile() {
           </h1>
 
           <form className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <Feild label="Your Name" value={user?.name ?? "Guest"} disabled />
+            <Feild
+              label="Your Name"
+              value={userProfile?.name ?? "Guest"}
+              disabled
+            />
             <Feild
               label="Email"
-              value={user?.email ?? "Not Provided"}
+              value={userProfile?.email ?? "Not Provided"}
               disabled
             />
           </form>
@@ -180,7 +200,7 @@ function Profile() {
                     <button
                       type="button"
                       onClick={() => setShowAddAddress(false)}
-                      className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100"
+                      className="px-4 py-2 cursor-pointer border border-gray-300 rounded-md text-gray-700 hover:bg-gray-100"
                     >
                       Cancel
                     </button>
@@ -209,7 +229,7 @@ function Profile() {
                         </h3>
                         <button
                           onClick={() => handleDelete(item?._id)}
-                          className="text-red-600 hover:text-red-800 text-sm font-medium"
+                          className="text-red-600 cursor-pointer hover:text-red-800 text-sm font-medium"
                         >
                           Delete
                         </button>

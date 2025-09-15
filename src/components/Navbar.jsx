@@ -7,13 +7,14 @@ import { TiThMenuOutline } from "react-icons/ti";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../CartContext";
 import { useUser } from "../UserContext";
-import { FiLogOut } from "react-icons/fi";
-import { BeatLoader } from "react-spinners";
-import { MdAccountCircle } from "react-icons/md";
+import { MdMenu } from "react-icons/md";
+import { RiAccountCircle2Fill } from "react-icons/ri";
+import { IoMdClose } from "react-icons/io";
+import { MdAddShoppingCart } from "react-icons/md";
 
 function Navbar() {
   const navigate = useNavigate();
-  const [toggle, setToggle] = useState(false);
+  const [toggle, setToggle] = useState(true);
   const { state: cartState } = useCart();
   const { state: userState, dispatch, logout } = useUser();
 
@@ -22,98 +23,81 @@ function Navbar() {
     navigate("/login");
   };
 
-  const navLinks = ["Shop", "On Sale", "New Arrivals", "Brands"];
-
-  const SearchBar = () => (
-    <div className="relative bg-[#DDE6ED] py-2 px-4 w-full lg:w-96 rounded-3xl">
-      <CiSearch className="absolute left-3 top-2.5 text-xl text-gray-500" />
-      <input
-        type="text"
-        placeholder="Search for products..."
-        className="w-full bg-transparent outline-0 border-0 pl-8 text-sm text-[#27374D]"
-      />
-    </div>
-  );
+  const navLinks = [
+    { label: "Shop", path: "/" },
+    { label: "On Sale", path: "/" },
+    { label: "New Arrivals", path: "/" },
+  ];
 
   return (
-    <nav className="bg-white shadow-md sticky top-0 z-50">
-      <div className="xl:px-16 lg:px-16 px-4 w-full py-5 flex items-center md:justify-between">
-        {/* Logo */}
-        <Link to={"/"}>
-          <img src="/logo.png" alt="z-store logo" className="w-28" />
-        </Link>
+    <nav className="bg-white flex items-center justify-between shadow-md top-0 z-50 px-4 py-4 lg:px-16 relative">
+      <Link to={"/"}>
+        <img src="/logo.png" alt="z-store logo" className="w-24 lg:w-26 " />
+      </Link>
 
-        {/* Toggle Button (Mobile) */}
-        <button
-          className="lg:hidden text-2xl cursor-pointer z-20 mr-6 ml-auto"
-          onClick={() => setToggle(!toggle)}
-        >
-          {toggle ? <IoCloseSharp /> : <TiThMenuOutline />}
-        </button>
+      {toggle ? (
+        <MdMenu
+          className="md:hidden text-3xl cursor-pointer absolute right-4 top-2/4 -translate-y-2/4 z-20 "
+          onClick={() => setToggle(false)}
+        />
+      ) : (
+        <IoMdClose
+          className="md:hidden text-3xl cursor-pointer absolute right-4 top-2/4 -translate-y-2/4 z-20 "
+          onClick={() => setToggle(true)}
+        />
+      )}
 
-        {/* Desktop Menu */}
-        <div className="hidden lg:flex items-center gap-8">
-          <ul className="flex gap-8 text-[#27374D] font-medium">
-            {navLinks.map((link, idx) => (
-              <li
-                key={idx}
-                className="cursor-pointer hover:text-blue-600 transition"
-              >
-                {link}
+      {/* Menu for desktop */}
+      <div>
+        <ul className="hidden gap-8 md:flex">
+          {navLinks.map((item) => {
+            return (
+              <li className=" text-gray-600">
+                <Link to={item.path}>{item.label}</Link>
               </li>
-            ))}
-          </ul>
-          <SearchBar />
-        </div>
-
-        {/* Icons */}
-        <div className="flex items-center gap-6 relative">
-          {/* Cart */}
-          <Link to={"/cart"} className="relative">
-            {cartState.cart.length > 0 && (
-              <span className="absolute -top-2 -right-2 bg-red-600 flex justify-center items-center text-white text-xs font-bold rounded-full w-5 h-5">
-                {cartState.cart.length}
-              </span>
-            )}
-            <MdOutlineShoppingCart className="text-3xl text-[#27374D]" />
-          </Link>
-
-          {/* User */}
-          <>
-            {!userState.isLogged ? (
-              <Link to={"/login"}>Login</Link>
-            ) : (
-              <button className="flex items-center gap-4 cursor-pointer">
-                <Link to="/profile">
-                  {" "}
-                  <MdAccountCircle className="text-4xl cursor-pointer hover:text-blue-600 transition" />
-                </Link>
-                <FiLogOut
-                  onClick={() => handleLogout()}
-                  className="text-2xl cursor-pointer"
-                />
-              </button>
-            )}
-          </>
-        </div>
+            );
+          })}
+        </ul>
       </div>
 
-      {/* Mobile Menu */}
-      {toggle && (
-        <div className="lg:hidden p-8 text-center flex flex-col gap-6 items-center py-6 bg-white shadow-md animate-slideDown">
-          <SearchBar />
-          <ul className="flex flex-col gap-4 text-[#27374D] font-medium">
-            {navLinks.map((link, idx) => (
-              <li
-                key={idx}
-                className="cursor-pointer hover:text-blue-600 transition"
-              >
-                {link}
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
+      {/* cart icon */}
+
+      {/* Menu for Mobile */}
+      <ul
+        style={{ transition: "0.5s" }}
+        className={`absolute left-0 bg-white shadow-lg w-full p-8 flex-col gap-8 text-xl ${
+          !toggle ? "top-4/4" : "-top-100"
+        }`}
+      >
+        <li className="">
+          <Link to={userState.isLogged ? "/profile" : "/login"}>
+            <RiAccountCircle2Fill className="text-5xl" />
+          </Link>
+        </li>
+        {navLinks.map((item) => {
+          return (
+            <li className="not-last:border-b-2 py-4 text-gray-500">
+              <Link to={item.path}>{item.label}</Link>
+            </li>
+          );
+        })}
+      </ul>
+      <div className="flex items-center gap-3">
+        <Link className="relative" to={"/cart"}>
+          <MdAddShoppingCart className="text-2xl mr-9 md:mr-0" />
+          {cartState.cart.length > 0 && (
+            <span className="absolute -top-3 -left-3 bg-red-500 text-xs  text-white font-bold rounded-full px-2 py-1 ">
+              {cartState.cart.length > 0 && cartState.cart.length}
+            </span>
+          )}
+        </Link>
+        <Link
+          className="hidden md:inline"
+          to={userState.isLogged ? "/profile" : "/login"}
+        >
+          <RiAccountCircle2Fill className="text-4xl" />
+        </Link>
+      </div>
     </nav>
   );
 }

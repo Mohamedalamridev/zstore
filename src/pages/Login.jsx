@@ -11,23 +11,28 @@ function Login() {
   const { state: cartState } = useCart();
 
   const navigate = useNavigate();
+
   const handleLogin = async () => {
-    const response = await fetch(`${baseUrl}/api/user/login`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "Application/json",
-      },
-      credentials: "include",
-      body: JSON.stringify({ email, password }),
-    });
-    const userData = await response.json();
-    if (response.ok) {
-      dispatch({ type: "LOGIN", payload: { userData } });
-      if (cartState.cart.length > 0) {
-        navigate("/cart");
-      } else {
-        navigate("/");
+    try {
+      const response = await fetch(`${baseUrl}/api/user/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "Application/json",
+        },
+        credentials: "include",
+        body: JSON.stringify({ email, password }),
+      });
+      const userData = await response.json();
+      if (response.ok) {
+        dispatch({ type: "LOGIN", payload: { userData } });
+        if (cartState.cart.length > 0) {
+          navigate("/cart");
+        } else {
+          navigate("/");
+        }
       }
+    } catch (error) {
+      console.log(error.message);
     }
   };
   return (
