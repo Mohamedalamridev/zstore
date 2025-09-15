@@ -4,6 +4,10 @@ import Slider from "rc-slider";
 import "rc-slider/assets/index.css";
 
 const SIZES = ["XS", "S", "M", "XL", "2X"];
+
+const categories = ["T-shirt", "Pants", "Shoes", "Dress", "Hoodie"];
+
+const labels = ["New Arrival", "Top Seller", "Discounted"];
 const COLORS = [
   { name: "black", hex: "#000000" },
   { name: "green", hex: "#00FF00" },
@@ -11,15 +15,14 @@ const COLORS = [
   { name: "blue", hex: "#0000FF" },
   { name: "red", hex: "#FF0000" },
 ];
-const categories = ["Kids", "Young", "Girls", "Baby"];
 function Filter({ products, setFilter }) {
   const [filters, setFilters] = useState({
     size: null,
     color: null,
     price: [0, 1000],
     category: null,
+    tags: null,
   });
-
   useEffect(() => {
     let filtered = [...products];
 
@@ -110,7 +113,7 @@ function Filter({ products, setFilter }) {
       {/* Categories  */}
       <div className="my-8">
         <h1 className="mb-3 font-semibold">Categories</h1>
-        <div className="flex gap-4">
+        <div className="flex flex-wrap gap-4">
           {categories.map((c) => {
             return (
               <span

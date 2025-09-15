@@ -20,7 +20,7 @@ function TopSeller() {
         });
         const data = await response.json();
         setProducts(data.products);
-        setFillter(data.products); // 👈 في البداية خلي المفلترة هي نفس المنتجات
+        setFillter(data.products);
       } catch (error) {
         console.log(error.message);
       }
@@ -38,12 +38,10 @@ function TopSeller() {
 
   return (
     <>
-      <section className="xl:px-12 min-h-[80vh] lg:px-10 px-3 pb-10 lg:flex gap-6">
-        {/* الفلتر بيعدل fillter */}
+      <section className="xl:px-12 min-h-[80vh] lg:px-10 px-3 pb-10 lg:grid grid-cols-4 gap-6">
         <Fillter products={products} setFilter={setFilter} />
 
-        {/* عرض المفلترة بدل كل المنتجات */}
-        <div className="grid grid-cols-12 gap-2 gap-y-8 flex-1">
+        <div className="grid grid-cols-12 col-span-3 gap-2 gap-y-8 flex-1">
           {filter.length > 0 ? (
             filter.map((p, i) => (
               <Product
