@@ -120,7 +120,6 @@ function SingleProduct() {
                   title={product.title}
                   price={product.price}
                   discount={product.oldPrice - product.price}
-                  count={product.count}
                 />
               )}
             </div>

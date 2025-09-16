@@ -3,6 +3,7 @@ import { FiMinus } from "react-icons/fi";
 import { GoPlus } from "react-icons/go";
 import { MdDelete } from "react-icons/md";
 import { useCart } from "../CartContext";
+import Quantity from "./Quantity";
 import { Link } from "react-router-dom";
 
 function Item({ id, img, title, info, price, count, discount }) {
@@ -47,29 +48,15 @@ function Item({ id, img, title, info, price, count, discount }) {
           <MdDelete />
         </span>
 
-        <div className="flex justify-evenly items-center bg-[#F0F0F0] py-1  rounded-3xl">
-          <span className="text-xl px-2 cursor-pointer">
-            <FiMinus
-              onClick={() =>
-                dispatch({
-                  type: "REMOVE_ITEM",
-                  payload: { id },
-                })
-              }
-            />
-          </span>
-          <span className="text-md px-1">{count}</span>
-          <span className="text-md px-1 cursor-pointer">
-            <GoPlus
-              onClick={() => {
-                dispatch({
-                  type: "ADD_TO_CART",
-                  payload: { id, img, title, info, price, count, discount },
-                });
-              }}
-            />
-          </span>
-        </div>
+        <Quantity
+          id={id}
+          img={img}
+          price={price}
+          discount={discount}
+          info={info}
+          title={title}
+          count={count}
+        />
       </div>
     </div>
   );
