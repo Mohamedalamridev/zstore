@@ -60,8 +60,6 @@ function Navbar() {
         </ul>
       </div>
 
-      {/* cart icon */}
-
       {/* Menu for Mobile */}
       <ul
         style={{ transition: "0.5s" }}
@@ -81,14 +79,6 @@ function Navbar() {
             </li>
           );
         })}
-        <li
-          className="pt-4 cursor-pointer text-black font-semibold"
-          onClick={() => {
-            dispatch({ type: "LOGOUT" });
-          }}
-        >
-          Logout
-        </li>
       </ul>
       <div className="flex items-center gap-3">
         <Link className="relative" to={"/cart"}>
@@ -105,6 +95,16 @@ function Navbar() {
         >
           <RiAccountCircle2Fill className="text-4xl" />
         </Link>
+        {statusbar.isLogged && (
+          <button
+            className="hidden md:inline cursor-pointer text-black font-semibold"
+            onClick={() => {
+              dispatch({ type: "LOGOUT" });
+            }}
+          >
+            Logout
+          </button>
+        )}
       </div>
     </nav>
   );
