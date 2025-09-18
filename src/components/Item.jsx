@@ -21,7 +21,11 @@ function Item({ id, img, title, price, count, discount }) {
 
         <h2 className="font-bold text-lg">
           ${price * count}{" "}
-          <span className="font-normal text-md text-red-500">{discount}$</span>
+          {discount > 0 && (
+            <span className="line-through text-gray-400 text-base font-normal ml-2">
+              ${discount}
+            </span>
+          )}{" "}
         </h2>
       </div>
       <div className="flex ml-auto flex-col justify-between">

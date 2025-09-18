@@ -9,38 +9,18 @@ import { FaCheckCircle, FaEye } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useCart } from "../CartContext";
 
-function Product({ id, title, name, img, rate, price, oldPrice, count }) {
+function Product({ id, title, name, img, price, oldPrice, count }) {
   const { state, dispatch } = useCart();
-  const [isHovered, setIsHovered] = useState(false);
-  const [isFavorited, setIsFavorited] = useState(false);
 
   const isAdded = state.cart.some((item) => item.id === id);
-  const validRate = Math.max(0, Math.min(5, rate));
   const discountPercentage =
     oldPrice > 0 ? Math.round(((oldPrice - price) / oldPrice) * 100) : 0;
 
   const handleAddToCart = () => {
     dispatch({
       type: "ADD_TO_CART",
-      payload: { id, name, img, price, title, count: 1 },
+      payload: { id, name, img, price, title, discountPercentage, count: 1 },
     });
-  };
-
-  const renderStars = () => {
-    const stars = [];
-    const fullStars = Math.floor(validRate);
-    const hasHalfStar = validRate % 1 >= 0.5;
-
-    for (let i = 1; i <= 5; i++) {
-      if (i <= fullStars) {
-        stars.push(<IoStarSharp key={i} className="text-yellow-400" />);
-      } else if (i === fullStars + 1 && hasHalfStar) {
-        stars.push(<IoStarHalfSharp key={i} className="text-yellow-400" />);
-      } else {
-        stars.push(<IoStarOutline key={i} className="text-gray-300" />);
-      }
-    }
-    return stars;
   };
 
   return (
@@ -57,7 +37,7 @@ function Product({ id, title, name, img, rate, price, oldPrice, count }) {
             -{discountPercentage}%
           </span>
         )}
-        {/* Hover Actions */}
+
         {/* Content */}
         <div className="py-6 px-2 flex-col flex justify-between min-h-[130px]">
           {/* Title */}
