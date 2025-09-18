@@ -4,6 +4,7 @@ import { useUser } from "../UserContext";
 export const Feild = ({ name, placeholder, value, onchange }) => {
   return (
     <input
+      required
       type="text"
       name={name}
       onChange={onchange}

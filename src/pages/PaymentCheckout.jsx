@@ -1,8 +1,15 @@
 import React from "react";
+import Swal from "sweetalert2";
 
 function PaymobCheckout({ cartItems, totalAmount, userId, address }) {
   const baseUrl = import.meta.env.VITE_BASE_URL;
   const handleCheckout = async () => {
+    console.log(address);
+
+    if (address) {
+      Swal.fire("please select an address");
+      return;
+    }
     const items = cartItems.map((item) => {
       return {
         name: item.title,
