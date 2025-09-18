@@ -42,7 +42,7 @@ function Products() {
       <section className="">
         <Filter products={products} setFilter={setFilter} />
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-3 md:p-6 md:gap-6 lg:p-12 xl:grid-cols-5">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 p-3 md:p-6 gap-y-8 gap-x-2 md:gap-6 lg:p-12 xl:grid-cols-5">
           {filter.length > 0 ? (
             filter.map((p, i) => (
               <Product

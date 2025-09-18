@@ -13,13 +13,13 @@ function Product({ id, title, name, img, price, oldPrice, count }) {
   const { state, dispatch } = useCart();
 
   const isAdded = state.cart.some((item) => item.id === id);
-  const discountPercentage =
+  const discount =
     oldPrice > 0 ? Math.round(((oldPrice - price) / oldPrice) * 100) : 0;
 
   const handleAddToCart = () => {
     dispatch({
       type: "ADD_TO_CART",
-      payload: { id, name, img, price, title, discountPercentage, count: 1 },
+      payload: { id, name, img, price, title, discount, count: 1 },
     });
   };
 
@@ -32,14 +32,14 @@ function Product({ id, title, name, img, price, oldPrice, count }) {
       {/* Image */}
       <div className="relative ">
         <img src={img} alt={title} className="w-full rounded-lg shadow-lg" />
-        {discountPercentage > 0 && (
+        {discount > 0 && (
           <span className="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded-lg text-xs font-semibold shadow">
-            -{discountPercentage}%
+            -{discount}%
           </span>
         )}
 
         {/* Content */}
-        <div className="py-6 px-2 flex-col flex justify-between min-h-[130px]">
+        <div className="py-4 px-2 flex-col flex justify-between h-[170px]">
           {/* Title */}
           <Link
             to={`/product_details/${id}`}

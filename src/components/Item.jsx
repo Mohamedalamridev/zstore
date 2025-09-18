@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { FiMinus } from "react-icons/fi";
-import { GoPlus } from "react-icons/go";
+
 import { MdDelete } from "react-icons/md";
 import { useCart } from "../CartContext";
 import Quantity from "./Quantity";

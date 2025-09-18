@@ -27,7 +27,7 @@ function Cart() {
       <Navbar />
       <section>
         {state.cart.length > 0 ? (
-          <div className="xl:px-24 lg:px-10 py-8 border-t border-gray-200">
+          <div className="xl:px-24 lg:px-10 p-4 border-t border-gray-200">
             <h1 className="uppercase text-3xl font-bold px-4">Your cart</h1>
             <span
               className="font-black text-4xl p-5 flex"
