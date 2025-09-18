@@ -60,7 +60,7 @@ function Cart() {
       <Navbar />
       <section>
         {state.cart.length > 0 ? (
-          <div className="xl:px-24 lg:px-10 p-4 border-t border-gray-200">
+          <div className="xl:px-24 lg:px-10 p-2 md:p-4 border-t border-gray-200">
             <h1 className="uppercase text-3xl font-bold px-4">Your cart</h1>
             <span
               className="font-black text-4xl p-5 flex"
@@ -85,7 +85,7 @@ function Cart() {
                 ))}
               </div>
 
-              <div className="check flex-1 border-2 border-gray-200 p-8 rounded-3xl h-fit">
+              <div className="check flex-1 border-2 border-gray-200 p-4 md:p-8 rounded-3xl h-fit">
                 {handleAddress()}
                 <h1 className="text-2xl font-bold mb-6">Order Summary</h1>
                 <div className="space-y-4">

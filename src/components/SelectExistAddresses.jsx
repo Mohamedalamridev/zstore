@@ -2,9 +2,9 @@ import React, { useState } from "react";
 
 function SelectExistAddresses({ addresses, setAddNewAddress }) {
   return (
-    <section className="border-2 p-6 rounded-2xl border-gray-200 shadow-md my-6 bg-white">
+    <section className="border-2 md:p-6 p-3 rounded-2xl border-gray-200 shadow-md my-6 bg-white">
       {/* Section Header */}
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">
+      <h1 className="md:text-2xl text-xl font-bold text-gray-900 mb-6">
         Choose Address
         <span className="block text-sm font-normal text-gray-500 mt-1">
           Select where you’d like your order delivered
