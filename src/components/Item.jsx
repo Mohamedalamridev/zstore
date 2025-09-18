@@ -6,7 +6,7 @@ import { useCart } from "../CartContext";
 import Quantity from "./Quantity";
 import { Link } from "react-router-dom";
 
-function Item({ id, img, title, info, price, count, discount }) {
+function Item({ id, img, title, price, count, discount }) {
   const { state, dispatch } = useCart();
 
   return (
@@ -18,21 +18,10 @@ function Item({ id, img, title, info, price, count, discount }) {
         <Link to={`/product_details/${id}`}>
           <h1>{title}</h1>
         </Link>
-        <p className="py-1 text-gray-500 font-normal text-xs">
-          {" "}
-          {info &&
-            info.length > 0 &&
-            info.map((item, i) => {
-              return (
-                <span className="" key={i}>
-                  {item}
-                </span>
-              );
-            })}
-        </p>
+
         <h2 className="font-bold text-lg">
           ${price * count}{" "}
-          <span className="font-normal text-md text-red-500">-${discount}</span>
+          <span className="font-normal text-md text-red-500">{discount}$</span>
         </h2>
       </div>
       <div className="flex ml-auto flex-col justify-between">
@@ -53,7 +42,6 @@ function Item({ id, img, title, info, price, count, discount }) {
           img={img}
           price={price}
           discount={discount}
-          info={info}
           title={title}
           count={count}
         />

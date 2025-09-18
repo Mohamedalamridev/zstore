@@ -1,17 +1,17 @@
 import React, { useEffect, useState } from "react";
 import Product from "./Product";
 import { BeatLoader } from "react-spinners";
-import Fillter from "./Fillter";
+import Filter from "./Filter";
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
-function TopSeller() {
+function Products() {
   const [products, setProducts] = useState([]);
   const [filter, setFilter] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await fetch(`${baseUrl}/api/product/top-seller`, {
+        const response = await fetch(`${baseUrl}/api/products`, {
           method: "GET",
           headers: {
             "Content-Type": "Application/json",
@@ -21,6 +21,7 @@ function TopSeller() {
         const data = await response.json();
         setProducts(data.products);
         setFilter(data.products);
+        console.log(data.products);
       } catch (error) {
         console.log(error.message);
       }
@@ -38,17 +39,17 @@ function TopSeller() {
 
   return (
     <>
-      <section className="xl:px-12 min-h-[80vh] lg:px-10 px-3 pb-10 lg:grid grid-cols-4 gap-6">
-        <Fillter products={products} setFilter={setFilter} />
+      <section className="">
+        <Filter products={products} setFilter={setFilter} />
 
-        <div className="grid grid-cols-12 col-span-3 gap-2 gap-y-8 flex-1">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 p-3 lg:p-12 xl:grid-cols-5">
           {filter.length > 0 ? (
             filter.map((p, i) => (
               <Product
                 id={p?._id}
                 key={i}
                 title={p?.title}
-                img={p?.img[0]}
+                img={p?.imgs[0]}
                 info={p?.moreInfo}
                 price={p?.price}
                 discount={p?.oldPrice - +p.price}
@@ -67,4 +68,4 @@ function TopSeller() {
   );
 }
 
-export default TopSeller;
+export default Products;

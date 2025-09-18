@@ -17,6 +17,10 @@ import { UserProvider, useUser } from "./UserContext.jsx";
 import Profile from "./pages/Profile.jsx";
 import PaymentSuccess from "./pages/PaymentSuccess.jsx";
 import Address from "./pages/Address.jsx";
+import Dashboard from "./pages/Dashboard.jsx";
+import ProductAdmin from "./pages/ProductAdmin.jsx";
+import AddProduct from "./components/AddProduct.jsx";
+import EditProduct from "./pages/EditProduct.jsx";
 
 export const ProtecedRoute = ({ children }) => {
   const { state } = useUser();
@@ -65,6 +69,26 @@ const router = createBrowserRouter([
   {
     path: "/success",
     element: <PaymentSuccess />,
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
+    children: [
+      {
+        path: "all_products",
+        index: true,
+        element: <ProductAdmin />,
+      },
+
+      {
+        path: "add_product",
+        element: <AddProduct />,
+      },
+      {
+        path: "edit_product/:id",
+        element: <EditProduct />,
+      },
+    ],
   },
 ]);
 

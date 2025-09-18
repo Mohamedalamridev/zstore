@@ -30,7 +30,7 @@ function Navbar() {
   ];
 
   return (
-    <nav className="bg-white flex items-center justify-between shadow-md top-0 z-50 px-4 py-4 lg:px-16 relative">
+    <nav className="bg-white flex items-center justify-between shadow-sm  top-0 z-50 px-4 py-6 lg:px-16 relative">
       <Link to={"/"}>
         <img src="/logo.png" alt="z-store logo" className="w-24 lg:w-26 " />
       </Link>
@@ -49,10 +49,10 @@ function Navbar() {
 
       {/* Menu for desktop */}
       <div>
-        <ul className="hidden gap-8 md:flex">
+        <ul className="hidden gap-10 md:flex">
           {navLinks.map((item, i) => {
             return (
-              <li key={i} className=" text-gray-600">
+              <li key={i} className=" text-gray-600 text-xl">
                 <Link to={item.path}>{item.label}</Link>
               </li>
             );
@@ -74,11 +74,28 @@ function Navbar() {
         </li>
         {navLinks.map((item, i) => {
           return (
-            <li key={i} className="not-last:border-b-2 py-4 text-gray-500">
+            <li
+              onClick={() => setToggle(true)}
+              key={i}
+              className="not-last:border-b-2 py-4 text-gray-600"
+            >
               <Link to={item.path}>{item.label}</Link>
             </li>
           );
         })}
+        <li>
+          {userState.isLogged && (
+            <button
+              className="cursor-pointer  text-md mt-4 text-black font-semibold"
+              onClick={() => {
+                setToggle(true);
+                dispatch({ type: "LOGOUT" });
+              }}
+            >
+              Logout
+            </button>
+          )}
+        </li>
       </ul>
       <div className="flex items-center gap-3">
         <Link className="relative" to={"/cart"}>

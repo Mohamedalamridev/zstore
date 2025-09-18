@@ -7,7 +7,7 @@ function PaymobCheckout({ cartItems, totalAmount, userId }) {
       return {
         name: item.title,
         amount_cents: String(item.price * 100),
-        description: item.info.join(", "),
+        description: item?.info,
         quantity: String(item.count),
       };
     });

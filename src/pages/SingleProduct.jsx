@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import Reviews from "../components/Reviews";
-import Newsletter from "../components/Newsletter";
 import Quantity from "../components/Quantity";
 import { useParams } from "react-router-dom";
 import { MdAddShoppingCart } from "react-icons/md";
@@ -18,15 +17,15 @@ function SingleProduct() {
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await fetch(`${baseUrl}/api/product/${id}`, {
+        const res = await fetch(`${baseUrl}/api/products/${id}`, {
           credentials: "include",
         });
         const data = await res.json();
         setProduct(data.product);
-        console.log(data.product.title);
+        console.log(data.product.imgs);
 
-        if (data.product?.img?.length > 0) {
-          setCurrentImg(data.product.img[0]);
+        if (data.product?.imgs?.length > 0) {
+          setCurrentImg(data.product.imgs[0]);
         }
       } catch (err) {
         console.error("Error fetching product:", err);
@@ -48,33 +47,33 @@ function SingleProduct() {
     <>
       <main className="w-full min-h-screen">
         <Navbar />
-        <section className="border-t-2 border-b-2 border-gray-200 product_details grid lg:grid-cols-2 gap-8 p-4 lg:p-24">
+        <section className="border-t-2 border-b-2 border-gray-200 product_details gap-12 flex p-4 lg:p-24">
           {/* Images */}
-          <div className="imgs flex gap-[10%]">
-            <div className="side_imgs basis-[25%] flex flex-col justify-between gap-4">
-              {product.img?.map((src, i) => (
+          <div className="imgs flex gap-6 flex-1">
+            <div className="side_imgs flex flex-col  gap-4">
+              {product.imgs?.map((src, i) => (
                 <img
                   key={i}
                   src={src}
                   alt={`preview-${i}`}
-                  className={`w-full h-[33%] rounded-2xl cursor-pointer ${
+                  className={`w-42 h-auto rounded-2xl cursor-pointer ${
                     currentImg === src ? "border-2 border-black" : ""
                   }`}
                   onClick={() => setCurrentImg(src)}
                 />
               ))}
             </div>
-            <div className="preview_img basis-[75%]">
+            <div className="preview_img ">
               <img
                 src={currentImg}
                 alt="main preview"
-                className="max-w-full h-full rounded-2xl"
+                className="  rounded-2xl h-[600px] w-[500px]"
               />
             </div>
           </div>
 
           {/* Product Content */}
-          <div className="content">
+          <div className="content flex-1">
             <h1 className="name lg:text-4xl text-2xl font-medium">
               {product.title}
             </h1>
@@ -100,7 +99,7 @@ function SingleProduct() {
                       payload: {
                         id: product._id,
                         title: product.title,
-                        img: product.img,
+                        img: product.imgs[0],
                         price: product.price,
                         discount: product.oldPrice - product.price,
                         count: product.count,
@@ -126,7 +125,6 @@ function SingleProduct() {
           </div>
         </section>
         <Reviews />
-        <Newsletter />
       </main>
       <Footer />
     </>
