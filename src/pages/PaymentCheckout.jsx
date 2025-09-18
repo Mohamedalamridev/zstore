@@ -1,6 +1,6 @@
 import React from "react";
 
-function PaymobCheckout({ cartItems, totalAmount, userId }) {
+function PaymobCheckout({ cartItems, totalAmount, userId, address }) {
   const baseUrl = import.meta.env.VITE_BASE_URL;
   const handleCheckout = async () => {
     const items = cartItems.map((item) => {
@@ -16,7 +16,7 @@ function PaymobCheckout({ cartItems, totalAmount, userId }) {
         method: "POST",
         headers: { "Content-Type": "Application/json" },
         credentials: "include",
-        body: JSON.stringify({ items: items, totalAmount, userId }),
+        body: JSON.stringify({ items: items, totalAmount, userId, address }),
       });
 
       const data = await res.json();

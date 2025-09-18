@@ -10,10 +10,11 @@ import SelectExistAddresses from "../components/SelectExistAddresses";
 
 function Cart() {
   const [showAddNewAddress, setAddNewAddress] = useState(true);
-
+  const [selectedAddress, setSelectedAddress] = useState({});
   const { state, dispatch } = useCart();
   const { state: userState } = useUser();
   const addresses = userState.profile?.user?.addresses ?? [];
+  console.log(selectedAddress);
 
   const { subTotal, discount, total } = useMemo(() => {
     const subTotal = state.cart.reduce(
@@ -36,6 +37,7 @@ function Cart() {
         <>
           <SelectExistAddresses
             addresses={addresses}
+            setSelectedAddress={setSelectedAddress}
             setAddNewAddress={setAddNewAddress}
           />
           <CreateAddressesFromCart setAddNewAddress={setAddNewAddress} />
@@ -43,12 +45,7 @@ function Cart() {
       );
     }
     if (userState.isLogged && !showAddNewAddress) {
-      return (
-        <SelectExistAddresses
-          addresses={addresses}
-          setAddNewAddress={setAddNewAddress}
-        />
-      );
+      return <SelectExistAddresses addresses={addresses} />;
     }
     return <span>Login to add delivary information</span>;
   };
@@ -85,10 +82,12 @@ function Cart() {
                 ))}
               </div>
 
-              <div className="check flex-1 border-2 border-gray-200 p-4 md:p-8 rounded-3xl h-fit">
+              <div className="check flex-1 h-fit">
                 {handleAddress()}
-                <h1 className="text-2xl font-bold mb-6">Order Summary</h1>
-                <div className="space-y-4">
+                <h1 className="text-2xl font-bold mb-6 text-center">
+                  Order Summary
+                </h1>
+                <div className="space-y-4 mx-6">
                   <div className="flex justify-between items-center">
                     <h2>Sub Total</h2>
                     <span className="font-medium">${subTotal}</span>
@@ -108,6 +107,7 @@ function Cart() {
 
                 {userState.isLogged ? (
                   <PaymobCheckout
+                    address={selectedAddress}
                     cartItems={state.cart}
                     totalAmount={total}
                     userId={userState.profile.user?._id}

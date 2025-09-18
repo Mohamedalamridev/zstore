@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useUser } from "../UserContext";
 
 export const Feild = ({ name, placeholder, value, onchange }) => {
   return (
@@ -13,7 +14,8 @@ export const Feild = ({ name, placeholder, value, onchange }) => {
   );
 };
 
-function CreateAddressesFromCart({ setAddNewAddress }) {
+function CreateAddressesFromCart({ setAddNewAddress, setAddresses }) {
+  const { setUserProfile } = useUser();
   const [address, setAddress] = useState({
     label: "",
     city: "",
@@ -39,7 +41,7 @@ function CreateAddressesFromCart({ setAddNewAddress }) {
       console.log(result);
 
       if (res.ok) {
-        alert("Address added successfully");
+        setUserProfile(result.user);
       } else {
         alert(result.message || "Failed to add address");
       }

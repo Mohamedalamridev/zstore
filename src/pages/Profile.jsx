@@ -59,6 +59,7 @@ function Profile() {
   const { state, userProfile, setUserProfile, orders, dispatch } = useUser();
 
   const addresses = userProfile?.addresses ?? [];
+  console.log(orders);
 
   const validate = (data) => {
     const isValid = Object.values(data).every(
@@ -130,7 +131,12 @@ function Profile() {
       phone: "",
     });
   };
-
+  const options = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  };
   if (state.isLoading) {
     return (
       <div className="min-h-screen flex justify-center items-center">
@@ -281,11 +287,18 @@ function Profile() {
                 className="bg-white shadow-md rounded-2xl p-6 mb-6 border border-gray-200"
               >
                 <div className="flex justify-between items-center mb-4">
-                  <h1 className="font-semibold text-lg text-gray-800">
-                    Order ID:{" "}
+                  <h1 className=" text-md text-gray-800 mb-2">
+                    <span className="font-semibold">Order ID:</span>{" "}
                     <span className="text-indigo-600 font-bold">
                       {item?.paymobOrderId ?? "N/A"}
                     </span>
+                    <p className="text-xs my-4 text-gray-600">
+                      Date:{"  "}
+                      {new Date(item.createdAt).toLocaleDateString(
+                        "en-US",
+                        options
+                      )}
+                    </p>
                   </h1>
                   <span
                     className={`px-3 py-1 rounded-full text-sm font-medium ${
@@ -303,6 +316,16 @@ function Profile() {
                     EGP {item?.totalAmount ?? 0}
                   </span>
                 </h3>
+                <div>
+                  <h1>Delivary To: </h1>
+                  <h1>{item?.address?.address?.name}</h1>
+                  <h2 className="my-[2px]">
+                    {item?.address?.country}, {item?.address?.city},{"  "}
+                    {item?.address?.state}
+                  </h2>
+
+                  <h3>{item?.address?.street}</h3>
+                </div>
                 <div className="border-t border-gray-200 pt-4">
                   <h4 className="font-semibold text-gray-800 mb-3">Items:</h4>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -311,9 +334,12 @@ function Profile() {
                         key={idx}
                         className="flex justify-between items-center bg-gray-50 rounded-lg p-3"
                       >
-                        <span className="font-medium text-gray-700">
+                        <Link
+                          to={`/product/product_details/${product._id}`}
+                          className="font-medium text-gray-700"
+                        >
                           {product?.name ?? "Unnamed Product"}
-                        </span>
+                        </Link>
                         <span className="text-sm text-gray-500">
                           x {product?.quantity ?? 0}
                         </span>

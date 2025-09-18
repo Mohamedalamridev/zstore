@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+import { useUser } from "../UserContext";
 
-function SelectExistAddresses({ addresses, setAddNewAddress }) {
+function SelectExistAddresses({ setSelectedAddress }) {
+  const { userProfile } = useUser();
+  const addresses = userProfile?.addresses ?? [];
+
   return (
     <section className="border-2 md:p-6 p-3 rounded-2xl border-gray-200 shadow-md my-6 bg-white">
       {/* Section Header */}
@@ -17,10 +21,11 @@ function SelectExistAddresses({ addresses, setAddNewAddress }) {
           addresses.map((item, index) => (
             <label
               key={index}
-              className="flex items-start border rounded-xl p-4 hover:shadow-md transition cursor-pointer"
+              className="flex items-start border rounded-xl p-2 hover:shadow-md transition cursor-pointer"
             >
               {/* Radio Input */}
               <input
+                onChange={() => setSelectedAddress(item)}
                 type="radio"
                 value={item.label}
                 name="selectedAddress"
@@ -28,7 +33,7 @@ function SelectExistAddresses({ addresses, setAddNewAddress }) {
               />
 
               {/* Address Content */}
-              <div className="ml-4 flex-1">
+              <div className=" ml-2 flex-1">
                 <h2 className="text-lg font-semibold text-gray-900">
                   {item.label}
                   <span className="ml-2 inline-block px-2 py-0.5 text-xs font-medium bg-indigo-100 text-indigo-700 rounded-full">
@@ -38,31 +43,25 @@ function SelectExistAddresses({ addresses, setAddNewAddress }) {
 
                 <ul className="mt-2 text-gray-700 space-y-1">
                   <li>
-                    <span className="font-medium">Country:</span> {item.country}
+                    <span className="font-medium text-xm">Country:</span>{" "}
+                    {item.country}
                   </li>
                   <li>
-                    <span className="font-medium">City:</span> {item.city}
+                    <span className="font-medium text-xm">City:</span>{" "}
+                    {item.city}
                   </li>
                   <li>
-                    <span className="font-medium">Postal Code:</span>{" "}
+                    <span className="font-medium text-xm">Postal Code:</span>{" "}
                     {item.postalCode}
                   </li>
                   <li>
-                    <span className="font-medium">Street:</span> {item.street}
+                    <span className="font-medium text-xm">Street:</span>{" "}
+                    {item.street}
                   </li>
                 </ul>
               </div>
             </label>
           ))}
-        <button
-          onClick={(e) => {
-            e.preventDefault();
-            setAddNewAddress(true);
-          }}
-          className="font-semibold cursor-pointer bg-indigo-50 px-3 py-1 text-sm rounded-2xl text-indigo-600 bg focus:ring-indigo-500"
-        >
-          Add new address
-        </button>
       </div>
     </section>
   );
