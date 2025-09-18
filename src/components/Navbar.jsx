@@ -62,7 +62,7 @@ function Navbar() {
 
       {/* Menu for Mobile */}
       <ul
-        style={{ transition: "0.5s" }}
+        style={{ transition: "0.3s" }}
         className={`absolute left-0 bg-white shadow-lg w-full p-8 flex-col gap-8 text-xl ${
           !toggle ? "top-4/4" : "-top-100"
         }`}
