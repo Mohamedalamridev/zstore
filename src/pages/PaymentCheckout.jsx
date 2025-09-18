@@ -4,9 +4,7 @@ import Swal from "sweetalert2";
 function PaymobCheckout({ cartItems, totalAmount, userId, address }) {
   const baseUrl = import.meta.env.VITE_BASE_URL;
   const handleCheckout = async () => {
-    console.log(address);
-
-    if (address) {
+    if (Object.keys(address).length === 0) {
       Swal.fire("please select an address");
       return;
     }
