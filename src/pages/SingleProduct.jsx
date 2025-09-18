@@ -6,7 +6,9 @@ import { useParams } from "react-router-dom";
 import { MdAddShoppingCart } from "react-icons/md";
 import { useCart } from "../CartContext";
 import Footer from "../components/Footer";
+
 const baseUrl = import.meta.env.VITE_BASE_URL;
+
 function SingleProduct() {
   const { state, dispatch } = useCart();
   const [currentImg, setCurrentImg] = useState(null);
@@ -22,7 +24,6 @@ function SingleProduct() {
         });
         const data = await res.json();
         setProduct(data.product);
-        console.log(data.product.imgs);
 
         if (data.product?.imgs?.length > 0) {
           setCurrentImg(data.product.imgs[0]);
@@ -45,55 +46,67 @@ function SingleProduct() {
 
   return (
     <>
-      <main className="w-full min-h-screen">
-        <Navbar />
-        <section className="border-t-2 border-b-2 border-gray-200 product_details gap-12 flex p-4 lg:p-24">
+      <Navbar />
+      <main className="w-full min-h-screen bg-gray-50">
+        <section className="max-w-7xl mx-auto py-12 px-4 lg:px-8 grid lg:grid-cols-2 gap-12">
           {/* Images */}
-          <div className="imgs flex gap-6 flex-1">
-            <div className="side_imgs flex flex-col  gap-4">
+          <div className="flex flex-col lg:flex-row gap-6">
+            {/* Side Thumbnails */}
+            <div className="flex lg:flex-col gap-4 lg:w-28">
               {product.imgs?.map((src, i) => (
                 <img
                   key={i}
                   src={src}
                   alt={`preview-${i}`}
-                  className={`w-42 h-auto rounded-2xl cursor-pointer ${
-                    currentImg === src ? "border-2 border-black" : ""
+                  className={`w-20 h-20 object-cover rounded-xl cursor-pointer transition border-2 ${
+                    currentImg === src
+                      ? "border-black"
+                      : "border-transparent hover:border-gray-400"
                   }`}
                   onClick={() => setCurrentImg(src)}
                 />
               ))}
             </div>
-            <div className="preview_img ">
+            {/* Main Image */}
+            <div className="flex-1">
               <img
                 src={currentImg}
                 alt="main preview"
-                className="  rounded-2xl h-[600px] w-[500px]"
+                className="w-full rounded-2xl h-[500px] shadow-md"
               />
             </div>
           </div>
 
           {/* Product Content */}
-          <div className="content flex-1">
-            <h1 className="name lg:text-4xl text-2xl font-medium">
-              {product.title}
-            </h1>
-            <span className="font-bold text-3xl my-3 block text-black">
-              ${product.price}
-              {product.oldPrice && (
-                <span className="line-through text-gray-400 text-lg ml-3">
-                  ${product.oldPrice}
-                </span>
-              )}
-            </span>
-            <p className="text-sm text-gray-500 my-4 border-b pb-4 border-gray-300">
-              {product.desc}
-            </p>
+          <div className="flex flex-col justify-between">
+            <div>
+              <h1 className="text-3xl lg:text-5xl font-semibold text-gray-900">
+                {product.title}
+              </h1>
 
-            {/* Add to Cart */}
-            <div className="add_to_cart flex-col flex my-8 gap-7">
+              {/* Price */}
+              <div className="mt-4">
+                <span className="text-3xl font-bold text-black">
+                  ${product.price}
+                </span>
+                {product.oldPrice && (
+                  <span className="line-through text-gray-400 text-lg ml-3">
+                    ${product.oldPrice}
+                  </span>
+                )}
+              </div>
+
+              {/* Description */}
+              <p className="text-gray-600 mt-6 border-b border-gray-200 pb-6 leading-relaxed">
+                {product.desc}
+              </p>
+            </div>
+
+            {/* Add to Cart Section */}
+            <div className="mt-8">
               {!isAdded ? (
                 <button
-                  onClick={() => {
+                  onClick={() =>
                     dispatch({
                       type: "ADD_TO_CART",
                       payload: {
@@ -105,17 +118,17 @@ function SingleProduct() {
                         count: product.count,
                         info: product.moreInfo,
                       },
-                    });
-                  }}
-                  className=" w-full justify-center mt-4 flex items-center gap-6 bg-black text-white px-4 py-2 rounded-xl shadow hover:bg-[#1b2433] transition"
+                    })
+                  }
+                  className="w-full flex items-center justify-center gap-3 bg-black text-white px-6 py-3 rounded-xl text-lg font-medium shadow-md hover:bg-gray-800 transition"
                 >
-                  <MdAddShoppingCart className="text-lg" />
+                  <MdAddShoppingCart className="text-xl" />
                   Add to Cart
                 </button>
               ) : (
                 <Quantity
                   id={product._id}
-                  img={product.img}
+                  img={product.imgs[0]}
                   title={product.title}
                   price={product.price}
                   discount={product.oldPrice - product.price}
@@ -124,7 +137,11 @@ function SingleProduct() {
             </div>
           </div>
         </section>
-        <Reviews />
+
+        {/* Reviews */}
+        <section className="max-w-7xl mx-auto px-4 lg:px-8 py-12 border-t border-gray-200">
+          <Reviews />
+        </section>
       </main>
       <Footer />
     </>
