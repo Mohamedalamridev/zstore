@@ -45,7 +45,7 @@ function Product({ id, title, name, img, rate, price, oldPrice, count }) {
 
   return (
     <div
-      className="group relative rounded-lg p-4 pb-0 shadow-lg "
+      className="group relative rounded-lg p-1 md:p-4 pb-0 shadow-lg "
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
@@ -59,11 +59,11 @@ function Product({ id, title, name, img, rate, price, oldPrice, count }) {
         )}
         {/* Hover Actions */}
         {/* Content */}
-        <div className="py-6 flex-col flex justify-between min-h-[130px]">
+        <div className="py-6 px-2 flex-col flex justify-between min-h-[130px]">
           {/* Title */}
           <Link
             to={`/product_details/${id}`}
-            className="block font-semibold text-gray-800 text-[0.88rem] hover:text-blue-600 transition"
+            className="block font-semibold text-gray-800 md:text-lg text-xs hover:text-blue-600 transition"
           >
             {title}
           </Link>
@@ -71,22 +71,24 @@ function Product({ id, title, name, img, rate, price, oldPrice, count }) {
           {/* Price */}
           <div className="flex items-center justify-between mt-3">
             <div className="flex items-baseline gap-2">
-              <span className="text-lg font-bold text-[#377071]">${price}</span>
+              <span className="text-md md:text-lg font-bold text-[#377071]">
+                ${price}
+              </span>
               {oldPrice > 0 && (
                 <span className="text-sm text-gray-400 line-through">
                   ${oldPrice}
                 </span>
               )}
             </div>
-            <span
-              onClick={handleAddToCart}
-              className={`${
-                isAdded && "bg-green-500"
-              } py-2 px-3 cursor-pointer rounded-2xl shadow-md bg-black text-white font-semibold text-xs `}
-            >
-              {isAdded ? "Added" : "Add to Cart"}
-            </span>
           </div>
+          <span
+            onClick={handleAddToCart}
+            className={`${
+              isAdded && "bg-green-500"
+            } py-2 mt-3 px-3 cursor-pointer text-center rounded-2xl shadow-md bg-black text-white font-semibold text-xs `}
+          >
+            {isAdded ? "Added" : "Add to Cart"}
+          </span>
         </div>
       </div>
     </div>
