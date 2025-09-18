@@ -30,16 +30,16 @@ function Product({ id, title, name, img, price, oldPrice, count }) {
       onMouseLeave={() => setIsHovered(false)}
     >
       {/* Image */}
-      <div className="relative ">
-        <img src={img} alt={title} className="w-full rounded-lg shadow-lg" />
+      <div className="relative overflow-hidden ">
+        <img src={img} alt={title} className=" w-full rounded-lg shadow-lg" />
         {discount > 0 && (
-          <span className="absolute top-3 left-3 bg-red-500 text-white px-2 py-1 rounded-lg text-xs font-semibold shadow">
+          <span className="absolute -rotate-45 top-4 -left-9 bg-red-500 text-white px-10 py-1 text-md font-semibold shadow">
             -{discount}%
           </span>
         )}
 
         {/* Content */}
-        <div className="py-4 px-2 flex-col flex justify-between h-[170px]">
+        <div className="py-5 px-2 flex-col flex justify-between h-[170px]">
           {/* Title */}
           <Link
             to={`/product_details/${id}`}
