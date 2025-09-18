@@ -1,15 +1,19 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import Navbar from "../components/Navbar";
 import Item from "../components/Item";
 import { useCart } from "../CartContext";
 import { MdCleaningServices } from "react-icons/md";
 import { useUser } from "../UserContext";
 import PaymobCheckout from "./PaymentCheckout";
-import SelectAddress from "../components/SelectAddress";
+import CreateAddressesFromCart from "../components/CreateAddressesFromCart";
+import SelectExistAddresses from "../components/SelectExistAddresses";
 
 function Cart() {
+  const [showAddNewAddress, setAddNewAddress] = useState(true);
+
   const { state, dispatch } = useCart();
   const { state: userState } = useUser();
+  const addresses = userState.profile?.user?.addresses ?? [];
 
   const { subTotal, discount, total } = useMemo(() => {
     const subTotal = state.cart.reduce(
@@ -22,6 +26,34 @@ function Cart() {
     );
     return { subTotal, discount, total: subTotal - discount };
   }, [state.cart]);
+
+  const handleAddress = () => {
+    if (userState.isLogged && addresses.length <= 0) {
+      return <CreateAddressesFromCart setAddNewAddress={setAddNewAddress} />;
+    }
+    if (userState.isLogged && showAddNewAddress) {
+      return (
+        <>
+          <SelectExistAddresses
+            addresses={addresses}
+            setAddNewAddress={setAddNewAddress}
+          />
+          <CreateAddressesFromCart setAddNewAddress={setAddNewAddress} />
+        </>
+      );
+    }
+    if (userState.isLogged && !showAddNewAddress) {
+      return (
+        <SelectExistAddresses
+          addresses={addresses}
+          setAddNewAddress={setAddNewAddress}
+        />
+      );
+    }
+    return <span>Login to add delivary information</span>;
+  };
+
+  const baseUrl = import.meta.env.VITE_BASE_URL;
 
   return (
     <>
@@ -54,7 +86,7 @@ function Cart() {
               </div>
 
               <div className="check flex-1 border-2 border-gray-200 p-8 rounded-3xl h-fit">
-                <SelectAddress />
+                {handleAddress()}
                 <h1 className="text-2xl font-bold mb-6">Order Summary</h1>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">

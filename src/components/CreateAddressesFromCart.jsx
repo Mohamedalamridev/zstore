@@ -13,7 +13,7 @@ export const Feild = ({ name, placeholder, value, onchange }) => {
   );
 };
 
-function SelectAddress() {
+function CreateAddressesFromCart({ setAddNewAddress }) {
   const [address, setAddress] = useState({
     label: "",
     city: "",
@@ -116,9 +116,19 @@ function SelectAddress() {
         >
           Save Address
         </button>
+        <button
+          onClick={(e) => {
+            e.preventDefault();
+
+            setAddNewAddress(false);
+          }}
+          className="text-white font-bold py-2 px-4 ml-4 rounded-2xl bg-red-700"
+        >
+          Cancel
+        </button>
       </form>
     </div>
   );
 }
 
-export default SelectAddress;
+export default CreateAddressesFromCart;
