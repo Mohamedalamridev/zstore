@@ -5,6 +5,7 @@ import { useCart } from "../CartContext";
 import { MdCleaningServices } from "react-icons/md";
 import { useUser } from "../UserContext";
 import PaymobCheckout from "./PaymentCheckout";
+import SelectAddress from "../components/SelectAddress";
 
 function Cart() {
   const { state, dispatch } = useCart();
@@ -37,7 +38,7 @@ function Cart() {
             </span>
 
             <div className="container gap-8 flex flex-col lg:flex-row">
-              <div className="items border-2 border-gray-200 rounded-3xl lg:p-5 p-3 flex-2 gap-4 flex flex-col">
+              <div className="items border-2 max-h-fit border-gray-200 rounded-3xl lg:p-5 p-3 flex-2 gap-4 flex flex-col">
                 {state.cart.map((item) => (
                   <Item
                     key={item.id}
@@ -53,6 +54,7 @@ function Cart() {
               </div>
 
               <div className="check flex-1 border-2 border-gray-200 p-8 rounded-3xl h-fit">
+                <SelectAddress />
                 <h1 className="text-2xl font-bold mb-6">Order Summary</h1>
                 <div className="space-y-4">
                   <div className="flex justify-between items-center">

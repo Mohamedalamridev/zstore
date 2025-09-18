@@ -33,7 +33,7 @@ function PaymobCheckout({ cartItems, totalAmount, userId }) {
       onClick={handleCheckout}
       className="w-full mt-6 py-3 rounded-xl bg-black text-white font-semibold hover:bg-blue-700 transition"
     >
-      Checkout with Paymob
+      Checkout
     </button>
   );
 }
