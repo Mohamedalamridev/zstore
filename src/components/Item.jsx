@@ -5,7 +5,7 @@ import { useCart } from "../CartContext";
 import Quantity from "./Quantity";
 import { Link } from "react-router-dom";
 
-function Item({ id, img, title, price, count, discount }) {
+function Item({ id, img, title, price, count, discount, size, color }) {
   const { state, dispatch } = useCart();
 
   return (
@@ -17,7 +17,14 @@ function Item({ id, img, title, price, count, discount }) {
         <Link to={`/product_details/${id}`}>
           <h1>{title}</h1>
         </Link>
-
+        <h2 className="my-1">
+          <span className="font-semibold">color:</span> {"  "}
+          {color}
+        </h2>
+        <h2 className="my-1">
+          <span className="font-bold">Size:</span> {"  "}
+          {size}
+        </h2>
         <h2 className="font-bold text-lg">
           ${price * count}{" "}
           {discount > 0 && (
@@ -42,6 +49,8 @@ function Item({ id, img, title, price, count, discount }) {
 
         <Quantity
           id={id}
+          color={color}
+          size={size}
           img={img}
           price={price}
           discount={discount}

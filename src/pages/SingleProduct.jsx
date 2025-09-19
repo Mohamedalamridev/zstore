@@ -10,10 +10,16 @@ import Footer from "../components/Footer";
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
 function SingleProduct() {
+  const SIZES = ["XS", "S", "M", "XL", "2X"];
+  const [selectedSize, setSelectedSize] = useState("");
+  const [selectedColor, setSelectedColor] = useState("");
   const { state, dispatch } = useCart();
+
   const [currentImg, setCurrentImg] = useState(null);
-  const { id } = useParams();
+
   const [product, setProduct] = useState(null);
+
+  const { id } = useParams();
   const isAdded = state.cart.some((item) => item.id === id);
 
   useEffect(() => {
@@ -24,6 +30,7 @@ function SingleProduct() {
         });
         const data = await res.json();
         setProduct(data.product);
+        console.log(data.product);
 
         if (data.product?.imgs?.length > 0) {
           setCurrentImg(data.product.imgs[0]);
@@ -86,7 +93,7 @@ function SingleProduct() {
 
               {/* Price */}
               <div className="mt-4">
-                <span className="text-3xl font-bold text-black">
+                <span className="text-3xl font-bold text-blue-900">
                   ${product.price}
                 </span>
                 {product.oldPrice && (
@@ -96,6 +103,33 @@ function SingleProduct() {
                 )}
               </div>
 
+              {/* Colors */}
+              <div className="my-6">
+                <span className="font-bold text-lg">Colors:</span>{" "}
+                <span className="font-semibold text-md text-gray-600">
+                  {product.color}
+                </span>
+              </div>
+
+              {/* Avilabel sizes */}
+              <div className="flex gap-2 my-6">
+                <span className="font-bold text-lg"> Sizes:</span>
+                {SIZES.map((item, i) => {
+                  return (
+                    <span
+                      onClick={() => setSelectedSize(item)}
+                      key={i}
+                      className={`${
+                        selectedSize === item
+                          ? "bg-black text-white"
+                          : "bg-gray-200 text-black"
+                      } font-semibold py-1 px-3 rounded-lg`}
+                    >
+                      {item}
+                    </span>
+                  );
+                })}
+              </div>
               {/* Description */}
               <p className="text-gray-600 mt-6 border-b border-gray-200 pb-6 leading-relaxed">
                 {product.desc}
@@ -116,6 +150,8 @@ function SingleProduct() {
                         price: product.price,
                         discount: product.oldPrice - product.price,
                         count: product.count,
+                        color: selectedColor || product.color,
+                        size: selectedSize,
                         info: product.moreInfo,
                       },
                     })

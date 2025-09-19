@@ -94,6 +94,8 @@ function Cart() {
                 {state.cart.map((item) => (
                   <Item
                     key={item.id}
+                    color={item.color}
+                    size={item.size}
                     id={item.id}
                     img={item.img}
                     title={item.title}

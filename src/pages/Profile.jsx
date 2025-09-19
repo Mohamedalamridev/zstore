@@ -83,7 +83,7 @@ function Profile() {
         if (result.isConfirmed) {
           Swal.fire({
             title: "Deleted!",
-            text: "Your file has been deleted.",
+            text: "Your address has been deleted.",
             icon: "success",
           });
           const res = await fetch(`${baseUrl}/api/user/profile/address/${id}`, {
