@@ -9,7 +9,6 @@ import {
 export const initialCart = {
   cart: JSON.parse(localStorage.getItem("cart")) || [],
 };
-
 // Cart Reducer
 
 const CartReducer = (state, action) => {

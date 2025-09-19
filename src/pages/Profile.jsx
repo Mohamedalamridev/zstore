@@ -59,7 +59,6 @@ function Profile() {
   const { state, userProfile, setUserProfile, orders, dispatch } = useUser();
 
   const addresses = userProfile?.addresses ?? [];
-  console.log(orders);
 
   const validate = (data) => {
     const isValid = Object.values(data).every(
@@ -335,7 +334,7 @@ function Profile() {
                         className="flex justify-between items-center bg-gray-50 rounded-lg p-3"
                       >
                         <Link
-                          to={`/product/product_details/${product._id}`}
+                          to={`/product_details/${product._id}`}
                           className="font-medium text-gray-700"
                         >
                           {product?.name ?? "Unnamed Product"}

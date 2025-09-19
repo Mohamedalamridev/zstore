@@ -6,8 +6,10 @@ import { useCart } from "../CartContext";
 const baseUrl = import.meta.env.VITE_BASE_URL;
 function Login() {
   const [email, setEmail] = useState("");
+  const [message, setMessage] = useState("");
   const [password, setPassword] = useState("");
-  const { state, dispatch } = useUser();
+
+  const { state, dispatch, loading } = useUser();
   const { state: cartState } = useCart();
 
   const navigate = useNavigate();
@@ -17,22 +19,31 @@ function Login() {
       const response = await fetch(`${baseUrl}/api/user/login`, {
         method: "POST",
         headers: {
-          "Content-Type": "Application/json",
+          "Content-Type": "application/json",
         },
         credentials: "include",
         body: JSON.stringify({ email, password }),
       });
+
       const userData = await response.json();
-      if (response.ok) {
-        dispatch({ type: "LOGIN", payload: { userData } });
-        if (cartState.cart.length > 0) {
-          navigate("/cart");
-        } else {
-          navigate("/");
-        }
+
+      if (!response.ok) {
+        setMessage("Invalid Credential");
+        return;
+      }
+
+      // dispatch login
+      dispatch({ type: "LOGIN", payload: { userData } });
+
+      // redirect logic
+      if (cartState.cart.length > 0) {
+        navigate("/cart");
+      } else {
+        navigate("/");
+        setMessage("Login successful");
       }
     } catch (error) {
-      console.log(error.message);
+      setMessage(error.message);
     }
   };
   return (
@@ -43,7 +54,11 @@ function Login() {
           <h2 className="text-2xl font-bold text-gray-800 text-center mb-6">
             Welcome Back
           </h2>
-
+          {message !== "" && (
+            <p className="p-3 mb-3 rounded-md text-red-600 bg-red-100 ">
+              {message}
+            </p>
+          )}
           <form
             className="space-y-4"
             onSubmit={(e) => {
@@ -58,7 +73,9 @@ function Login() {
               </label>
               <input
                 value={email}
-                onChange={(e) => setEmail(e.target.value)}
+                onChange={(e) => {
+                  setEmail(e.target.value);
+                }}
                 type="email"
                 placeholder="Enter your email"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:outline-none"
@@ -72,7 +89,9 @@ function Login() {
               </label>
               <input
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={(e) => {
+                  setPassword(e.target.value);
+                }}
                 type="password"
                 placeholder="Enter your password"
                 className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-black focus:outline-none"
@@ -84,7 +103,7 @@ function Login() {
               type="submit"
               className="w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition"
             >
-              Login
+              {loading ? "Loading..." : "Login"}
             </button>
           </form>
 

@@ -5,7 +5,9 @@ const initialUser = {
   isLogged: false,
   profile: null,
   isLoading: true,
+  isAdmin: false,
 };
+console.log(initialUser);
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
 const userReducer = (state, action) => {
@@ -17,18 +19,21 @@ const userReducer = (state, action) => {
         isLogged: true,
         profile: action.payload,
       };
-
-    case "UPDATE_PROFILE":
+    case "ADMIN":
       return {
         ...state,
-        profile: {
-          ...state.profile,
-          addresses: action.payload,
-        },
+        isLoading: false,
+        isLogged: true,
+        isAdmin: true,
+        profile: action.payload,
       };
-
     case "LOGOUT":
-      return { ...state.profile, isLogged: false, profile: null };
+      return {
+        ...state.profile,
+        isLogged: false,
+        profile: null,
+        isLoading: false,
+      };
     default:
       return state;
   }
@@ -40,6 +45,9 @@ export const UserProvider = ({ children }) => {
   const [userProfile, setUserProfile] = useState(null);
   const [orders, setOrders] = useState(null);
   const [state, dispatch] = useReducer(userReducer, initialUser);
+  const updateProfile = (data) => {
+    setUserProfile(data);
+  };
 
   useEffect(() => {
     const fetchProfile = async () => {
@@ -77,11 +85,11 @@ export const UserProvider = ({ children }) => {
   const logout = async () => {
     try {
       await fetch(`${baseUrl}/api/user/logout`, {
-        method: "POST",
+        method: "DELETE",
         credentials: "include",
       });
     } catch (err) {
-      console.log(err);
+      console.log(err.message);
     }
 
     dispatch({ type: "LOGOUT" });
@@ -89,7 +97,15 @@ export const UserProvider = ({ children }) => {
 
   return (
     <UserContext.Provider
-      value={{ state, dispatch, logout, userProfile, orders, setUserProfile }}
+      value={{
+        state,
+        dispatch,
+        updateProfile,
+        logout,
+        userProfile,
+        orders,
+        setUserProfile,
+      }}
     >
       {children}
     </UserContext.Provider>

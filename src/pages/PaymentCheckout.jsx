@@ -1,7 +1,10 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
+import { useUser } from "../UserContext";
 
 function PaymobCheckout({ cartItems, totalAmount, userId, address }) {
+  const { state } = useUser();
   const baseUrl = import.meta.env.VITE_BASE_URL;
   const handleCheckout = async () => {
     if (Object.keys(address).length === 0) {
@@ -34,12 +37,18 @@ function PaymobCheckout({ cartItems, totalAmount, userId, address }) {
   };
 
   return (
-    <button
-      onClick={handleCheckout}
-      className="w-full mt-6 py-3 rounded-xl bg-black text-white font-semibold hover:bg-blue-700 transition"
-    >
-      Checkout
-    </button>
+    <>
+      {state.isLogged ? (
+        <button
+          onClick={handleCheckout}
+          className="w-full mt-6 py-3 rounded-xl bg-black text-white font-semibold hover:bg-blue-700 transition"
+        >
+          Check Out
+        </button>
+      ) : (
+        <Link to="/login"></Link>
+      )}
+    </>
   );
 }
 

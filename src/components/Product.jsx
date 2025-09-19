@@ -1,11 +1,4 @@
 import React, { useState } from "react";
-import { IoStarSharp, IoStarHalfSharp, IoStarOutline } from "react-icons/io5";
-import {
-  MdAddShoppingCart,
-  MdFavorite,
-  MdFavoriteBorder,
-} from "react-icons/md";
-import { FaCheckCircle, FaEye } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useCart } from "../CartContext";
 
@@ -24,16 +17,12 @@ function Product({ id, title, name, img, price, oldPrice, count }) {
   };
 
   return (
-    <div
-      className="group relative rounded-lg p-1 md:p-4 pb-0 shadow-lg "
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
+    <div className="group relative rounded-lg p-1 md:p-4 pb-0 shadow-lg ">
       {/* Image */}
       <div className="relative overflow-hidden ">
         <img src={img} alt={title} className=" w-full rounded-lg shadow-lg" />
         {discount > 0 && (
-          <span className="absolute -rotate-45 top-4 -left-9 bg-red-500 text-white px-10 py-1 text-md font-semibold shadow">
+          <span className="absolute -rotate-45 top-4 -left-9 bg-red-500 text-white px-10 text-md font-semibold shadow">
             -{discount}%
           </span>
         )}
@@ -65,7 +54,7 @@ function Product({ id, title, name, img, price, oldPrice, count }) {
             onClick={handleAddToCart}
             className={`${
               isAdded && "bg-green-500"
-            } py-2 mt-3 px-3 cursor-pointer text-center rounded-2xl shadow-md bg-black text-white font-semibold text-xs `}
+            } py-2 mt-3 px-3 cursor-pointer text-center rounded-2xl shadow-md bg-black text-white font-semibold text-sm md:text-md `}
           >
             {isAdded ? "Added" : "Add to Cart"}
           </span>

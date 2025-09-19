@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { useUser } from "../UserContext";
 
-function SelectExistAddresses({ setSelectedAddress }) {
+function SelectExistAddresses() {
   const { userProfile } = useUser();
-  const addresses = userProfile?.addresses ?? [];
 
   return (
     <section className="border-2 md:p-6 p-3 rounded-2xl border-gray-200 shadow-md my-6 bg-white">
@@ -17,8 +16,8 @@ function SelectExistAddresses({ setSelectedAddress }) {
 
       {/* Address List */}
       <div className="space-y-4">
-        {addresses.length > 0 &&
-          addresses.map((item, index) => (
+        {userProfile.addresses.length > 0 &&
+          userProfile.addresses.map((item, index) => (
             <label
               key={index}
               className="flex items-start border rounded-xl p-2 hover:shadow-md transition cursor-pointer"

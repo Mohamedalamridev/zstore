@@ -68,8 +68,14 @@ function Navbar() {
         }`}
       >
         <li className="">
-          <Link to={userState.isLogged ? "/profile" : "/login"}>
+          <Link
+            className="flex items-center gap-2"
+            to={userState.isLogged ? "/profile" : "/login"}
+          >
             <RiAccountCircle2Fill className="text-5xl" />
+            <span className="font-semibold text-gray-500">
+              {userState.isLogged ? "profile" : "login"}
+            </span>
           </Link>
         </li>
         {navLinks.map((item, i) => {
@@ -89,7 +95,7 @@ function Navbar() {
               className="cursor-pointer  text-md mt-4 text-black font-semibold"
               onClick={() => {
                 setToggle(true);
-                dispatch({ type: "LOGOUT" });
+                handleLogout();
               }}
             >
               Logout
@@ -106,17 +112,23 @@ function Navbar() {
             </span>
           )}
         </Link>
-        <Link
-          className="hidden md:inline"
-          to={userState.isLogged ? "/profile" : "/login"}
-        >
-          <RiAccountCircle2Fill className="text-4xl" />
-        </Link>
-        {statusbar.isLogged && (
+        {userState.isLogged ? (
+          <Link
+            className="hidden md:inline"
+            to={userState.isLogged ? "/profile" : "/login"}
+          >
+            <RiAccountCircle2Fill className="text-4xl" />
+          </Link>
+        ) : (
+          <Link to="/login" className="font-bold text-lg md:inline hidden">
+            Login
+          </Link>
+        )}
+        {userState.isLogged && (
           <button
             className="hidden md:inline cursor-pointer text-black font-semibold"
             onClick={() => {
-              dispatch({ type: "LOGOUT" });
+              handleLogout();
             }}
           >
             Logout

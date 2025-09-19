@@ -7,14 +7,13 @@ import { useUser } from "../UserContext";
 import PaymobCheckout from "./PaymentCheckout";
 import CreateAddressesFromCart from "../components/CreateAddressesFromCart";
 import SelectExistAddresses from "../components/SelectExistAddresses";
+import { Link } from "react-router-dom";
 
 function Cart() {
   const [showAddNewAddress, setAddNewAddress] = useState(true);
   const [selectedAddress, setSelectedAddress] = useState({});
   const { state, dispatch } = useCart();
-  const { state: userState } = useUser();
-  const addresses = userState.profile?.user?.addresses ?? [];
-  console.log(selectedAddress);
+  const { state: userState, userProfile } = useUser();
 
   const { subTotal, discount, total } = useMemo(() => {
     const subTotal = state.cart.reduce(
@@ -29,25 +28,32 @@ function Cart() {
   }, [state.cart]);
 
   const handleAddress = () => {
-    if (userState.isLogged && addresses.length <= 0) {
-      return <CreateAddressesFromCart setAddNewAddress={setAddNewAddress} />;
+    if (!userState.isLogged) {
+      return <span>Login to add delivery information</span>;
     }
-    if (userState.isLogged && showAddNewAddress) {
+
+    if (userProfile.addresses.length === 0) {
+      return <CreateAddressesFromCart />;
+    }
+
+    if (showAddNewAddress) {
       return (
         <>
           <SelectExistAddresses
-            addresses={addresses}
             setSelectedAddress={setSelectedAddress}
             setAddNewAddress={setAddNewAddress}
           />
-          <CreateAddressesFromCart setAddNewAddress={setAddNewAddress} />
+          <CreateAddressesFromCart />
         </>
       );
     }
-    if (userState.isLogged && !showAddNewAddress) {
-      return <SelectExistAddresses addresses={addresses} />;
-    }
-    return <span>Login to add delivary information</span>;
+
+    return (
+      <SelectExistAddresses
+        setSelectedAddress={setSelectedAddress}
+        setAddNewAddress={setAddNewAddress}
+      />
+    );
   };
 
   const baseUrl = import.meta.env.VITE_BASE_URL;
@@ -60,10 +66,11 @@ function Cart() {
           <div className="xl:px-24 lg:px-10 p-2 md:p-4 border-t border-gray-200">
             <h1 className="uppercase text-3xl font-bold px-4">Your cart</h1>
             <span
-              className="font-black text-4xl p-5 flex"
+              className="p-5 flex items-center gap-2 text-red-500 cursor-pointer"
               onClick={() => dispatch({ type: "CLEAR_CART" })}
             >
-              <MdCleaningServices className="ml-auto" />
+              <MdCleaningServices className="ml-auto font-black text-2xl " />
+              <span className="font-semibold text-lg">Clear</span>
             </span>
 
             <div className="container gap-8 flex flex-col lg:flex-row">
@@ -112,10 +119,18 @@ function Cart() {
                     totalAmount={total}
                     userId={userState.profile.user?._id}
                   />
-                ) : (
-                  <button className="w-full mt-6 py-3 rounded-xl bg-gray-600 text-white font-semibold cursor-not-allowed">
-                    Login to Checkout
+                ) : userState.isLogged ? (
+                  <button className="w-full mt-6 py-3 rounded-x text-white font-semibold cursor-not-allowed">
+                    Checkout
                   </button>
+                ) : (
+                  <Link
+                    className="flex py-3 rounded-x  m-6 font-semibold rounded-2xl justify-center cursor-pointer bg-black text-white"
+                    to={"/login"}
+                  >
+                    {" "}
+                    Login to Checkout
+                  </Link>
                 )}
               </div>
             </div>

@@ -15,8 +15,8 @@ export const Feild = ({ name, placeholder, value, onchange }) => {
   );
 };
 
-function CreateAddressesFromCart({ setAddNewAddress, setAddresses }) {
-  const { setUserProfile } = useUser();
+function CreateAddressesFromCart() {
+  const { userProfile } = useUser();
   const [address, setAddress] = useState({
     label: "",
     city: "",
@@ -36,13 +36,13 @@ function CreateAddressesFromCart({ setAddNewAddress, setAddresses }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(address),
+
         credentials: "include",
       });
       const result = await res.json();
-      console.log(result);
+      userProfile(result.user);
 
       if (res.ok) {
-        setUserProfile(result.user);
       } else {
         alert(result.message || "Failed to add address");
       }

@@ -1,4 +1,4 @@
-import { StrictMode } from "react";
+import { StrictMode, useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import {
   createBrowserRouter,
@@ -22,72 +22,47 @@ import ProductAdmin from "./pages/ProductAdmin.jsx";
 import AddProduct from "./components/AddProduct.jsx";
 import EditProduct from "./pages/EditProduct.jsx";
 
-export const ProtecedRoute = ({ children }) => {
-  const { state } = useUser();
-  if (state.isLoading) {
-    return (
-      <div className="min-h-screen flex justify-center items-center">
-        Loading...
-      </div>
-    );
+export const ProtecedRoute = ({ children, role }) => {
+  const { state, userProfile } = useUser();
+
+  if (!state.isLogged) {
+    return <Navigate to="/login" replace />;
   }
-  return state.isLogged ? children : <Navigate to="/login" replace />;
+
+  if (role && userProfile.role !== role) {
+    return <Navigate to="/" replace />;
+  }
+
+  return children;
 };
+
 const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <Home />,
-  },
-  {
-    path: "/cart",
-    element: <Cart />,
-  },
-  {
-    path: "/product_details/:id",
-    element: <SingleProduct />,
-  },
-  {
-    path: "/signup",
-    element: <Signup />,
-  },
-  {
-    path: "/login",
-    element: <Login />,
-  },
-  {
-    path: "/address",
-    element: <Address />,
-  },
+  { path: "/", element: <Home /> },
+  { path: "/cart", element: <Cart /> },
+  { path: "/product_details/:id", element: <SingleProduct /> },
+  { path: "/signup", element: <Signup /> },
+  { path: "/login", element: <Login /> },
+  { path: "/address", element: <Address /> },
   {
     path: "/profile",
     element: (
       <ProtecedRoute>
-        <Profile />,
+        <Profile />
       </ProtecedRoute>
     ),
   },
-  {
-    path: "/success",
-    element: <PaymentSuccess />,
-  },
+  { path: "/success", element: <PaymentSuccess /> },
   {
     path: "/dashboard",
-    element: <Dashboard />,
+    element: (
+      <ProtecedRoute role="Admin">
+        <Dashboard />
+      </ProtecedRoute>
+    ),
     children: [
-      {
-        path: "all_products",
-        index: true,
-        element: <ProductAdmin />,
-      },
-
-      {
-        path: "add_product",
-        element: <AddProduct />,
-      },
-      {
-        path: "edit_product/:id",
-        element: <EditProduct />,
-      },
+      { path: "all_products", index: true, element: <ProductAdmin /> },
+      { path: "add_product", element: <AddProduct /> },
+      { path: "edit_product/:id", element: <EditProduct /> },
     ],
   },
 ]);
@@ -95,9 +70,7 @@ const router = createBrowserRouter([
 createRoot(document.getElementById("root")).render(
   <UserProvider>
     <CartProvider>
-      <RouterProvider router={router}>
-        <App />
-      </RouterProvider>
+      <RouterProvider router={router} />
     </CartProvider>
   </UserProvider>
 );
