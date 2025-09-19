@@ -10,11 +10,11 @@ import SelectExistAddresses from "../components/SelectExistAddresses";
 import { Link } from "react-router-dom";
 
 function Cart() {
-  const [showAddNewAddress, setAddNewAddress] = useState(true);
+  const [addNewAddress, setAddNewAddress] = useState(false);
   const [selectedAddress, setSelectedAddress] = useState({});
   const { state, dispatch } = useCart();
   const { state: userState, userProfile } = useUser();
-
+  const addresses = userProfile?.addresses ?? [];
   const { subTotal, discount, total } = useMemo(() => {
     const subTotal = state.cart.reduce(
       (sum, item) => sum + +item.price * item.count,
@@ -32,19 +32,35 @@ function Cart() {
       return <span>Login to add delivery information</span>;
     }
 
-    if (userProfile.addresses.length === 0) {
-      return <CreateAddressesFromCart />;
+    if (addresses.length === 0) {
+      return (
+        <CreateAddressesFromCart
+          addNewAddress={addNewAddress}
+          setAddNewAddress={setAddNewAddress}
+        />
+      );
     }
 
-    if (showAddNewAddress) {
+    if (addNewAddress) {
       return (
         <>
           <SelectExistAddresses
             setSelectedAddress={setSelectedAddress}
             setAddNewAddress={setAddNewAddress}
           />
-          <CreateAddressesFromCart />
+          <CreateAddressesFromCart
+            addNewAddress={addNewAddress}
+            setAddNewAddress={setAddNewAddress}
+          />
         </>
+      );
+    }
+    if (!addNewAddress && addresses.length !== 0) {
+      return (
+        <SelectExistAddresses
+          setSelectedAddress={setSelectedAddress}
+          setAddNewAddress={setAddNewAddress}
+        />
       );
     }
 
