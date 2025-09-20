@@ -37,11 +37,7 @@ function Product({ id, title, name, img, price, oldPrice, sizes = ["other"] }) {
     <div className="group transition-all relative rounded-lg p-2 md:p-4 shadow-lg">
       {/* Image */}
       <div className="relative overflow-hidden">
-        <img
-          src={img}
-          alt={title}
-          className="w-full md:min-h-[430px] rounded-lg shadow-md"
-        />
+        <img src={img} alt={title} className="w-full rounded-lg shadow-md" />
         {discount > 0 && (
           <span className="absolute -rotate-45 top-4 -left-9 bg-red-500 text-white px-10 text-sm font-semibold shadow">
             -{discount}%
