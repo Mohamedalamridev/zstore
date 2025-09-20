@@ -50,6 +50,7 @@ function ProductAdmin() {
         <table className="min-w-full bg-white border border-gray-200">
           <thead>
             <tr>
+              <th className="py-2 px-4 border-b border-gray-200">Img</th>
               <th className="py-2 px-4 border-b border-gray-200">ID</th>
               <th className="py-2 px-4 border-b border-gray-200">Title</th>
               <th className="py-2 px-4 border-b border-gray-200">Price</th>
@@ -63,6 +64,9 @@ function ProductAdmin() {
               products.length > 0 &&
               products?.map((product) => (
                 <tr key={product._id}>
+                  <td className="py-2 px-4 border-b border-gray-200">
+                    <img src={product?.imgs[0]} className="w-24 h-28" alt="" />
+                  </td>
                   <td className="py-2 px-4 border-b border-gray-200">
                     {product?._id}
                   </td>
@@ -79,7 +83,10 @@ function ProductAdmin() {
                     {product.soldCount}
                   </td>
                   <td className="py-2 px-4 border-b border-gray-200">
-                    <Link to={`/dashboard/edit_product/${product._id}`}>
+                    <Link
+                      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mr-4"
+                      to={`/dashboard-98568348/edit_product/${product._id}`}
+                    >
                       Edit
                     </Link>
 

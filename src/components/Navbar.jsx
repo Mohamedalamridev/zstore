@@ -25,7 +25,7 @@ function Navbar() {
   ];
 
   return (
-    <nav className="bg-white flex items-center justify-between shadow-sm  top-0 z-50 px-4 py-6 lg:px-16 relative">
+    <nav className="bg-white flex items-center justify-between shadow-sm  top-0 z-50  py-6 lg:px-24 relative">
       <Link to={"/"}>
         <img src="/logo.png" alt="z-store logo" className="w-24 lg:w-26 " />
       </Link>

@@ -137,6 +137,30 @@ function AddProduct() {
     }
     setLoading(false);
   };
+  const categories = [
+    "General",
+    "T-Shirt",
+    "Shirt",
+    "Pants",
+    "Jeans",
+    "Shorts",
+    "Dress",
+    "Skirt",
+    "Suit",
+    "Hoodie",
+    "Jacket",
+    "Coat",
+    "Shoes",
+    "Sandals",
+    "Boots",
+    "Sneakers",
+    "Watch",
+    "Bag",
+    "Hat",
+    "Accessories",
+    "Sportswear",
+    "Underwear",
+  ];
 
   return (
     <section className="p-6 max-w-5xl mx-auto">
@@ -157,13 +181,18 @@ function AddProduct() {
             onChange={(e) => setData({ ...data, title: e.target.value })}
             placeholder="Enter product title"
           />
-          <ProductField
-            label="Category"
-            name="category"
-            value={data.category}
+
+          <select
+            className="border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
             onChange={(e) => setData({ ...data, category: e.target.value })}
-            placeholder="Enter category"
-          />
+          >
+            <option>Select Category</option>
+            {categories.map((cat, i) => (
+              <option key={i} value={cat}>
+                {cat}
+              </option>
+            ))}
+          </select>
           <ProductField
             label="Price"
             name="price"

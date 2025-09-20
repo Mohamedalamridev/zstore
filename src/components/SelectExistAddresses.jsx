@@ -64,7 +64,7 @@ function SelectExistAddresses({ setAddNewAddress, setSelectedAddress }) {
 
         <span
           onClick={() => setAddNewAddress(true)}
-          className="bg-indigo-100 text-indigo-700 py-1 px-2 rounded-lg text-lg"
+          className="cursor-pointer bg-indigo-100 text-indigo-700 py-1 px-2 rounded-lg text-lg"
         >
           Or add a new address
         </span>
