@@ -23,7 +23,7 @@ import AddProduct from "./components/AddProduct.jsx";
 import EditProduct from "./pages/EditProduct.jsx";
 
 export const ProtecedRoute = ({ children }) => {
-  const { state } = useUser();
+  const { state, userProfile } = useUser();
   if (state.isLoading) {
     return (
       <div className="min-h-screen flex justify-center items-center">
@@ -71,7 +71,7 @@ const router = createBrowserRouter([
     element: <PaymentSuccess />,
   },
   {
-    path: "/dashboard",
+    path: "/dashboard-98568348",
     element: <Dashboard />,
     children: [
       {
