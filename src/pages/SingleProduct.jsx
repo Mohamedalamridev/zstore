@@ -77,13 +77,13 @@ function SingleProduct() {
               <img
                 src={currentImg}
                 alt="main preview"
-                className="w-full rounded-2xl h-[500px] shadow-md"
+                className="rounded-2xl  shadow-md hover:cursor-zoom-in"
               />
             </div>
           </div>
 
           {/* Product Content */}
-          <div className="flex flex-col justify-between">
+          <div className="flex flex-col justify-between h-[70vh]">
             <div>
               <h1 className="text-3xl lg:text-5xl font-semibold text-gray-900">
                 {product.title}
