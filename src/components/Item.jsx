@@ -17,10 +17,7 @@ function Item({ id, img, title, price, count, discount, size, color }) {
         <Link to={`/product_details/${id}`}>
           <h1>{title}</h1>
         </Link>
-        <h2 className="my-1">
-          <span className="font-semibold">color:</span> {"  "}
-          {color}
-        </h2>
+
         <h2 className="my-1">
           <span className="font-bold">Size:</span> {"  "}
           {size}

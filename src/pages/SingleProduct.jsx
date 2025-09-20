@@ -10,7 +10,6 @@ import Footer from "../components/Footer";
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
 function SingleProduct() {
-  const SIZES = ["XS", "S", "M", "XL", "2X"];
   const [selectedSize, setSelectedSize] = useState("");
   const [selectedColor, setSelectedColor] = useState("");
   const { state, dispatch } = useCart();
@@ -21,7 +20,6 @@ function SingleProduct() {
 
   const { id } = useParams();
   const isAdded = state.cart.some((item) => item.id === id);
-
   useEffect(() => {
     const fetchProduct = async () => {
       try {
@@ -114,16 +112,15 @@ function SingleProduct() {
               {/* Avilabel sizes */}
               <div className="flex gap-2 my-6">
                 <span className="font-bold text-lg"> Sizes:</span>
-                {SIZES.map((item, i) => {
+                {product.availableSizes.map((item) => {
                   return (
                     <span
                       onClick={() => setSelectedSize(item)}
-                      key={i}
-                      className={`${
-                        selectedSize === item
-                          ? "bg-black text-white"
-                          : "bg-gray-200 text-black"
-                      } font-semibold py-1 px-3 rounded-lg`}
+                      className={`py-1 px-2 mx-1 rounded-lg ${
+                        selectedSize !== item
+                          ? "bg-gray-200 text-black"
+                          : "bg-black text-white"
+                      } cursor-pointer `}
                     >
                       {item}
                     </span>

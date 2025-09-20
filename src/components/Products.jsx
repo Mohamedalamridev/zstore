@@ -54,6 +54,7 @@ function Products() {
                 price={p?.price}
                 discount={p?.oldPrice - +p.price}
                 oldPrice={p?.oldPrice}
+                sizes={p?.availableSizes}
               />
             ))
           ) : (

@@ -46,7 +46,7 @@ function PaymobCheckout({ cartItems, totalAmount, userId, address }) {
           Check Out
         </button>
       ) : (
-        <Link to="/login"></Link>
+        <Link to="/login">login</Link>
       )}
     </>
   );
