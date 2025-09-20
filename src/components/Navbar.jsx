@@ -1,4 +1,9 @@
 import React, { useState } from "react";
+import { IoCloseSharp } from "react-icons/io5";
+import { CiSearch } from "react-icons/ci";
+import { MdOutlineShoppingCart } from "react-icons/md";
+import { FaRegUserCircle } from "react-icons/fa";
+import { TiThMenuOutline } from "react-icons/ti";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../CartContext";
 import { useUser } from "../UserContext";
@@ -25,7 +30,7 @@ function Navbar() {
   ];
 
   return (
-    <nav className="bg-white flex items-center justify-between shadow-sm  top-0 z-50  py-6 lg:px-24 relative">
+    <nav className="bg-white flex items-center justify-between shadow-sm  top-0 z-50 px-4 py-6 lg:px-16 relative">
       <Link to={"/"}>
         <img src="/logo.png" alt="z-store logo" className="w-24 lg:w-26 " />
       </Link>
@@ -115,7 +120,7 @@ function Navbar() {
             <RiAccountCircle2Fill className="text-4xl" />
           </Link>
         ) : (
-          <Link to="/login" className="font-bold text-lg md:inline hidden">
+          <Link to="/login" className="font-bold text-lg md:hidden">
             Login
           </Link>
         )}
@@ -123,7 +128,7 @@ function Navbar() {
           <button
             className="hidden md:inline cursor-pointer text-black font-semibold"
             onClick={() => {
-              handleLogout();
+              dispatch({ type: "LOGOUT" });
             }}
           >
             Logout
