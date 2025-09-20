@@ -40,7 +40,7 @@ function Product({ id, title, name, img, price, oldPrice, sizes = ["other"] }) {
         <img
           src={img}
           alt={title}
-          className="w-full min-h-[430px] rounded-lg shadow-md"
+          className="w-full md:min-h-[430px] rounded-lg shadow-md"
         />
         {discount > 0 && (
           <span className="absolute -rotate-45 top-4 -left-9 bg-red-500 text-white px-10 text-sm font-semibold shadow">
