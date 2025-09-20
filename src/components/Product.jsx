@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../CartContext";
 
-function Product({ id, title, name, img, price, oldPrice, sizes = [] }) {
+function Product({ id, title, name, img, price, oldPrice, sizes = ["other"] }) {
   const { state, dispatch } = useCart();
   const [selectedSize, setSelectedSize] = useState("");
   const [showOptions, setShowOptions] = useState(false);
@@ -12,7 +12,7 @@ function Product({ id, title, name, img, price, oldPrice, sizes = [] }) {
     oldPrice > 0 ? Math.round(((oldPrice - price) / oldPrice) * 100) : 0;
 
   const handleAddToCart = () => {
-    if (!selectedSize) {
+    if (!selectedSize && sizes[0] !== "other") {
       setShowOptions(true);
       return;
     }
@@ -69,7 +69,7 @@ function Product({ id, title, name, img, price, oldPrice, sizes = [] }) {
 
         {/* Sizes */}
 
-        {showOptions && sizes.length > 0 && (
+        {showOptions && sizes && sizes.length > 0 && (
           <div>
             <span className="block text-sm my-1">Select size</span>
             <div className="flex flex-wrap gap-2 mt-3">

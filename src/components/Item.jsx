@@ -18,10 +18,12 @@ function Item({ id, img, title, price, count, discount, size, color }) {
           <h1>{title}</h1>
         </Link>
 
-        <h2 className="my-1">
-          <span className="font-bold">Size:</span> {"  "}
-          {size}
-        </h2>
+        {size && (
+          <h2 className="my-1">
+            <span className="font-bold">Size:</span> {"  "}
+            {size}
+          </h2>
+        )}
         <h2 className="font-bold text-lg">
           ${price * count}{" "}
           {discount > 0 && (

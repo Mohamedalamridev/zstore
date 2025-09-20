@@ -19,9 +19,12 @@ function Quantity({ id, img, title, price, discount }) {
   }, [state.cart]);
 
   return (
-    <div className="flex justify-evenly items-center bg-[#F0F0F0] py-1  rounded-3xl">
+    <div className="flex justify-evenly w-44 items-center hover:scale-105  transition-all text-white bg-black py-3 font-bold  rounded-3xl">
       <span className="text-xl px-2 cursor-pointer">
-        <FiMinus onClick={() => handleDecrease()} />
+        <FiMinus
+          onClick={() => handleDecrease()}
+          className="hover:scale-200  transition-all"
+        />
       </span>
       <span className="text-md px-1">
         {state.cart.map((item) => {
@@ -30,6 +33,7 @@ function Quantity({ id, img, title, price, discount }) {
       </span>
       <span className="text-md px-1 cursor-pointer">
         <GoPlus
+          className="hover:scale-200  transition-all"
           onClick={() => {
             dispatch({
               type: "ADD_TO_CART",

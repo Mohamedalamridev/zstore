@@ -77,13 +77,13 @@ function SingleProduct() {
               <img
                 src={currentImg}
                 alt="main preview"
-                className="rounded-2xl  shadow-md hover:cursor-zoom-in"
+                className="rounded-2xl  shadow-md "
               />
             </div>
           </div>
 
           {/* Product Content */}
-          <div className="flex flex-col justify-between h-[70vh]">
+          <div className="flex flex-col justify-between h-[60vh]">
             <div>
               <h1 className="text-3xl lg:text-5xl font-semibold text-gray-900">
                 {product.title}
@@ -110,23 +110,25 @@ function SingleProduct() {
               </div>
 
               {/* Avilabel sizes */}
-              <div className="flex gap-2 my-6">
-                <span className="font-bold text-lg"> Sizes:</span>
-                {product.availableSizes.map((item) => {
-                  return (
-                    <span
-                      onClick={() => setSelectedSize(item)}
-                      className={`py-1 px-2 mx-1 rounded-lg ${
-                        selectedSize !== item
-                          ? "bg-gray-200 text-black"
-                          : "bg-black text-white"
-                      } cursor-pointer `}
-                    >
-                      {item}
-                    </span>
-                  );
-                })}
-              </div>
+              {product.availableSizes[0] !== "other" && (
+                <div className="flex gap-2 my-6">
+                  <span className="font-bold text-lg"> Sizes:</span>
+                  {product.availableSizes.map((item) => {
+                    return (
+                      <span
+                        onClick={() => setSelectedSize(item)}
+                        className={`py-1 px-2 mx-1 rounded-lg ${
+                          selectedSize !== item
+                            ? "bg-gray-200 text-black"
+                            : "bg-black text-white"
+                        } cursor-pointer `}
+                      >
+                        {item}
+                      </span>
+                    );
+                  })}
+                </div>
+              )}
               {/* Description */}
               <p className="text-gray-600 mt-6 border-b border-gray-200 pb-6 leading-relaxed">
                 {product.desc}
@@ -153,7 +155,7 @@ function SingleProduct() {
                       },
                     })
                   }
-                  className="w-full flex items-center justify-center gap-3 bg-black text-white px-6 py-3 rounded-xl text-lg font-medium shadow-md hover:bg-gray-800 transition"
+                  className="w-44 hover:scale-105  flex items-center justify-center gap-3 bg-black text-white px-6 py-3 rounded-xl text-lg font-medium shadow-md hover:bg-gray-800 transition"
                 >
                   <MdAddShoppingCart className="text-xl" />
                   Add to Cart
