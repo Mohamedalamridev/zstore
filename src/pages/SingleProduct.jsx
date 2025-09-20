@@ -83,7 +83,7 @@ function SingleProduct() {
           </div>
 
           {/* Product Content */}
-          <div className="flex flex-col justify-between h-[60vh]">
+          <div className="flex flex-col justify-between md:h-[60vh]">
             <div>
               <h1 className="text-3xl lg:text-5xl font-semibold text-gray-900">
                 {product.title}
