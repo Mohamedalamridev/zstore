@@ -3,7 +3,7 @@ import { IoStarSharp } from "react-icons/io5";
 
 function Review({ rate, name, body, date }) {
   return (
-    <div className="p-6 flex flex-col gap-2  border-2 rounded-2xl border-gray-200">
+    <div className="p-4 flex flex-col gap-2  border-2 rounded-2xl border-gray-200">
       <div className="flex text-[#FFC633] text-lg">
         {Array.from({ length: rate }).map((_, i) => {
           return <IoStarSharp className="" />;

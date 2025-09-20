@@ -111,13 +111,13 @@ function SingleProduct() {
 
               {/* Avilabel sizes */}
               {product.availableSizes[0] !== "other" && (
-                <div className="flex gap-2 my-6">
+                <div className="flex gap-2 my-6 flex-wrap">
                   <span className="font-bold text-lg"> Sizes:</span>
                   {product.availableSizes.map((item) => {
                     return (
                       <span
                         onClick={() => setSelectedSize(item)}
-                        className={`py-1 px-2 mx-1 rounded-lg ${
+                        className={`py-1 px-1 mx-1 rounded-lg ${
                           selectedSize !== item
                             ? "bg-gray-200 text-black"
                             : "bg-black text-white"

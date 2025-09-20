@@ -16,7 +16,17 @@ export const Feild = ({ name, placeholder, value, onchange }) => {
 };
 
 function CreateAddressesFromCart({ setAddNewAddress, addNewAddress }) {
-  const { userProfile } = useUser();
+  const countries = [
+    "US",
+    "Egypt",
+    "Saudi Arabia",
+    "UAE",
+    "UK",
+    "France",
+    "Canada",
+  ];
+
+  const { setUserProfile } = useUser();
   const [address, setAddress] = useState({
     label: "",
     city: "",
@@ -40,7 +50,7 @@ function CreateAddressesFromCart({ setAddNewAddress, addNewAddress }) {
         credentials: "include",
       });
       const result = await res.json();
-      userProfile(result.user);
+      setUserProfile(result.user);
 
       if (res.ok) {
       } else {

@@ -1,9 +1,4 @@
 import React, { useState } from "react";
-import { IoCloseSharp } from "react-icons/io5";
-import { CiSearch } from "react-icons/ci";
-import { MdOutlineShoppingCart } from "react-icons/md";
-import { FaRegUserCircle } from "react-icons/fa";
-import { TiThMenuOutline } from "react-icons/ti";
 import { Link, useNavigate } from "react-router-dom";
 import { useCart } from "../CartContext";
 import { useUser } from "../UserContext";

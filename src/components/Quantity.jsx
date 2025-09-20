@@ -19,7 +19,7 @@ function Quantity({ id, img, title, price, discount }) {
   }, [state.cart]);
 
   return (
-    <div className="flex justify-evenly w-44 items-center hover:scale-105  transition-all text-white bg-black py-3 font-bold  rounded-3xl">
+    <div className="flex w-fit justify-evenly  items-center hover:scale-105  transition-all text-white bg-black py-1 px-2 font-bold  rounded-3xl">
       <span className="text-xl px-2 cursor-pointer">
         <FiMinus
           onClick={() => handleDecrease()}

@@ -21,6 +21,7 @@ import Dashboard from "./pages/Dashboard.jsx";
 import ProductAdmin from "./pages/ProductAdmin.jsx";
 import AddProduct from "./components/AddProduct.jsx";
 import EditProduct from "./pages/EditProduct.jsx";
+import Orders from "./pages/Orders.jsx";
 
 export const ProtecedRoute = ({ children }) => {
   const { state, userProfile } = useUser();
@@ -83,6 +84,14 @@ const router = createBrowserRouter([
       {
         path: "add_product",
         element: <AddProduct />,
+      },
+      {
+        path: "edit_product/:id",
+        element: <EditProduct />,
+      },
+      {
+        path: "orders",
+        element: <Orders />,
       },
       {
         path: "edit_product/:id",

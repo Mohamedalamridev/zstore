@@ -13,7 +13,7 @@ function PaymobCheckout({ cartItems, totalAmount, userId, address }) {
     }
     const items = cartItems.map((item) => {
       return {
-        name: item.title,
+        name: item?.title,
         amount_cents: String(item.price * 100),
         description: item?.info,
         quantity: String(item.count),

@@ -10,7 +10,7 @@ import SelectExistAddresses from "../components/SelectExistAddresses";
 import { Link } from "react-router-dom";
 
 function Cart() {
-  const [addNewAddress, setAddNewAddress] = useState(false);
+  const [addNewAddress, setAddNewAddress] = useState(true);
   const [selectedAddress, setSelectedAddress] = useState({});
   const { state, dispatch } = useCart();
   const { state: userState, userProfile } = useUser();

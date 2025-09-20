@@ -9,7 +9,7 @@ function Login() {
   const [message, setMessage] = useState("");
   const [password, setPassword] = useState("");
 
-  const { state, dispatch, loading } = useUser();
+  const { state, dispatch, loading, setUserProfile } = useUser();
   const { state: cartState } = useCart();
 
   const navigate = useNavigate();
@@ -26,6 +26,7 @@ function Login() {
       });
 
       const userData = await response.json();
+      setUserProfile(userData.profile);
 
       if (!response.ok) {
         setMessage("Invalid Credential");

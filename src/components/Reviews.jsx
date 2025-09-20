@@ -4,7 +4,7 @@ import Recommends from "./Recommends";
 
 function Reviews() {
   return (
-    <section className="p-8 md:p-24">
+    <section className="p-2 md:p-24">
       <h1 className="text-center py-6 text-3xl font-bold">Rating & Reviews</h1>
       <div className="">
         <h1 className="py-4 text-xl font-medium text-gray-600">
