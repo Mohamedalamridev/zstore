@@ -98,7 +98,7 @@ function CreateAddressesFromCart({ setAddNewAddress, addNewAddress }) {
   return (
     <>
       {addNewAddress && (
-        <div className="mb-6">
+        <div className="mb-6 m-6">
           <h1 className="font-bold text-xl mb-3">Add Address</h1>
           <form>
             <Feild
