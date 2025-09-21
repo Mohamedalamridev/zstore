@@ -120,7 +120,7 @@ function Navbar() {
             <RiAccountCircle2Fill className="text-4xl" />
           </Link>
         ) : (
-          <Link to="/login" className="font-bold text-lg md:hidden">
+          <Link to="/login" className="font-bold text-lg md:inline hidden">
             Login
           </Link>
         )}
