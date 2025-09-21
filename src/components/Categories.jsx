@@ -1,23 +1,32 @@
 import React from "react";
+import HeadTitle from "./HeadTitle";
 
 function Categories() {
   return (
-    <section className="p-4 bg-gradient-to-r from-blue-100 via-blue-200 to-green-100">
-      <div className="container grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ">
-        <div className="cat-1 p-12 h-72 bg-white shadow-lg rounded-lg text-2xl font-bold    ">
-          Polo
+    <>
+      <HeadTitle text="Shop by Category" />
+      <section className="p-4 my-16">
+        <div className="container grid gap-6 grid-cols-1 md:grid-cols-2 lg:grid-cols-3 ">
+          <img src="polo.png" className="h-auto rounded-2xl shadow-lg" alt="" />
+          <img
+            src="shirts.png"
+            className="h-auto rounded-2xl shadow-lg"
+            alt=""
+          />
+
+          <img
+            src="t-shirts.png"
+            className="h-auto rounded-2xl shadow-lg"
+            alt=""
+          />
+          <img
+            src="shoes.png"
+            className="h-auto rounded-2xl shadow-lg"
+            alt=""
+          />
         </div>
-        <div className="">
-          <img src="t-shirts.png" className="h-auto w-full" alt="" />
-        </div>
-        <div className="cat-1 p-12 h-72 bg-white shadow-lg rounded-lg text-2xl font-bold    ">
-          Shirt
-        </div>
-        <div className="cat-1 p-12 h-72 bg-white shadow-lg rounded-lg text-2xl font-bold    ">
-          Shose
-        </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }
 
