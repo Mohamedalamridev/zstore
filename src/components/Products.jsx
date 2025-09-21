@@ -5,6 +5,7 @@ import { BeatLoader } from "react-spinners";
 import FeaturedProducts from "./FeaturedProducts";
 import NewArrival from "./NewArrival";
 import TopSelling from "./TopSelling";
+import Categories from "./Categories";
 const baseUrl = import.meta.env.VITE_BASE_URL;
 
 function Products() {
@@ -43,6 +44,7 @@ function Products() {
       <TopSelling products={products} />
       <NewArrival products={products} />
       <FeaturedProducts products={products} />
+      <Categories />
     </section>
   );
 }

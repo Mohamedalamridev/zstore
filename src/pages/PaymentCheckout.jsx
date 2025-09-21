@@ -5,7 +5,7 @@ import { useUser } from "../UserContext";
 
 function PaymobCheckout({ cartItems, totalAmount, address }) {
   const { userProfile } = useUser();
-  const userId = userProfile._id;
+  const userId = userProfile?._id;
   console.log(userId);
 
   const { state } = useUser();

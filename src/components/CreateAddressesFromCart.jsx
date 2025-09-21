@@ -80,11 +80,11 @@ function CreateAddressesFromCart({ setAddNewAddress, addNewAddress }) {
         credentials: "include",
       });
       const result = await res.json();
-      setUserProfile(result);
 
       if (!res.ok) {
         alert(result.message || "Failed to add address");
       }
+      setUserProfile(result.user);
     } catch (err) {
       console.error("Add address failed:", err);
     }
