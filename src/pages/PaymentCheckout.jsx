@@ -3,7 +3,14 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useUser } from "../UserContext";
 
-function PaymobCheckout({ cartItems, totalAmount, address }) {
+function PaymobCheckout({
+  cartItems,
+  totalAmount,
+  shippingFee,
+  address,
+  deliveryDateFrom,
+  deliveryDateTo,
+}) {
   const { userProfile } = useUser();
   const userId = userProfile?._id;
   console.log(userId);
@@ -15,22 +22,30 @@ function PaymobCheckout({ cartItems, totalAmount, address }) {
       Swal.fire("please select an address");
       return;
     }
+
     const items = cartItems.map((item) => {
       return {
         name: item?.title,
         amount_cents: String(item.price * 100),
         description: item?.info,
         quantity: String(item.count),
+        shippingFee: shippingFee,
       };
     });
-    console.log(items);
 
     try {
       const res = await fetch(`${baseUrl}/api/payment/checkout`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ items, totalAmount, userId, address }),
+        body: JSON.stringify({
+          items,
+          totalAmount,
+          userId,
+          address,
+          deliveryDateFrom,
+          deliveryDateTo,
+        }),
       });
 
       const data = await res.json();

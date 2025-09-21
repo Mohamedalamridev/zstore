@@ -41,8 +41,8 @@ function Products() {
 
   return (
     <section className="max-w-[1400px] mx-auto">
-      <TopSelling products={products} />
       <NewArrival products={products} />
+      <TopSelling products={products} />
       <FeaturedProducts products={products} />
       <Categories />
     </section>

@@ -8,13 +8,14 @@ import PaymobCheckout from "./PaymentCheckout";
 import CreateAddressesFromCart from "../components/CreateAddressesFromCart";
 import SelectExistAddresses from "../components/SelectExistAddresses";
 import { Link } from "react-router-dom";
-
+import { LuTruck } from "react-icons/lu";
 function Cart() {
   const [addNewAddress, setAddNewAddress] = useState(true);
   const [selectedAddress, setSelectedAddress] = useState({});
   const { state, dispatch } = useCart();
   const { state: userState, userProfile } = useUser();
   const addresses = userProfile?.addresses ?? [];
+  const delivety = 30;
   const { subTotal, discount, total } = useMemo(() => {
     const subTotal = state.cart.reduce(
       (sum, item) => sum + +item.price * item.count,
@@ -24,7 +25,7 @@ function Cart() {
       (sum, item) => sum + (item.discount || 0) * item.count,
       0
     );
-    return { subTotal, discount, total: subTotal - discount };
+    return { subTotal, discount, total: subTotal - discount + delivety };
   }, [state.cart]);
 
   const handleAddress = () => {
@@ -73,7 +74,22 @@ function Cart() {
   };
 
   const baseUrl = import.meta.env.VITE_BASE_URL;
+  function getEstimatedDelivery(processingDays, shippingDays, extraDays = 4) {
+    const now = Date.now();
+    const totalDays = processingDays + shippingDays;
 
+    const from = new Date(now + totalDays * 24 * 60 * 60 * 1000);
+    const to = new Date(now + (totalDays + extraDays) * 24 * 60 * 60 * 1000);
+
+    return { from, to };
+  }
+  const options = { day: "numeric", month: "long", year: "numeric" };
+  const { from, to } = getEstimatedDelivery(2, 10);
+  const deliveryDate = `From ${new Date(from).toLocaleDateString(
+    "en-GB",
+    options
+  )} 
+  To ${new Date(to).toLocaleDateString("en-GB", options)}`;
   return (
     <>
       <Navbar />
@@ -112,6 +128,24 @@ function Cart() {
                 <h1 className="text-2xl font-bold mb-6 text-center">
                   Order Summary
                 </h1>
+
+                {/* Delivery Date */}
+                <div className="flex items-center gap-3 bg-green-50 border border-green-200 p-3 rounded-xl mb-4">
+                  <LuTruck className="text-green-600 text-2xl" />
+                  <div>
+                    <h2 className="font-semibold text-gray-700">
+                      Estimated Delivery
+                    </h2>
+                    <span className="block text-green-700 font-medium">
+                      {deliveryDate}
+                    </span>
+                    <span className="text-xs text-gray-500 italic">
+                      International Shipping
+                    </span>
+                  </div>
+                </div>
+
+                {/* Summary */}
                 <div className="space-y-4 mx-6">
                   <div className="flex justify-between items-center">
                     <h2>Sub Total</h2>
@@ -123,6 +157,10 @@ function Cart() {
                       - ${discount}
                     </span>
                   </div>
+                  <div className="flex justify-between items-center">
+                    <h2>Delivery</h2>
+                    <span>${delivety}</span>
+                  </div>
                   <hr />
                   <div className="flex justify-between items-center">
                     <h2 className="text-lg font-semibold">Total</h2>
@@ -130,25 +168,26 @@ function Cart() {
                   </div>
                 </div>
 
-                {userState.isLogged ? (
-                  <PaymobCheckout
-                    address={selectedAddress}
-                    cartItems={state.cart}
-                    totalAmount={total}
-                  />
-                ) : userState.isLogged ? (
-                  <button className="w-full mt-6 py-3 rounded-x text-white font-semibold cursor-not-allowed">
-                    Checkout
-                  </button>
-                ) : (
-                  <Link
-                    className="flex py-3 rounded-x  m-6 font-semibold rounded-2xl justify-center cursor-pointer bg-black text-white"
-                    to={"/login"}
-                  >
-                    {" "}
-                    Login to Checkout
-                  </Link>
-                )}
+                {/* Checkout Section */}
+                <div className="mx-6 mt-6">
+                  {userState.isLogged ? (
+                    <PaymobCheckout
+                      address={selectedAddress}
+                      cartItems={state.cart}
+                      totalAmount={total}
+                      shippingFee={30}
+                      deliveryDateFrom={from}
+                      deliveryDateTo={to}
+                    />
+                  ) : (
+                    <Link
+                      className="flex items-center justify-center gap-2 py-3 px-6 bg-black text-white rounded-xl font-semibold hover:bg-gray-900 transition"
+                      to="/login"
+                    >
+                      <span>Login to Checkout</span>
+                    </Link>
+                  )}
+                </div>
               </div>
             </div>
           </div>

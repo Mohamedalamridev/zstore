@@ -5,6 +5,13 @@ import Footer from "../components/Footer.jsx";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 import Swal from "sweetalert2";
+import {
+  FaBoxOpen,
+  FaCalendarAlt,
+  FaMoneyBillWave,
+  FaMapMarkerAlt,
+} from "react-icons/fa";
+
 const Feild = ({
   label,
   value,
@@ -57,6 +64,7 @@ function Profile() {
   const [runValidate, setRunValidate] = useState(false);
 
   const { state, userProfile, setUserProfile, orders, dispatch } = useUser();
+  console.log(orders);
 
   const addresses = userProfile?.addresses ?? [];
 
@@ -178,8 +186,6 @@ function Profile() {
               </button>
             </div>
 
-            {}
-
             {/* Add New Address Form */}
             {showAddAddress && (
               <div className="bg-gray-50 p-4 rounded-lg mb-6">
@@ -278,27 +284,32 @@ function Profile() {
 
         {/* Orders Section */}
         <div className="max-w-4xl mx-auto">
-          <h2 className="text-2xl font-bold text-gray-800 mb-6">My Orders</h2>
+          <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
+            <FaBoxOpen className="text-indigo-600" /> My Orders
+          </h2>
           {orders?.length > 0 ? (
             orders.map((item, i) => (
               <div
                 key={i}
-                className="bg-white shadow-md rounded-2xl p-6 mb-6 border border-gray-200"
+                className="bg-white shadow-md rounded-2xl p-6 mb-6 border border-gray-200 hover:shadow-lg transition"
               >
-                <div className="flex justify-between items-center mb-4">
-                  <h1 className=" text-md text-gray-800 mb-2">
-                    <span className="font-semibold">Order ID:</span>{" "}
-                    <span className="text-indigo-600 font-bold">
-                      {item?.paymobOrderId ?? "N/A"}
-                    </span>
-                    <p className="text-xs my-4 text-gray-600">
-                      Date:{"  "}
+                {/* Header */}
+                <div className="flex justify-between items-start mb-4">
+                  <div>
+                    <h1 className="text-md text-gray-800 mb-1 flex items-center gap-2">
+                      <span className="font-semibold">Order ID:</span>{" "}
+                      <span className="text-indigo-600 font-bold">
+                        {item?.paymobOrderId ?? "N/A"}
+                      </span>
+                    </h1>
+                    <p className="flex items-center gap-2 text-xs text-gray-600">
+                      <FaCalendarAlt />{" "}
                       {new Date(item.createdAt).toLocaleDateString(
                         "en-US",
                         options
                       )}
                     </p>
-                  </h1>
+                  </div>
                   <span
                     className={`px-3 py-1 rounded-full text-sm font-medium ${
                       item?.paymentStatus === "paid"
@@ -309,38 +320,50 @@ function Profile() {
                     {item?.paymentStatus ?? "unknown"}
                   </span>
                 </div>
-                <h3 className="text-gray-700 font-medium mb-2">
+
+                {/* Amount */}
+                <h3 className="text-gray-700 font-medium mb-3 flex items-center gap-2">
+                  <FaMoneyBillWave className="text-green-600" />
                   Total Amount:{" "}
                   <span className="text-indigo-700 font-bold">
                     EGP {item?.totalAmount ?? 0}
                   </span>
                 </h3>
-                <div>
-                  <h1>Delivary To: </h1>
-                  <h1>{item?.address?.address?.name}</h1>
-                  <h2 className="my-[2px]">
-                    {item?.address?.country}, {item?.address?.city},{"  "}
-                    {item?.address?.state}
-                  </h2>
 
-                  <h3>{item?.address?.street}</h3>
+                {/* Address */}
+                <div className="mb-4">
+                  <h4 className="font-semibold text-gray-800 flex items-center gap-2">
+                    <FaMapMarkerAlt className="text-red-500" /> Delivery To:
+                  </h4>
+                  <p className="ml-6 font-medium">
+                    {item?.address?.address?.name}
+                  </p>
+                  <p className="ml-6 text-sm text-gray-600">
+                    {item?.address?.country}, {item?.address?.city},{" "}
+                    {item?.address?.state}
+                  </p>
+                  <p className="ml-6 text-sm text-gray-600">
+                    {item?.address?.street}
+                  </p>
                 </div>
+
+                {/* Items */}
                 <div className="border-t border-gray-200 pt-4">
                   <h4 className="font-semibold text-gray-800 mb-3">Items:</h4>
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                     {item?.items?.map((product, idx) => (
                       <div
                         key={idx}
-                        className="flex justify-between items-center bg-gray-50 rounded-lg p-3"
+                        className="flex justify-between items-center bg-gray-50 rounded-lg p-3 hover:bg-gray-100 transition"
                       >
                         <Link
                           to={`/product_details/${product._id}`}
-                          className="font-medium text-gray-700"
+                          className="font-medium text-gray-700 hover:text-indigo-600"
                         >
                           {product?.name ?? "Unnamed Product"}
                         </Link>
                         <span className="text-sm text-gray-500">
-                          x {product?.quantity ?? 0}
+                          × {product?.quantity ?? 0}
                         </span>
                       </div>
                     ))}
