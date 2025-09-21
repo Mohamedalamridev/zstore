@@ -135,7 +135,6 @@ function Cart() {
                     address={selectedAddress}
                     cartItems={state.cart}
                     totalAmount={total}
-                    userId={userState.profile.user?._id}
                   />
                 ) : userState.isLogged ? (
                   <button className="w-full mt-6 py-3 rounded-x text-white font-semibold cursor-not-allowed">

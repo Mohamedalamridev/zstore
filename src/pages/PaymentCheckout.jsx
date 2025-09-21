@@ -3,7 +3,11 @@ import { Link } from "react-router-dom";
 import Swal from "sweetalert2";
 import { useUser } from "../UserContext";
 
-function PaymobCheckout({ cartItems, totalAmount, userId, address }) {
+function PaymobCheckout({ cartItems, totalAmount, address }) {
+  const { userProfile } = useUser();
+  const userId = userProfile._id;
+  console.log(userId);
+
   const { state } = useUser();
   const baseUrl = import.meta.env.VITE_BASE_URL;
   const handleCheckout = async () => {
@@ -19,20 +23,21 @@ function PaymobCheckout({ cartItems, totalAmount, userId, address }) {
         quantity: String(item.count),
       };
     });
+    console.log(items);
+
     try {
       const res = await fetch(`${baseUrl}/api/payment/checkout`, {
         method: "POST",
-        headers: { "Content-Type": "Application/json" },
+        headers: { "Content-Type": "application/json" },
         credentials: "include",
-        body: JSON.stringify({ items: items, totalAmount, userId, address }),
+        body: JSON.stringify({ items, totalAmount, userId, address }),
       });
 
       const data = await res.json();
       if (data.url) window.open(data.url, "_blank");
       else alert("Payment failed");
     } catch (err) {
-      console.error(err);
-      alert("Payment error");
+      console.error(err.message);
     }
   };
 
