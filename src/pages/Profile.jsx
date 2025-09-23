@@ -151,6 +151,10 @@ function Profile() {
       </div>
     );
   }
+  const orderDate = (date) => {
+    const hours = new Date(date).getHours();
+    console.log(hours);
+  };
   return (
     <>
       <Navbar />
@@ -303,11 +307,7 @@ function Profile() {
                       </span>
                     </h1>
                     <p className="flex items-center gap-2 text-xs text-gray-600">
-                      <FaCalendarAlt />{" "}
-                      {new Date(item.createdAt).toLocaleDateString(
-                        "en-US",
-                        options
-                      )}
+                      <FaCalendarAlt /> {orderDate(item.createdAt)}
                     </p>
                   </div>
                   <span

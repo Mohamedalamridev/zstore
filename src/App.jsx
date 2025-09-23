@@ -3,7 +3,11 @@ import Home from "./pages/Home";
 import { CartProvider } from "./CartContext";
 
 function App() {
-  return <Home />;
+  return (
+    <main className="">
+      <Home />;
+    </main>
+  );
 }
 
 export default App;

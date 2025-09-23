@@ -6,7 +6,9 @@ import FeaturedProducts from "./FeaturedProducts";
 import NewArrival from "./NewArrival";
 import TopSelling from "./TopSelling";
 import Categories from "./Categories";
+import Hero from "./Hero";
 const baseUrl = import.meta.env.VITE_BASE_URL;
+0;
 
 function Products() {
   const [products, setProducts] = useState([]);
@@ -23,7 +25,6 @@ function Products() {
         });
         const data = await response.json();
         setProducts(data.products);
-        console.log(data.products);
       } catch (error) {
         console.log(error.message);
       }
@@ -40,12 +41,15 @@ function Products() {
   }
 
   return (
-    <section className="max-w-[1400px] mx-auto">
-      <NewArrival products={products} />
-      <TopSelling products={products} />
-      <FeaturedProducts products={products} />
-      <Categories />
-    </section>
+    <>
+      <Hero />
+      <section className="mx-2 md:mx-12">
+        <TopSelling products={products} />
+        <NewArrival products={products} />
+        <FeaturedProducts products={products} />
+        <Categories />
+      </section>
+    </>
   );
 }
 

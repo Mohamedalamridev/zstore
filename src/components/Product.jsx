@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useCart } from "../CartContext";
 
-function Product({ id, title, name, img, price, oldPrice, sizes = ["other"] }) {
+function Product({ id, title, img, price, oldPrice = 0, sizes = ["other"] }) {
   const { state, dispatch } = useCart();
   const [selectedSize, setSelectedSize] = useState("");
   const [showOptions, setShowOptions] = useState(false);
@@ -21,45 +21,48 @@ function Product({ id, title, name, img, price, oldPrice, sizes = ["other"] }) {
       type: "ADD_TO_CART",
       payload: {
         id,
-        name,
+        title,
         img,
         price,
-        title,
+        oldPrice,
         discount,
+        size: selectedSize || "other",
         count: 1,
-        size: selectedSize,
       },
     });
+
     setShowOptions(false);
   };
 
   return (
-    <div className="group transition-all relative rounded-lg p-2 md:p-4 shadow-lg">
+    <div className="group bg-white rounded-lg shadow-md hover:shadow-lg transition overflow-hidden relative">
       {/* Image */}
-      <div className="relative overflow-hidden">
-        <img src={img} alt={title} className="w-full rounded-lg shadow-md" />
+      <div className="relative ">
+        <img
+          src={img}
+          alt={title || "Product image"}
+          className="w-full h-auto object-cover"
+        />
         {discount > 0 && (
-          <span className="absolute -rotate-45 top-4 -left-9 bg-red-500 text-white px-10 text-sm font-semibold shadow">
+          <span className="absolute top-2 right-2 font-semibold bg-red-500 text-white py-1 px-2 rounded-lg text-xs">
             -{discount}%
           </span>
         )}
       </div>
 
       {/* Content */}
-      <div className={` py-4 flex flex-col min-h-[180px] justify-between`}>
+      <div className="p-4 flex flex-col justify-between min-h-[220px]">
         {/* Title */}
         <Link
           to={`/product_details/${id}`}
-          className="block font-semibold text-gray-800 md:text-lg text-sm hover:text-blue-600 transition"
+          className="block text-gray-800 font-medium md:text-lg text-sm hover:text-blue-600 transition line-clamp-2"
         >
           {title}
         </Link>
 
         {/* Price */}
-        <div className="flex items-center gap-2 mt-2">
-          <span className="text-md md:text-lg font-bold text-[#377071]">
-            ${price}
-          </span>
+        <div className="flex items-center gap-2 mt-3">
+          <span className="text-lg md:text-xl font-bold">${price}</span>
           {oldPrice > 0 && (
             <span className="text-sm text-gray-400 line-through">
               ${oldPrice}
@@ -68,16 +71,15 @@ function Product({ id, title, name, img, price, oldPrice, sizes = ["other"] }) {
         </div>
 
         {/* Sizes */}
-
-        {showOptions && sizes && sizes.length > 0 && (
-          <div>
-            <span className="block text-sm my-1">Select size</span>
-            <div className="flex flex-wrap gap-2 mt-3">
+        {showOptions && sizes.length > 0 && (
+          <div className="mt-4">
+            <span className="block text-sm mb-2 font-medium">Select Size:</span>
+            <div className="flex flex-wrap gap-2">
               {sizes.map((size) => (
                 <button
                   key={size}
                   onClick={() => setSelectedSize(size)}
-                  className={`px-3 py-1 rounded-md text-sm font-medium transition 
+                  className={`px-3 py-1 rounded-md text-sm font-medium transition
                     ${
                       selectedSize === size
                         ? "bg-black text-white"
@@ -95,15 +97,14 @@ function Product({ id, title, name, img, price, oldPrice, sizes = ["other"] }) {
         <button
           onClick={handleAddToCart}
           disabled={isAdded}
-          className={`mt-4 py-2 px-3 rounded-2xl  shadow-md font-semibold text-sm md:text-md transition
+          className={`mt-5 py-3 px-4 rounded-lg font-semibold text-sm md:text-md transition
             ${
               isAdded
-                ? "bg-green-500 text-white"
-                : "bg-black text-white hover:bg-gray-800"
-            }
-          `}
+                ? "bg-green-500 text-white cursor-not-allowed"
+                : "bg-black text-white hover:bg-gray-900"
+            }`}
         >
-          {isAdded ? "Added" : "Add to Cart"}
+          {isAdded ? "Added to Cart" : "Add to Cart"}
         </button>
       </div>
     </div>

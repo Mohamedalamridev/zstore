@@ -1,9 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 function ProductAdmin() {
   const baseUrl = import.meta.env.VITE_BASE_URL;
-  const [products, setProducts] = React.useState([]);
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const fetchProducts = async () => {
       try {
@@ -16,17 +18,19 @@ function ProductAdmin() {
         const data = await response.json();
 
         if (response.ok) {
-          setProducts(data.products);
+          setProducts(data.products || []);
         }
       } catch (error) {
         console.error("Error fetching products:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchProducts();
-  });
+  }, [baseUrl]);
 
-  const handleDElete = async (id) => {
+  const handleDelete = async (id) => {
     try {
       const response = await fetch(`${baseUrl}/api/products/${id}`, {
         method: "DELETE",
@@ -34,9 +38,8 @@ function ProductAdmin() {
           "Content-Type": "application/json",
         },
       });
-      const data = await response.json();
       if (response.ok) {
-        setProducts(products.filter((product) => product._id !== id));
+        setProducts((prev) => prev.filter((product) => product._id !== id));
       }
     } catch (error) {
       console.error("Error deleting product:", error);
@@ -46,61 +49,66 @@ function ProductAdmin() {
   return (
     <section>
       <div className="container mx-auto p-4">
-        <h1 className="text-2xl font-bold mb-4">Product Admin</h1>
-        <table className="min-w-full bg-white border border-gray-200">
-          <thead>
-            <tr>
-              <th className="py-2 px-4 border-b border-gray-200">Img</th>
-              <th className="py-2 px-4 border-b border-gray-200">ID</th>
-              <th className="py-2 px-4 border-b border-gray-200">Title</th>
-              <th className="py-2 px-4 border-b border-gray-200">Price</th>
-              <th className="py-2 px-4 border-b border-gray-200">Category</th>
-              <th className="py-2 px-4 border-b border-gray-200">Stock</th>
-              <th className="py-2 px-4 border-b border-gray-200">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {products &&
-              products.length > 0 &&
-              products?.map((product) => (
-                <tr key={product._id}>
-                  <td className="py-2 px-4 border-b border-gray-200">
-                    <img src={product?.imgs[0]} className="w-24 h-28" alt="" />
-                  </td>
-                  <td className="py-2 px-4 border-b border-gray-200">
-                    {product?._id}
-                  </td>
-                  <td className="py-2 px-4 border-b border-gray-200">
-                    {product?.title}
-                  </td>
-                  <td className="py-2 px-4 border-b border-gray-200">
-                    ${product?.price}
-                  </td>
-                  <td className="py-2 px-4 border-b border-gray-200">
-                    {product?.category}
-                  </td>
-                  <td className="py-2 px-4 border-b border-gray-200">
-                    {product.soldCount}
-                  </td>
-                  <td className="py-2 px-4 border-b border-gray-200">
-                    <Link
-                      className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 mr-4"
-                      to={`/dashboard-98568348/edit_product/${product._id}`}
-                    >
-                      Edit
-                    </Link>
+        <h1 className="text-2xl font-bold mb-6">Product Admin</h1>
 
-                    <button
-                      onClick={() => handleDElete(product._id)}
-                      className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600"
-                    >
-                      Delete
-                    </button>
-                  </td>
+        {loading ? (
+          <p className="text-gray-500">Loading products...</p>
+        ) : products.length === 0 ? (
+          <p className="text-gray-500">No products found.</p>
+        ) : (
+          <div className="overflow-x-auto">
+            <table className="min-w-full bg-white border border-gray-200 rounded-lg shadow-md">
+              <thead className="bg-black text-white">
+                <tr>
+                  <th className="py-3 px-4 text-left">Img</th>
+                  <th className="py-3 px-4 text-left">ID</th>
+                  <th className="py-3 px-4 text-left">Title</th>
+                  <th className="py-3 px-4 text-left">Price</th>
+                  <th className="py-3 px-4 text-left">Category</th>
+                  <th className="py-3 px-4 text-left">Stock</th>
+                  <th className="py-3 px-4 text-left">Actions</th>
                 </tr>
-              ))}
-          </tbody>
-        </table>
+              </thead>
+              <tbody>
+                {products.map((product) => (
+                  <tr
+                    key={product._id}
+                    className="border-b border-gray-200 hover:bg-gray-50"
+                  >
+                    <td className="py-2 px-4">
+                      <img
+                        src={product?.imgs?.[0] || "/placeholder.png"}
+                        className="w-16 h-20 object-cover rounded"
+                        alt={product?.title || "Product"}
+                      />
+                    </td>
+                    <td className="py-2 px-4">{product?._id}</td>
+                    <td className="py-2 px-4">{product?.title}</td>
+                    <td className="py-2 px-4 font-semibold text-gray-800">
+                      ${product?.price}
+                    </td>
+                    <td className="py-2 px-4">{product?.category}</td>
+                    <td className="py-2 px-4">{product?.soldCount}</td>
+                    <td className="py-2 px-4 flex gap-2">
+                      <Link
+                        to={`/dashboard-98568348/edit_product/${product._id}`}
+                        className="bg-blue-600 text-white px-3 py-1.5 rounded hover:bg-blue-700 transition"
+                      >
+                        Edit
+                      </Link>
+                      <button
+                        onClick={() => handleDelete(product._id)}
+                        className="bg-red-600 text-white px-3 py-1.5 rounded hover:bg-red-700 transition"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        )}
       </div>
     </section>
   );

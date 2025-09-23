@@ -7,7 +7,7 @@ function TopSelling({ products }) {
     <section className="">
       <div>
         <HeadTitle text="Top Selling" />
-        <div className="grid grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-2 p-3 md:p-6 md:gap-x-6 gap-y-14">
+        <div className="grid grid-cols-2 lg:grid-cols-4 xl:grid-cols-5 gap-x-2 p-3 md:p-6 md:gap-x-6 gap-y-14">
           {products
             ?.filter((e) => e.isTopSelling)
             .map((p) => (

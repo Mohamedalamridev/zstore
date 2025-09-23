@@ -6,7 +6,7 @@ import Products from "../components/Products";
 
 function Home() {
   return (
-    <section className="min-h-[120vh]">
+    <section className="min-h-[120vh] bg-[#F9F9F9]">
       <Header />
 
       <Products />

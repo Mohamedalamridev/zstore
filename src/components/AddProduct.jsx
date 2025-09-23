@@ -13,33 +13,30 @@ const ProductField = ({
   value,
   onChange,
   placeholder,
-}) => {
-  return (
-    <div className="flex flex-col">
-      <label className="mb-1 text-sm font-semibold text-gray-700">
-        {label}
-      </label>
-      {type === "textarea" ? (
-        <textarea
-          name={name}
-          value={value}
-          onChange={onChange}
-          placeholder={placeholder}
-          className="border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
-        />
-      ) : (
-        <input
-          type={type}
-          name={name}
-          value={value}
-          onChange={onChange}
-          placeholder={placeholder}
-          className="border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
-        />
-      )}
-    </div>
-  );
-};
+}) => (
+  <div className="flex flex-col">
+    <label className="mb-1 text-sm font-semibold text-gray-700">{label}</label>
+    {type === "textarea" ? (
+      <textarea
+        name={name}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        className="border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+      />
+    ) : (
+      <input
+        type={type}
+        name={name}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        min={type === "number" ? 0 : undefined}
+        className="border border-gray-300 p-2 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
+      />
+    )}
+  </div>
+);
 
 function AddProduct() {
   const baseUrl = import.meta.env.VITE_BASE_URL;
@@ -62,7 +59,7 @@ function AddProduct() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [msg, setMsg] = useState("");
+  const [msg, setMsg] = useState({ type: "", text: "" });
 
   const handleUploadImages = async (files) => {
     if (!files.length) return;
@@ -83,7 +80,7 @@ function AddProduct() {
       );
       setData((prev) => ({ ...prev, imgs: [...prev.imgs, ...urls] }));
     } catch (err) {
-      setMsg(`Upload error: ${err.message}`);
+      setMsg({ type: "error", text: `Upload error: ${err.message}` });
     }
     setLoading(false);
   };
@@ -98,7 +95,10 @@ function AddProduct() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!data.title || !data.price || data.imgs.length === 0) {
-      setMsg(" Title, price, and at least one image are required.");
+      setMsg({
+        type: "error",
+        text: "Title, price, and at least one image are required.",
+      });
       return;
     }
 
@@ -112,31 +112,35 @@ function AddProduct() {
       });
       const result = await res.json();
       if (res.ok) {
-        setMsg("Product created successfully!");
+        setMsg({ type: "success", text: "✅ Product created successfully!" });
         setData({
           title: "",
           desc: "",
-          price: 0,
-          oldPrice: 0,
+          price: "",
+          oldPrice: "",
           category: "",
           availableSizes: [],
           color: "",
-          stock: 0,
           tags: [],
           soldCount: 0,
+          stock: 0,
           imgs: [],
           isTopSelling: false,
           isFeatured: false,
           isNewArrival: false,
         });
       } else {
-        setMsg(result.message || "Failed to create product.");
+        setMsg({
+          type: "error",
+          text: result.message || "Failed to create product.",
+        });
       }
     } catch (err) {
-      setMsg(` Error: ${err.message}`);
+      setMsg({ type: "error", text: `Error: ${err.message}` });
     }
     setLoading(false);
   };
+
   const categories = [
     "General",
     "T-Shirt",
@@ -168,7 +172,16 @@ function AddProduct() {
         <h1 className="text-2xl font-bold mb-4 text-gray-800">
           Add New Product
         </h1>
-        {msg && <p className="mb-4 text-sm font-medium text-red-600">{msg}</p>}
+
+        {msg.text && (
+          <p
+            className={`mb-4 text-sm font-medium ${
+              msg.type === "error" ? "text-red-600" : "text-green-600"
+            }`}
+          >
+            {msg.text}
+          </p>
+        )}
 
         <form
           className="grid grid-cols-1 md:grid-cols-2 gap-6"
@@ -182,17 +195,24 @@ function AddProduct() {
             placeholder="Enter product title"
           />
 
-          <select
-            className="border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none"
-            onChange={(e) => setData({ ...data, category: e.target.value })}
-          >
-            <option>Select Category</option>
-            {categories.map((cat, i) => (
-              <option key={i} value={cat}>
-                {cat}
-              </option>
-            ))}
-          </select>
+          <div className="flex flex-col">
+            <label className="mb-1 text-sm font-semibold text-gray-700">
+              Category
+            </label>
+            <select
+              value={data.category}
+              className="border border-gray-300 rounded-lg p-2 focus:ring-2 focus:ring-blue-400 focus:outline-none"
+              onChange={(e) => setData({ ...data, category: e.target.value })}
+            >
+              <option value="">Select Category</option>
+              {categories.map((cat, i) => (
+                <option key={i} value={cat}>
+                  {cat}
+                </option>
+              ))}
+            </select>
+          </div>
+
           <ProductField
             label="Price"
             name="price"
@@ -203,6 +223,7 @@ function AddProduct() {
             }
             placeholder="Enter price"
           />
+
           <ProductField
             label="Old Price"
             name="oldPrice"
@@ -213,6 +234,7 @@ function AddProduct() {
             }
             placeholder="Enter old price"
           />
+
           <ProductField
             label="Description"
             name="desc"
@@ -221,6 +243,7 @@ function AddProduct() {
             onChange={(e) => setData({ ...data, desc: e.target.value })}
             placeholder="Enter description"
           />
+
           <ProductField
             label="Available Sizes"
             name="availableSizes"
@@ -230,6 +253,7 @@ function AddProduct() {
             }
             placeholder="E.g. S, M, L, XL"
           />
+
           <ProductField
             label="Color"
             name="color"
@@ -237,15 +261,18 @@ function AddProduct() {
             onChange={(e) => setData({ ...data, color: e.target.value })}
             placeholder="Enter product color"
           />
+
           <ProductField
-            label="sold count"
+            label="Sold Count"
             name="soldCount"
+            type="number"
             value={data.soldCount}
             onChange={(e) =>
               setData({ ...data, soldCount: Number(e.target.value) })
             }
-            placeholder="Enter product sold count"
+            placeholder="Enter sold count"
           />
+
           <ProductField
             label="Tags"
             name="tags"
@@ -255,16 +282,19 @@ function AddProduct() {
             }
             placeholder="E.g. T-Shirt, Casual"
           />
+
           <ProductField
-            label="stock"
+            label="Stock"
             name="stock"
+            type="number"
             value={data.stock}
             onChange={(e) =>
               setData({ ...data, stock: Number(e.target.value) })
             }
-            placeholder="Enter product stock"
+            placeholder="Enter stock quantity"
           />
 
+          {/* Image Upload */}
           <div className="md:col-span-2">
             <label className="mb-1 text-sm font-semibold text-gray-700">
               Upload Images
@@ -277,55 +307,46 @@ function AddProduct() {
               className="block w-full border border-gray-300 rounded-lg p-2 mt-1"
             />
             <div className="flex flex-wrap gap-3 mt-3">
-              {data.imgs &&
-                data.imgs.map((url, i) => (
-                  <div key={i} className="relative">
-                    <img
-                      src={url}
-                      alt="preview"
-                      className="w-28 h-28 object-cover rounded-lg border"
-                    />
-                    <button
-                      type="button"
-                      onClick={() => removeImage(i)}
-                      className="absolute top-0 right-0 bg-red-500 text-white text-xs px-1 rounded-full shadow"
-                    >
-                      ✕
-                    </button>
-                  </div>
-                ))}
+              {data.imgs.map((url, i) => (
+                <div key={i} className="relative">
+                  <img
+                    src={url}
+                    alt="preview"
+                    className="w-28 h-28 object-cover rounded-lg border"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => removeImage(i)}
+                    className="absolute top-0 right-0 bg-red-500 text-white text-xs px-1 rounded-full shadow"
+                  >
+                    ✕
+                  </button>
+                </div>
+              ))}
             </div>
           </div>
 
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={data.isTopSelling}
-              onChange={(e) =>
-                setData({ ...data, isTopSelling: e.target.checked })
-              }
-            />
-            <label className="text-sm font-medium">Top Selling</label>
-          </div>
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={data.isFeatured}
-              onChange={(e) =>
-                setData({ ...data, isFeatured: e.target.checked })
-              }
-            />
-            <label className="text-sm font-medium">Featured</label>
-          </div>
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              checked={data.isNewArrival}
-              onChange={(e) =>
-                setData({ ...data, isNewArrival: e.target.checked })
-              }
-            />
-            <label className="text-sm font-medium">New Arrival</label>
+          {/* Flags */}
+          <div className="flex flex-col gap-2 md:col-span-2">
+            {[
+              { key: "isTopSelling", label: "Top Selling" },
+              { key: "isFeatured", label: "Featured" },
+              { key: "isNewArrival", label: "New Arrival" },
+            ].map(({ key, label }) => (
+              <label
+                key={key}
+                className="flex items-center gap-2 text-sm font-medium"
+              >
+                <input
+                  type="checkbox"
+                  checked={data[key]}
+                  onChange={(e) =>
+                    setData({ ...data, [key]: e.target.checked })
+                  }
+                />
+                {label}
+              </label>
+            ))}
           </div>
 
           <div className="md:col-span-2 flex justify-end">
